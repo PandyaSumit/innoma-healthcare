@@ -2,210 +2,154 @@ import React from 'react';
 
 const TraumaExplanation: React.FC = () => {
   return (
-    <section className="py-24 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+    <section className="py-16 md:py-24 bg-white overflow-hidden" id="mission">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
         {/* Section Header */}
-        <div className="mb-20">
-          <div className="flex items-center gap-2 mb-4">
+        <div className="mb-16 md:mb-20 text-left lg:text-center">
+          <div className="flex items-center lg:justify-center gap-2 mb-4">
             <span className="w-8 h-1 bg-brand-orange rounded-full"></span>
             <span className="text-xs font-bold tracking-widest uppercase text-brand-blue/60">OUR MISSION</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight max-w-2xl">
+          <h2 className="text-3xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight max-w-3xl lg:mx-auto">
             Understanding Trauma and our 
             <span className="text-brand-orange"> Holistic Approach</span>
           </h2>
         </div>
 
-        {/* Flowcharts Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 mb-24">
+        {/* Flowcharts Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-start mb-16">
           
-          {/* How Trauma Works */}
-          <div className="bg-gray-50 rounded-2xl p-8 md:p-12">
-            <h3 className="text-2xl font-bold text-brand-blue mb-12 flex items-center gap-3">
-              <span className="w-1.5 h-6 bg-brand-blue rounded-full"></span>
-              How Trauma Works
-            </h3>
+          {/* FLOWCHART 1: HOW TRAUMA WORKS */}
+          <div className="bg-slate-50/80 backdrop-blur rounded-[2.5rem] p-6 md:p-10 border border-white shadow-card flex flex-col items-center">
+            <h3 className="text-2xl font-bold text-brand-blue mb-10 self-start lg:self-center">How Trauma Works</h3>
             
-            <div className="flex flex-col items-center space-y-0">
-              {/* Trauma Node */}
-              <div className="group relative z-10 transition-transform duration-300 hover:scale-105">
-                <div className="absolute -inset-1 bg-gradient-to-r from-red-200 to-red-100 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                <div className="relative bg-white border border-red-100 rounded-xl px-12 py-5 text-center shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] min-w-[200px]">
-                  <p className="text-[10px] font-bold text-red-400 uppercase tracking-[0.2em] mb-1">Source</p>
-                  <p className="font-bold text-brand-blue text-xl">Trauma</p>
-                </div>
+            <div className="w-full flex flex-col items-center">
+              {/* Node: Trauma */}
+              <div className="bg-white border-2 border-red-50 rounded-2xl px-8 py-4 shadow-flow min-w-[180px] text-center">
+                <p className="text-[10px] font-black text-red-400 uppercase tracking-widest mb-1">Source</p>
+                <p className="font-bold text-brand-blue text-xl">Trauma</p>
               </div>
 
-              {/* Red Arrow Path */}
-              <div className="h-12 w-px bg-gradient-to-b from-red-100 to-red-400 relative">
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-4 border-r-2 border-b-2 border-red-400 rotate-45 rounded-br-sm"></div>
+              {/* Arrow Down */}
+              <div className="h-10 w-px bg-red-200 relative my-2">
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-red-200"></div>
               </div>
 
-              {/* Coping Mechanisms Node */}
-              <div className="group relative z-10 transition-transform duration-300 hover:scale-105">
-                <div className="absolute -inset-1 bg-gradient-to-r from-brand-blue/20 to-brand-blue/10 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                <div className="relative bg-white border border-brand-blue/10 rounded-xl px-12 py-5 text-center shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] min-w-[240px]">
-                  <p className="text-[10px] font-bold text-brand-blue/40 uppercase tracking-[0.2em] mb-1">Response</p>
-                  <p className="font-bold text-brand-blue text-lg">Coping Mechanisms</p>
-                </div>
+              {/* Node: Coping Mechanisms */}
+              <div className="bg-white border border-slate-200 rounded-2xl px-10 py-5 shadow-flow min-w-[220px] text-center">
+                <p className="text-[10px] font-black text-brand-blue/40 uppercase tracking-widest mb-1">Response</p>
+                <p className="font-bold text-brand-blue text-lg">Coping Mechanisms</p>
               </div>
 
-              {/* Branching SVG (Curved) */}
-              <div className="w-full max-w-[440px] mt-0 -mb-2">
-                <svg width="100%" height="60" viewBox="0 0 400 60" fill="none" preserveAspectRatio="none">
-                  <path d="M200 0V20 C200 30 190 30 180 30 H60 C40 30 40 30 40 45 V60" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M200 0V60" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M200 0V20 C200 30 210 30 220 30 H340 C360 30 360 30 360 45 V60" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" />
+              {/* Branching SVG for 3 categories */}
+              <div className="w-full max-w-[380px] h-12">
+                <svg viewBox="0 0 400 40" className="w-full h-full" preserveAspectRatio="none">
+                  <path d="M200 0 V15 M200 15 H50 V40 M200 15 H350 V40 M200 15 V40" stroke="#CBD5E1" strokeWidth="2" fill="none" />
                 </svg>
               </div>
 
-              {/* 3 Categories Nodes */}
-              <div className="grid grid-cols-3 gap-3 w-full max-w-[480px]">
-                {[
-                  { title: "Addictions", color: "bg-gray-100" },
-                  { title: "Mental Illness", color: "bg-gray-100" },
-                  { title: "Physiological Disorders", color: "bg-gray-100" }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex flex-col items-center">
-                    <div className="bg-white border border-gray-100 rounded-lg px-2 py-3 w-full text-center shadow-sm">
-                      <p className="text-[10px] md:text-[11px] font-bold text-brand-blue/60 uppercase tracking-tight leading-tight">
-                        {item.title.split(' ').map((line, i) => (
-                          <span key={i} className="block">{line}</span>
-                        ))}
-                      </p>
-                    </div>
+              {/* 3 Categories: Addictions, Mental Illness, Physiological */}
+              <div className="grid grid-cols-3 gap-2 w-full max-w-[420px]">
+                {["Addictions", "Mental Illness", "Physiological Disorders"].map((item, i) => (
+                  <div key={i} className="bg-white/80 border border-slate-100 rounded-xl p-3 sm:p-2 text-center shadow-flow flex items-center justify-center min-h-[50px] sm:min-h-[auto]">
+                    <p className="text-[8px] sm:text-[12px] font-bold text-slate-500 uppercase leading-tight tracking-tight break-words w-full">{item}</p>
                   </div>
                 ))}
               </div>
 
-              {/* Bottom Red Arrow Path */}
-              <div className="h-16 w-px bg-gradient-to-b from-gray-200 via-red-200 to-red-400 relative">
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-4 border-r-2 border-b-2 border-red-400 rotate-45 rounded-br-sm"></div>
+              {/* Arrow Down */}
+              <div className="h-12 w-px bg-red-300 relative my-2">
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-red-300"></div>
               </div>
 
-              {/* Final Node - Symptoms */}
-              <div className="group relative w-full transition-transform duration-300 hover:scale-[1.02]">
-                <div className="absolute -inset-1 bg-gradient-to-r from-brand-blue/10 to-transparent rounded-2xl blur opacity-25"></div>
-                <div className="relative bg-white border-2 border-brand-blue/5 rounded-2xl p-6 text-center shadow-md">
-                  <p className="text-[10px] font-bold text-red-400 uppercase tracking-[0.3em] mb-2">Outcome</p>
-                  <p className="text-xl font-bold text-brand-blue italic font-serif">
-                    Symptoms/Dysfunctionalities
-                  </p>
-                </div>
+              {/* Node: Outcome */}
+              <div className="bg-white border-2 border-red-50 rounded-2xl p-6 shadow-md w-full text-center">
+                <p className="text-[10px] font-black text-red-500 uppercase tracking-widest mb-1">Outcome</p>
+                <p className="font-bold text-brand-blue text-lg md:text-xl italic font-serif">Symptoms / Dysfunctionalities</p>
               </div>
             </div>
           </div>
 
-          {/* How TOT Works */}
-          <div className="bg-gray-50 rounded-2xl p-8 md:p-12">
-            <h3 className="text-2xl font-bold text-brand-blue mb-12 flex items-center gap-3">
-              <span className="w-1.5 h-6 bg-brand-orange rounded-full"></span>
-              How TOT Works
-            </h3>
-
-            <div className="flex flex-col items-center space-y-0">
+          {/* FLOWCHART 2: HOW TOT WORKS */}
+          <div className="bg-slate-50/80 backdrop-blur rounded-[2.5rem] p-6 md:p-10 border border-white shadow-card flex flex-col items-center">
+            <h3 className="text-2xl font-bold text-brand-blue mb-10 self-start lg:self-center">How TOT Works</h3>
+            
+            <div className="w-full flex flex-col items-center">
               {/* Step 1 */}
-              <div className="group relative transition-transform duration-300 hover:scale-105">
-                <div className="relative bg-white border border-gray-100 rounded-xl px-10 py-4 text-center shadow-sm min-w-[220px]">
-                  <p className="text-[10px] font-bold text-brand-blue/40 uppercase tracking-[0.2em] mb-1">Step 01</p>
-                  <p className="font-bold text-brand-blue text-[13px]">Identification of Symptoms</p>
-                </div>
+              <div className="bg-white border border-slate-200 rounded-2xl px-8 py-4 shadow-flow min-w-[240px] text-center">
+                <p className="text-[10px] font-black text-brand-blue/30 uppercase tracking-widest mb-1">Step 01</p>
+                <p className="font-bold text-brand-blue">Identification of Symptoms</p>
               </div>
 
-              {/* Branching Down SVG (Curved) */}
-              <div className="w-full max-w-[440px] mt-0 -mb-2">
-                <svg width="100%" height="60" viewBox="0 0 400 60" fill="none" preserveAspectRatio="none">
-                  <path d="M200 0V20 C200 30 190 30 180 30 H60 C40 30 40 30 40 45 V60" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M200 0V60" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M200 0V20 C200 30 210 30 220 30 H340 C360 30 360 30 360 45 V60" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" />
-                  {/* Arrows */}
-                  <path d="M40 60L36 54M40 60L44 54" stroke="#E2E8F0" strokeWidth="2" />
-                  <path d="M200 60L196 54M200 60L204 54" stroke="#E2E8F0" strokeWidth="2" />
-                  <path d="M360 60L356 54M360 60L364 54" stroke="#E2E8F0" strokeWidth="2" />
+              {/* Branching Down to categories */}
+              <div className="w-full max-w-[380px] h-10">
+                <svg viewBox="0 0 400 30" className="w-full h-full" preserveAspectRatio="none">
+                   <path d="M200 0 V10 M200 10 H50 V30 M200 10 H350 V30 M200 10 V30" stroke="#CBD5E1" strokeWidth="2" fill="none" />
                 </svg>
               </div>
 
-              {/* 3 Categories Nodes */}
-              <div className="grid grid-cols-3 gap-3 w-full max-w-[480px]">
-                {[
-                  { title: "Toxic Behaviours" },
-                  { title: "Mental Illness" },
-                  { title: "Addictions" }
-                ].map((item, idx) => (
-                  <div key={idx} className="bg-white border border-gray-100 rounded-lg px-2 py-4 w-full text-center shadow-sm">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tight leading-tight">
-                      {item.title.split(' ').map((line, i) => (
-                        <span key={i} className="block">{line}</span>
-                      ))}
-                    </p>
+              {/* Categories */}
+              <div className="grid grid-cols-3 gap-2 w-full max-w-[420px]">
+                {["Toxic Behaviours", "Mental Illness", "Addictions"].map((item, i) => (
+                  <div key={i} className="bg-white/80 border border-slate-100 rounded-xl p-3 text-center shadow-flow flex items-center justify-center">
+                    <p className="text-[8px] sm:text-[12px] font-bold text-slate-400 uppercase leading-tight tracking-tight break-words w-full">{item}</p>
                   </div>
                 ))}
               </div>
 
-              {/* Branching Up SVG (Merge Curved) */}
-              <div className="w-full max-w-[440px] mt-0">
-                <svg width="100%" height="60" viewBox="0 0 400 60" fill="none" preserveAspectRatio="none">
-                  <path d="M40 0V15 C40 30 40 30 60 30 H180 C190 30 200 30 200 40 V60" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M200 0V60" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M360 0V15 C360 30 360 30 340 30 H220 C210 30 200 30 200 40 V60" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" />
-                  {/* Arrows */}
-                  <path d="M200 60L196 54L200 60L204 54" stroke="#E2E8F0" strokeWidth="2" />
+              {/* Branching back Up */}
+              <div className="w-full max-w-[380px] h-10 transform rotate-180">
+                <svg viewBox="0 0 400 30" className="w-full h-full" preserveAspectRatio="none">
+                   <path d="M200 0 V10 M200 10 H50 V30 M200 10 H350 V30 M200 10 V30" stroke="#CBD5E1" strokeWidth="2" fill="none" />
                 </svg>
               </div>
 
-              {/* Symptom Management Node */}
-              <div className="group relative transition-transform duration-300 hover:scale-105">
-                <div className="relative bg-white border border-brand-blue/10 rounded-xl px-10 py-4 text-center shadow-sm min-w-[300px]">
-                  <p className="text-[10px] font-bold text-brand-blue/40 uppercase tracking-[0.2em] mb-1">Step 02</p>
-                  <p className="font-bold text-brand-blue text-[13px] italic">Symptom Management Through Therapy/Medication</p>
-                </div>
+              {/* Step 2 */}
+              <div className="bg-white border border-slate-200 rounded-2xl px-6 py-4 shadow-flow text-center max-w-[320px]">
+                <p className="text-[10px] font-black text-brand-blue/30 uppercase tracking-widest mb-1">Step 02</p>
+                <p className="font-bold text-brand-blue text-[13px] italic">Symptom Management Through Therapy/Medication</p>
               </div>
 
-              {/* Green Arrow Path */}
-              <div className="h-10 w-px bg-gradient-to-b from-brand-blue/10 to-green-500 relative">
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-4 border-r-2 border-b-2 border-green-500 rotate-45 rounded-br-sm"></div>
+              {/* Green Arrow */}
+              <div className="h-10 w-px bg-green-200 relative my-2">
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-green-300"></div>
               </div>
 
-              {/* Exploration Node */}
-              <div className="group relative transition-transform duration-300 hover:scale-105">
-                <div className="relative bg-white border border-brand-blue/10 rounded-xl px-10 py-4 text-center shadow-sm min-w-[320px]">
-                  <p className="text-[10px] font-bold text-green-500 uppercase tracking-[0.2em] mb-1">Step 03</p>
-                  <p className="font-bold text-brand-blue text-[13px] italic">Exploration Of Coping Mechanisms And Patterns</p>
-                </div>
+              {/* Step 3 */}
+              <div className="bg-white border border-green-100 rounded-2xl px-6 py-4 shadow-flow text-center max-w-[320px]">
+                <p className="text-[10px] font-black text-green-500 uppercase tracking-widest mb-1">Step 03</p>
+                <p className="font-bold text-brand-blue text-[13px] italic">Exploration Of Coping Mechanisms And Patterns</p>
               </div>
 
-              {/* Green Arrow Path */}
-              <div className="h-10 w-px bg-gradient-to-b from-green-300 to-green-600 relative">
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-4 border-r-2 border-b-2 border-green-600 rotate-45 rounded-br-sm"></div>
+              {/* Final Arrow */}
+              <div className="h-10 w-px bg-green-400 relative my-2">
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-green-500"></div>
               </div>
 
-              {/* Final Node - Root Trauma */}
-              <div className="group relative w-full transition-transform duration-300 hover:scale-[1.02]">
-                <div className="absolute -inset-1 bg-gradient-to-r from-green-400 to-brand-blue rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
-                <div className="relative bg-brand-blue rounded-xl p-6 text-center shadow-xl border border-brand-blue">
-                  <p className="text-[10px] font-bold text-green-400 uppercase tracking-[0.3em] mb-2">The Goal</p>
-                  <p className="text-[15px] font-bold text-white uppercase tracking-wider">
-                    Identification and Processing of Root Trauma
-                  </p>
-                </div>
+              {/* The Goal */}
+              <div className="bg-brand-blue rounded-2xl p-8 shadow-card w-full text-center">
+                <p className="text-[10px] font-black text-green-400 uppercase tracking-[0.3em] mb-2">The Goal</p>
+                <p className="font-bold text-white text-sm md:text-base uppercase tracking-wider">Identification and Processing of Root Trauma</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Informative Text */}
-        <div className="max-w-3xl mx-auto space-y-12 mb-12">
-          <div className="space-y-6">
-            <p className="text-gray-600 text-lg md:text-xl leading-relaxed">
+        {/* Support Text from SS */}
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <p className="text-slate-600 text-lg leading-relaxed border-l-4 border-brand-orange pl-6">
               Trauma is the response of the brain to a specific event that overwhelms the central nervous system.
             </p>
-            <p className="text-gray-600 text-lg md:text-xl leading-relaxed">
-              Mental disorders often emerge as coping mechanisms to protect us from underlying trauma. Over time, these mechanisms can become dysfunctionalities that require professional care.
+            <p className="text-slate-600 text-lg leading-relaxed border-l-4 border-brand-blue pl-6">
+              We understand mental disorders as a coping mechanism used to keep trauma dissociated and keep us protected.
             </p>
           </div>
-          <div className="p-8 md:p-12 rounded-2xl bg-brand-blue text-white shadow-xl">
-            <p className="text-xl md:text-2xl font-bold leading-tight">
-              Our therapy is based on a holistic approach of identifying and soothing symptoms while exploring underlying trauma.
+          
+          <div className="bg-brand-blue rounded-3xl p-8 md:p-12 text-white shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700"></div>
+            <p className="text-xl md:text-2xl font-medium leading-relaxed relative z-10">
+              Our therapy is based on a <span className="text-brand-orange font-bold underline decoration-2 underline-offset-8">holistic approach</span> of identifying and soothing symptoms while exploring underlying trauma to provide effective, long-lasting mental healthcare solutions.
             </p>
           </div>
         </div>
@@ -215,4 +159,3 @@ const TraumaExplanation: React.FC = () => {
 };
 
 export default TraumaExplanation;
-

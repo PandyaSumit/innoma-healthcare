@@ -57,7 +57,7 @@ const Header: React.FC = () => {
             </div>
 
             {/* CTA Buttons */}
-            <div className="hidden md:flex items-center gap-6">
+            <div className="hidden lg:flex items-center gap-6">
               <button className={`text-sm font-semibold transition-colors cursor-pointer ${
                 isScrolled ? 'text-brand-blue hover:text-brand-orange' : 'text-white/90 hover:text-white'
               }`}>

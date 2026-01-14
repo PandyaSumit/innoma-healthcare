@@ -35,8 +35,8 @@ const TherapistsCarousel: React.FC = () => {
   ];
 
   return (
-    <section id="therapists" className="py-24 bg-gray-50 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+    <section id="therapists" className="py-10 sm:py-24 bg-gray-50 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-12">
         <div className="mb-16">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-8 h-1 bg-brand-orange rounded-full"></span>
@@ -53,9 +53,9 @@ const TherapistsCarousel: React.FC = () => {
 
         {/* Carousel Container */}
         <div className="relative">
-          <div className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
+          <div className="flex gap-6 sm:gap-8 overflow-x-auto xl:overflow-visible pb-0 sm:pb-12 snap-x lg:snap-none no-scrollbar px-2">
             {therapists.map((therapist) => (
-              <div key={therapist.id} className="snap-start flex-shrink-0 w-[320px] md:w-[380px]">
+              <div key={therapist.id} className="snap-start flex-shrink-0 w-[90vw] sm:w-[85vw] md:w-1/2 lg:w-[380px] max-w-[380px]">
                 <TherapistCard therapist={therapist} />
               </div>
             ))}

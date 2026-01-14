@@ -30,7 +30,7 @@ const FAQSection: React.FC = () => {
   return (
     <section className="section-spacing bg-white">
       <div className="max-w-[1440px] mx-auto px-[24px] md:px-[48px] lg:px-[80px] xl:px-[120px]">
-        <div className="grid lg:grid-cols-2 gap-24">
+        <div className="grid lg:grid-cols-2 gap-6 md:gap-12">
           
           {/* Left - Title */}
           <div>
@@ -38,7 +38,7 @@ const FAQSection: React.FC = () => {
               <span className="w-8 h-[1px] bg-brand-orange-500"></span>
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-brand-blue-500">FAQ</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-balance text-brand-blue-500">
+            <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-balance text-brand-blue-500">
               Common <span className="text-brand-orange-500">questions.</span>
             </h2>
           </div>
@@ -52,7 +52,7 @@ const FAQSection: React.FC = () => {
               >
                 <button
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                  className="w-full py-8 flex items-center justify-between text-left group cursor-pointer"
+                  className="w-full py-4 sm:py-6 flex items-center justify-between text-left group cursor-pointer"
                 >
                   <span className={`text-xl font-medium transition-colors ${openIndex === index ? 'text-brand-orange-500' : 'text-brand-blue-900 group-hover:text-brand-blue-500'}`}>
                     {faq.question}

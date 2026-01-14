@@ -9,7 +9,7 @@ const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
   return (
     <div className="group bg-white rounded-xl border border-gray-100 overflow-hidden hover:border-brand-blue/20 transition-all duration-300">
       {/* Image Container */}
-      <div className="relative aspect-[4/5] overflow-hidden">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-t-xl bg-gray-100">
         <img
           src={therapist.photo}
           alt={therapist.name}
@@ -24,7 +24,7 @@ const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xl font-bold text-brand-blue line-clamp-1">
             {therapist.name}

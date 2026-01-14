@@ -132,8 +132,8 @@ body {
 
 @media (min-width: 1024px) {
   .section-spacing {
-    padding-top: 160px;
-    padding-bottom: 160px;
+    padding-top: 96px;
+    padding-bottom: 96px;
   }
 }
 

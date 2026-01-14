@@ -21,8 +21,8 @@ const LeadForm: React.FC = () => {
 
   return (
     <section id="get-care-plan" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="bg-brand-blue rounded-2xl p-8 md:p-16 lg:p-20 relative overflow-hidden shadow-xl">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-12">
+        <div className="bg-brand-blue rounded-2xl p-4 sm:p-8 md:p-16 lg:p-20 relative overflow-hidden shadow-xl">
           {/* Subtle decoration */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
           
@@ -34,7 +34,7 @@ const LeadForm: React.FC = () => {
                 <span className="text-xs font-bold tracking-widest uppercase text-white/60">GET STARTED</span>
               </div>
               
-              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-8">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-8">
                 Begin your journey to 
                 <span className="text-brand-orange"> healing</span>.
               </h2>
@@ -62,7 +62,7 @@ const LeadForm: React.FC = () => {
             </div>
 
             {/* Form Side */}
-            <div className="bg-white rounded-xl p-8 md:p-10 shadow-lg">
+            <div className="bg-white rounded-xl p-6 sm:p-8 md:p-10 shadow-lg w-full max-w-full">
               {isSubmitted ? (
                 <div className="text-center py-10">
                   <div className="w-20 h-20 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-8">
@@ -95,7 +95,7 @@ const LeadForm: React.FC = () => {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Jane Doe"
-                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-5 py-4 text-brand-blue placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 sm:px-5 sm:py-4 text-brand-blue placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
                     />
                   </div>
                   
@@ -111,7 +111,7 @@ const LeadForm: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="jane@example.com"
-                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-5 py-4 text-brand-blue placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 sm:px-5 sm:py-4 text-brand-blue placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
                     />
                   </div>
 
@@ -127,13 +127,13 @@ const LeadForm: React.FC = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+91 00000 00000"
-                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-5 py-4 text-brand-blue placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 sm:px-5 sm:py-4 text-brand-blue placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
                     />
                   </div>
 
                   <button 
                     type="submit"
-                    className="w-full py-5 bg-brand-orange text-white text-base font-bold rounded-md transition-all hover:bg-brand-orange/90 shadow-lg shadow-brand-orange/20"
+                    className="w-full py-3 sm:py-5 bg-brand-orange text-white text-base font-bold rounded-md transition-all hover:bg-brand-orange/90 shadow-lg shadow-brand-orange/20"
                   >
                     Get your care plan
                   </button>
