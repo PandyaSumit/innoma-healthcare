@@ -133,7 +133,7 @@ const LeadForm: React.FC = () => {
 
                   <button 
                     type="submit"
-                    className="w-full py-3 sm:py-5 bg-brand-orange text-white text-base font-bold rounded-md transition-all hover:bg-brand-orange/90 shadow-lg shadow-brand-orange/20"
+                    className="w-full cursor-pointer py-3 sm:py-5 bg-brand-orange text-white text-base font-bold rounded-md transition-all hover:bg-brand-orange/90 shadow-lg shadow-brand-orange/20"
                   >
                     Get your care plan
                   </button>

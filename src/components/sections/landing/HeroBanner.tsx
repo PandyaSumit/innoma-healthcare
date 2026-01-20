@@ -2,7 +2,7 @@ import React from "react";
 
 const HeroBanner: React.FC = () => {
   return (
-    <section className="relative min-h-[85vh] md:min-h-[90vh] flex items-center justify-center overflow-hidden bg-slate-950">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950">
       {/* Immersive Background */}
       <div className="absolute inset-0 z-0">
         <img
@@ -33,7 +33,7 @@ const HeroBanner: React.FC = () => {
           {/* Single CTA */}
           <div className="opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
             <button
-              className="group relative inline-flex items-center justify-center px-10 py-5 bg-brand-orange text-white text-[1.125rem] font-bold rounded-md transition-all duration-300 hover:bg-brand-orange/90 hover:px-12 active:scale-[0.98] shadow-[0_0_40px_rgba(249,115,22,0.2)] hover:shadow-[0_0_60px_rgba(249,115,22,0.4)] focus:outline-none focus-visible:outline-none focus:ring-0"
+              className="group cursor-pointer relative inline-flex items-center justify-center px-10 py-5 bg-brand-orange text-white text-[1.125rem] font-bold rounded-md transition-all duration-300 hover:bg-brand-orange/90 hover:px-12 active:scale-[0.98] shadow-[0_0_40px_rgba(249,115,22,0.2)] hover:shadow-[0_0_60px_rgba(249,115,22,0.4)] focus:outline-none focus-visible:outline-none focus:ring-0"
             >
               Start your journey
               <svg

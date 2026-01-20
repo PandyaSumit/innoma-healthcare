@@ -193,7 +193,7 @@ const Footer: React.FC = () => {
                 placeholder="Email address"
                 className="bg-white/10 border border-white/30 rounded-md px-4 py-3 text-sm w-full focus:outline-none focus:border-brand-orange transition text-white placeholder:text-white/80"
               />
-              <button className="bg-brand-orange text-white px-6 py-3 rounded-md text-xs font-bold uppercase tracking-widest hover:bg-brand-orange/90 transition">
+              <button className="bg-brand-orange cursor-pointer text-white px-6 py-3 rounded-md text-xs font-bold uppercase tracking-widest hover:bg-brand-orange/90 transition">
                 Join
               </button>
             </form>
@@ -207,7 +207,7 @@ const Footer: React.FC = () => {
             <span>© 2026 Innoma Healthcare</span>
             <span className="hidden sm:block">•</span>
             <span>All rights reserved</span>
-          </div>
+          </div>claude/implement-color-system-h1YLY
 
           <div className="flex gap-8 text-[11px] font-semibold uppercase tracking-widest text-white/80">
             {["Twitter", "LinkedIn", "Instagram"].map((social) => (
