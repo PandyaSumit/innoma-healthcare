@@ -92,7 +92,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-brand-blue-900 text-white">
+    <footer className="bg-brand-blue text-white">
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 py-20">
 
         {/* Top Grid */}
@@ -104,13 +104,13 @@ const Footer: React.FC = () => {
               Innoma <span className="text-brand-orange">Healthcare</span>
             </h2>
 
-            <p className="text-white/90 text-sm leading-relaxed mb-8 max-w-xs">
+            <p className="text-white text-sm leading-relaxed mb-8 max-w-xs">
               Building healthier minds by tackling the root cause of mental illness.
             </p>
 
             <div className="space-y-6">
               <div>
-                <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/60 mb-2">
+                <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/80 mb-2">
                   Vision
                 </h4>
                 <p className="text-sm font-medium text-white">
@@ -119,10 +119,10 @@ const Footer: React.FC = () => {
               </div>
 
               <div>
-                <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/60 mb-2">
+                <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/80 mb-2">
                   Mission
                 </h4>
-                <p className="text-sm font-medium leading-relaxed text-white/95">
+                <p className="text-sm font-medium leading-relaxed text-white">
                   We aim to revolutionise mental healthcare by acknowledging childhood developmental trauma.
                 </p>
               </div>
@@ -131,7 +131,7 @@ const Footer: React.FC = () => {
 
           {/* Expertise */}
           <div>
-            <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/60 mb-8">
+            <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/80 mb-8">
               Expertise
             </h4>
             <ul className="space-y-4">
@@ -144,7 +144,7 @@ const Footer: React.FC = () => {
                 <li key={item}>
                   <a
                     href="#"
-                    className="text-sm text-white/90 hover:text-brand-orange transition-colors"
+                    className="text-sm text-white hover:text-brand-orange transition-colors"
                   >
                     {item}
                   </a>
@@ -155,7 +155,7 @@ const Footer: React.FC = () => {
 
           {/* Company */}
           <div>
-            <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/60 mb-8">
+            <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/80 mb-8">
               Company
             </h4>
             <ul className="space-y-4">
@@ -168,7 +168,7 @@ const Footer: React.FC = () => {
                 <li key={item}>
                   <a
                     href="#"
-                    className="text-sm text-white/90 hover:text-brand-orange transition-colors"
+                    className="text-sm text-white hover:text-brand-orange transition-colors"
                   >
                     {item}
                   </a>
@@ -179,11 +179,11 @@ const Footer: React.FC = () => {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/60 mb-8">
+            <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/80 mb-8">
               Stay Updated
             </h4>
 
-            <p className="text-sm text-white/90 mb-6">
+            <p className="text-sm text-white mb-6">
               Insights on mental wellness, delivered to your inbox.
             </p>
 
@@ -191,7 +191,7 @@ const Footer: React.FC = () => {
               <input
                 type="email"
                 placeholder="Email address"
-                className="bg-white/10 border border-white/20 rounded-md px-4 py-3 text-sm w-full focus:outline-none focus:border-brand-orange transition text-white placeholder:text-white/60"
+                className="bg-white/10 border border-white/30 rounded-md px-4 py-3 text-sm w-full focus:outline-none focus:border-brand-orange transition text-white placeholder:text-white/80"
               />
               <button className="bg-brand-orange text-white px-6 py-3 rounded-md text-xs font-bold uppercase tracking-widest hover:bg-brand-orange/90 transition">
                 Join
@@ -201,15 +201,15 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Divider */}
-        <div className="mt-20 border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="mt-20 border-t border-white/30 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
 
-          <div className="flex flex-col sm:flex-row gap-4 text-[11px] text-white/60 font-semibold uppercase tracking-widest text-center sm:text-left">
+          <div className="flex flex-col sm:flex-row gap-4 text-[11px] text-white/80 font-semibold uppercase tracking-widest text-center sm:text-left">
             <span>© 2026 Innoma Healthcare</span>
             <span className="hidden sm:block">•</span>
             <span>All rights reserved</span>
           </div>
 
-          <div className="flex gap-8 text-[11px] font-semibold uppercase tracking-widest text-white/60">
+          <div className="flex gap-8 text-[11px] font-semibold uppercase tracking-widest text-white/80">
             {["Twitter", "LinkedIn", "Instagram"].map((social) => (
               <a
                 key={social}
