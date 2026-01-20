@@ -1,226 +1,69 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import Lottie from "lottie-react";
+
+// Import animations from assets
+import sunAnimation from "../../../assets/animations/clear sun.json";
+import handsAnimation from "../../../assets/animations/Handshake.json";
+import waterAnimation from "../../../assets/animations/Water flow.json";
+import plantAnimation from "../../../assets/animations/Animated plant loader..json";
 
 const WellnessHeroIllustration: React.FC = () => {
+  const handsRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (handsRef.current) {
+      // Play from frame 0 to 45 (where hands are fully met and clasped)
+      handsRef.current.playSegments([0, 45], true);
+    }
+  }, []);
+
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      <svg
-        viewBox="0 0 600 800"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <defs>
-          {/* Gradients for soft, premium look */}
-          <linearGradient id="sunGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#FEF3C7" stopOpacity="0.9" />
-            <stop offset="50%" stopColor="#FDE68A" stopOpacity="0.7" />
-            <stop offset="100%" stopColor="#FCD34D" stopOpacity="0.5" />
-          </linearGradient>
+    <div className="relative w-full h-full min-h-screen overflow-hidden">
+      {/* Background Soft Glows */}
+      <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[50rem] h-[50rem] bg-amber-50/30 rounded-full blur-[140px] animate-pulse-slow" />
+      <div className="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-[60rem] h-[60rem] bg-blue-50/20 rounded-full blur-[140px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
 
-          <linearGradient id="sunRays" x1="50%" y1="0%" x2="50%" y2="100%">
-            <stop offset="0%" stopColor="#FBBF24" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.1" />
-          </linearGradient>
+      {/* Sun Animation - Top Center Ambient */}
+      <div className="absolute top-[5%] sm:top-[8%] left-1/2 -translate-x-1/2 w-[14rem] sm:w-[20rem] md:w-[22rem] h-auto z-0 opacity-30 pointer-events-none">
+        <Lottie animationData={sunAnimation} loop={true} />
+      </div>
 
-          <linearGradient id="waterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#CFFAFE" stopOpacity="0.5" />
-            <stop offset="50%" stopColor="#A5F3FC" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#67E8F9" stopOpacity="0.7" />
-          </linearGradient>
+      {/* Hands Animation - CENTER PIECE BEHIND TEXT */}
+      <div className="absolute left-1/2 -translate-x-1/2 -translate-y-[45%] w-[45rem] h-[45rem] w-full z-0 opacity-[0.15] pointer-events-none blur-[1px]">
+        <Lottie 
+          lottieRef={handsRef}
+          animationData={handsAnimation} 
+          loop={false} 
+          autoplay={false}
+        />
+      </div>
 
-          <linearGradient id="handsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FECACA" stopOpacity="0.8" />
-            <stop offset="50%" stopColor="#FCA5A5" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#F87171" stopOpacity="0.8" />
-          </linearGradient>
+      {/* Water Flow Animation - SEAMLESS BOTTOM EDGE */}
+      <div className="absolute bottom-0 left-[-2%] w-[104%] h-[150px] sm:h-[220px] md:h-[280px] z-20 opacity-95 pointer-events-none">
+        <Lottie 
+          animationData={waterAnimation} 
+          loop={true} 
+          style={{ width: '100%', height: '100%' }} 
+          rendererSettings={{
+            preserveAspectRatio: 'none'
+          }}
+        />
+      </div>
 
-          <linearGradient id="plantGradient" x1="0%" y1="100%" x2="0%" y2="0%">
-            <stop offset="0%" stopColor="#86EFAC" stopOpacity="0.8" />
-            <stop offset="50%" stopColor="#4ADE80" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#22C55E" stopOpacity="0.7" />
-          </linearGradient>
+      {/* Left Plant - Corner Anchor */}
+      <div className="absolute bottom-0 left-[-10px] sm:left-[-20px] w-32 h-32 sm:w-48 sm:h-48 md:w-72 md:h-72 z-30 opacity-95 pointer-events-none animate-sway" style={{ transformOrigin: 'bottom' }}>
+        <Lottie animationData={plantAnimation} loop={false} />
+      </div>
 
-          {/* Filters for soft glows */}
-          <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="8" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
+      {/* Right Plant - Corner Anchor */}
+      <div className="absolute bottom-0 right-[-10px] sm:right-[-20px] w-32 h-32 sm:w-48 sm:h-48 md:w-72 md:h-72 z-30 opacity-95 pointer-events-none animate-sway scale-x-[-1]" style={{ transformOrigin: 'bottom', animationDelay: '1.5s' }}>
+        <Lottie animationData={plantAnimation} loop={false} />
+      </div>
 
-          <filter id="waterReflection" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="12" result="blur" />
-            <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.5 0" />
-          </filter>
-        </defs>
-
-        {/* Background soft gradient circle */}
-        <circle cx="300" cy="400" r="350" fill="url(#sunRays)" opacity="0.3" />
-
-        {/* Sunrise at the top - Hope and Healing */}
-        <g className="sunrise-group">
-          {/* Sun rays spreading downward */}
-          <g opacity="0.4">
-            <line x1="300" y1="120" x2="300" y2="250" stroke="#FBBF24" strokeWidth="3" strokeLinecap="round" />
-            <line x1="300" y1="120" x2="240" y2="230" stroke="#FBBF24" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-            <line x1="300" y1="120" x2="360" y2="230" stroke="#FBBF24" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-            <line x1="300" y1="120" x2="200" y2="210" stroke="#FBBF24" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
-            <line x1="300" y1="120" x2="400" y2="210" stroke="#FBBF24" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
-            <line x1="300" y1="120" x2="180" y2="200" stroke="#F59E0B" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
-            <line x1="300" y1="120" x2="420" y2="200" stroke="#F59E0B" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
-          </g>
-
-          {/* Sun circle with soft glow */}
-          <circle cx="300" cy="120" r="55" fill="url(#sunGradient)" filter="url(#softGlow)" />
-          <circle cx="300" cy="120" r="45" fill="#FEF3C7" opacity="0.9" />
-          <circle cx="300" cy="120" r="35" fill="#FFFBEB" opacity="0.8" />
-        </g>
-
-        {/* Left plant - Recovery, Growth, Well-being */}
-        <g className="left-plant" transform="translate(80, 580)">
-          {/* Stem */}
-          <path
-            d="M 0 80 Q -5 60 0 40 Q 5 20 0 0"
-            stroke="url(#plantGradient)"
-            strokeWidth="4"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* Leaves */}
-          <ellipse cx="-12" cy="60" rx="16" ry="24" fill="#86EFAC" opacity="0.8" transform="rotate(-30 -12 60)" />
-          <ellipse cx="12" cy="50" rx="14" ry="22" fill="#4ADE80" opacity="0.85" transform="rotate(25 12 50)" />
-          <ellipse cx="-10" cy="35" rx="15" ry="23" fill="#86EFAC" opacity="0.75" transform="rotate(-35 -10 35)" />
-          <ellipse cx="14" cy="25" rx="16" ry="24" fill="#22C55E" opacity="0.8" transform="rotate(30 14 25)" />
-
-          {/* Flowers */}
-          <g transform="translate(0, 10)">
-            <circle cx="0" cy="0" r="7" fill="#FCA5A5" opacity="0.9" />
-            <circle cx="-4" cy="-2" r="5" fill="#FCD34D" opacity="0.85" />
-            <circle cx="4" cy="-2" r="5" fill="#FCD34D" opacity="0.85" />
-            <circle cx="-3" cy="3" r="4.5" fill="#FBBF24" opacity="0.8" />
-            <circle cx="3" cy="3" r="4.5" fill="#FBBF24" opacity="0.8" />
-          </g>
-
-          {/* Small fruits */}
-          <circle cx="-8" cy="45" r="5" fill="#F87171" opacity="0.85" />
-          <circle cx="10" cy="15" r="4.5" fill="#FB923C" opacity="0.8" />
-        </g>
-
-        {/* Right plant - Symmetrical balance */}
-        <g className="right-plant" transform="translate(520, 580) scale(-1, 1)">
-          {/* Stem */}
-          <path
-            d="M 0 80 Q -5 60 0 40 Q 5 20 0 0"
-            stroke="url(#plantGradient)"
-            strokeWidth="4"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* Leaves */}
-          <ellipse cx="-12" cy="60" rx="16" ry="24" fill="#86EFAC" opacity="0.8" transform="rotate(-30 -12 60)" />
-          <ellipse cx="12" cy="50" rx="14" ry="22" fill="#4ADE80" opacity="0.85" transform="rotate(25 12 50)" />
-          <ellipse cx="-10" cy="35" rx="15" ry="23" fill="#86EFAC" opacity="0.75" transform="rotate(-35 -10 35)" />
-          <ellipse cx="14" cy="25" rx="16" ry="24" fill="#22C55E" opacity="0.8" transform="rotate(30 14 25)" />
-
-          {/* Flowers */}
-          <g transform="translate(0, 10)">
-            <circle cx="0" cy="0" r="7" fill="#FCA5A5" opacity="0.9" />
-            <circle cx="-4" cy="-2" r="5" fill="#FCD34D" opacity="0.85" />
-            <circle cx="4" cy="-2" r="5" fill="#FCD34D" opacity="0.85" />
-            <circle cx="-3" cy="3" r="4.5" fill="#FBBF24" opacity="0.8" />
-            <circle cx="3" cy="3" r="4.5" fill="#FBBF24" opacity="0.8" />
-          </g>
-
-          {/* Small fruits */}
-          <circle cx="-8" cy="45" r="5" fill="#F87171" opacity="0.85" />
-          <circle cx="10" cy="15" r="4.5" fill="#FB923C" opacity="0.8" />
-        </g>
-
-        {/* Center hands holding - Support, Safety, Connection */}
-        <g className="hands-group" transform="translate(300, 380)" filter="url(#softGlow)">
-          {/* Soft glow background circle */}
-          <circle cx="0" cy="0" r="90" fill="#FECACA" opacity="0.2" />
-          <circle cx="0" cy="0" r="70" fill="#FCA5A5" opacity="0.15" />
-
-          {/* Left hand */}
-          <g transform="translate(-35, 0)">
-            {/* Palm */}
-            <ellipse cx="0" cy="0" rx="28" ry="38" fill="url(#handsGradient)" opacity="0.9" />
-            <ellipse cx="0" cy="0" rx="24" ry="34" fill="#FEE2E2" opacity="0.8" />
-
-            {/* Fingers */}
-            <ellipse cx="-15" cy="-25" rx="8" ry="22" fill="#FECACA" opacity="0.85" transform="rotate(-15 -15 -25)" />
-            <ellipse cx="-8" cy="-30" rx="7" ry="24" fill="#FCA5A5" opacity="0.9" transform="rotate(-5 -8 -30)" />
-            <ellipse cx="0" cy="-32" rx="7" ry="26" fill="#FCA5A5" opacity="0.9" />
-            <ellipse cx="8" cy="-30" rx="7" ry="24" fill="#FECACA" opacity="0.85" transform="rotate(5 8 -30)" />
-            <ellipse cx="15" cy="-25" rx="7" ry="20" fill="#FEE2E2" opacity="0.8" transform="rotate(12 15 -25)" />
-
-            {/* Thumb */}
-            <ellipse cx="-20" cy="8" rx="10" ry="20" fill="#FCA5A5" opacity="0.85" transform="rotate(-45 -20 8)" />
-          </g>
-
-          {/* Right hand */}
-          <g transform="translate(35, 0)">
-            {/* Palm */}
-            <ellipse cx="0" cy="0" rx="28" ry="38" fill="url(#handsGradient)" opacity="0.9" />
-            <ellipse cx="0" cy="0" rx="24" ry="34" fill="#FEE2E2" opacity="0.8" />
-
-            {/* Fingers */}
-            <ellipse cx="15" cy="-25" rx="8" ry="22" fill="#FECACA" opacity="0.85" transform="rotate(15 15 -25)" />
-            <ellipse cx="8" cy="-30" rx="7" ry="24" fill="#FCA5A5" opacity="0.9" transform="rotate(5 8 -30)" />
-            <ellipse cx="0" cy="-32" rx="7" ry="26" fill="#FCA5A5" opacity="0.9" />
-            <ellipse cx="-8" cy="-30" rx="7" ry="24" fill="#FECACA" opacity="0.85" transform="rotate(-5 -8 -30)" />
-            <ellipse cx="-15" cy="-25" rx="7" ry="20" fill="#FEE2E2" opacity="0.8" transform="rotate(-12 -15 -25)" />
-
-            {/* Thumb */}
-            <ellipse cx="20" cy="8" rx="10" ry="20" fill="#FCA5A5" opacity="0.85" transform="rotate(45 20 8)" />
-          </g>
-
-          {/* Connection symbol - small heart in center */}
-          <g transform="translate(0, 5)">
-            <path
-              d="M 0 8 C -3 5 -8 3 -10 -2 C -12 -7 -10 -12 -5 -12 C -2 -12 0 -10 0 -10 C 0 -10 2 -12 5 -12 C 10 -12 12 -7 10 -2 C 8 3 3 5 0 8 Z"
-              fill="#F87171"
-              opacity="0.7"
-            />
-          </g>
-        </g>
-
-        {/* Water flow at the bottom - Calm and Emotional Stability */}
-        <g className="water-group" filter="url(#waterReflection)">
-          {/* Flowing water waves */}
-          <path
-            d="M 0 680 Q 75 670 150 680 T 300 680 T 450 680 T 600 680 L 600 800 L 0 800 Z"
-            fill="url(#waterGradient)"
-            opacity="0.6"
-          />
-          <path
-            d="M 0 700 Q 75 690 150 700 T 300 700 T 450 700 T 600 700 L 600 800 L 0 800 Z"
-            fill="#A5F3FC"
-            opacity="0.5"
-          />
-          <path
-            d="M 0 720 Q 60 710 120 720 T 240 720 T 360 720 T 480 720 T 600 720 L 600 800 L 0 800 Z"
-            fill="#CFFAFE"
-            opacity="0.4"
-          />
-
-          {/* Water ripples */}
-          <ellipse cx="150" cy="710" rx="30" ry="8" fill="#E0F2FE" opacity="0.3" />
-          <ellipse cx="350" cy="705" rx="25" ry="7" fill="#E0F2FE" opacity="0.25" />
-          <ellipse cx="480" cy="715" rx="28" ry="8" fill="#E0F2FE" opacity="0.28" />
-        </g>
-
-        {/* Decorative ambient circles for depth */}
-        <circle cx="130" cy="300" r="40" fill="#E9D5FF" opacity="0.15" filter="url(#softGlow)" />
-        <circle cx="470" cy="500" r="50" fill="#D1FAE5" opacity="0.12" filter="url(#softGlow)" />
-        <circle cx="100" cy="500" r="35" fill="#DBEAFE" opacity="0.13" filter="url(#softGlow)" />
-        <circle cx="500" cy="320" r="45" fill="#FCE7F3" opacity="0.14" filter="url(#softGlow)" />
-      </svg>
+      {/* Ambient Floating Elements */}
+      <div className="absolute top-[25%] left-[15%] w-24 h-24 rounded-full bg-purple-100/20 blur-xl animate-float" />
+      <div className="absolute bottom-[45%] right-[20%] w-28 h-28 rounded-full bg-emerald-50/20 blur-xl animate-float" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-[65%] left-[8%] w-20 h-20 rounded-full bg-blue-100/20 blur-xl animate-float" style={{ animationDelay: '2s' }} />
     </div>
   );
 };

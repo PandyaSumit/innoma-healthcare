@@ -25,7 +25,7 @@ const Header: React.FC = () => {
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ease-in-out ${
           isScrolled 
             ? 'bg-white border-b border-gray-100 py-4 shadow-sm' 
-            : 'bg-transparent py-6 border-b border-transparent'
+            : 'bg-white/10 backdrop-blur-md py-6 border-b border-white/5'
         }`}
       >
         <nav className="max-w-7xl mx-auto px-6 md:px-12">
@@ -33,7 +33,7 @@ const Header: React.FC = () => {
             {/* Logo */}
             <div className="flex-shrink-0">
               <a href="#home" className="flex items-center gap-2 group cursor-pointer no-underline">
-                <span className={`text-2xl font-bold tracking-tight transition-colors ${isScrolled ? 'text-brand-blue-900' : 'text-white'}`}>
+                <span className={`text-2xl font-bold tracking-tight transition-colors ${isScrolled ? 'text-brand-blue-900' : 'text-slate-900'}`}>
                   Innoma <span className="text-brand-orange">Healthcare</span>
                 </span>
               </a>
@@ -48,7 +48,7 @@ const Header: React.FC = () => {
                   className={`text-sm font-medium transition-colors no-underline ${
                     isScrolled 
                       ? 'text-brand-blue-900 hover:text-brand-orange' 
-                      : 'text-white/80 hover:text-white'
+                      : 'text-slate-700 hover:text-brand-blue-900'
                   }`}
                 >
                   {link.name}
@@ -59,14 +59,14 @@ const Header: React.FC = () => {
             {/* CTA Buttons */}
             <div className="hidden lg:flex items-center gap-6">
               <button className={`text-sm font-semibold transition-colors cursor-pointer ${
-                isScrolled ? 'text-brand-blue-900 hover:text-brand-orange' : 'text-white/90 hover:text-white'
+                isScrolled ? 'text-brand-blue-900 hover:text-brand-orange' : 'text-slate-700 hover:text-brand-blue-900'
               }`}>
                 Sign In
               </button>
               <button className={`inline-flex items-center justify-center px-6 py-2.5 rounded-md text-sm font-bold transition-all cursor-pointer ${
                 isScrolled 
                   ? 'bg-brand-blue text-white hover:bg-brand-blue/90 shadow-sm' 
-                  : 'bg-white text-brand-blue-900 hover:bg-gray-100'
+                  : 'bg-brand-blue text-white hover:bg-brand-blue-900'
               }`}>
                 Book Free Session
               </button>
@@ -76,7 +76,7 @@ const Header: React.FC = () => {
             <button
               onClick={() => setIsMobileMenuOpen(true)}
               className={`lg:hidden p-2 transition-colors cursor-pointer ${
-                isScrolled ? 'text-brand-blue-900' : 'text-white'
+                isScrolled ? 'text-brand-blue-900' : 'text-slate-700'
               }`}
               aria-label="Open menu"
             >

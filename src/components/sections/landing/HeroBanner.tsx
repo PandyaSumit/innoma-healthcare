@@ -7,32 +7,40 @@ const HeroBanner: React.FC = () => {
       {/* Soft ambient background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-sky-50/40 to-blue-50/60" />
 
-      {/* Content Grid - Split layout */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-0">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[80vh]">
-          {/* Left side - Text content */}
-          <div className="space-y-8 md:space-y-10 text-center lg:text-left order-2 lg:order-1">
+      {/* Background Illustration Layer */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <WellnessHeroIllustration />
+      </div>
+
+      {/* Content Center Container */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12">
+        <div className="flex flex-col items-center justify-center text-center min-h-[80vh] sm:min-h-[85vh] space-y-8 sm:space-y-10">
+          {/* Main Text Content */}
+          <div className="space-y-8 max-w-3xl">
             {/* Headline */}
-            <div className="space-y-6 opacity-0 animate-[slide-up_1s_ease-out_0.2s_forwards]">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] text-slate-900">
+            <div className="space-y-4 opacity-0 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.1] text-slate-900 px-4">
                 Build a{" "}
                 <span className="bg-gradient-to-r from-brand-orange to-rose-500 bg-clip-text text-transparent">
                   healthier
                 </span>{" "}
                 mind
               </h1>
-              <p className="text-lg md:text-xl font-light text-slate-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+              <p className="text-base sm:text-lg md:text-2xl font-light text-slate-600 leading-relaxed max-w-2xl mx-auto px-6">
                 Trauma-focused mental healthcare designed to restore safety and
                 emotional well-being through professional guidance.
               </p>
             </div>
 
             {/* Single CTA */}
-            <div className="opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
-              <button className="group cursor-pointer relative inline-flex items-center justify-center px-10 py-5 bg-brand-orange text-white text-[1.125rem] font-bold rounded-xl transition-all duration-300 hover:bg-brand-orange/90 hover:px-12 active:scale-[0.98] shadow-[0_8px_32px_rgba(249,115,22,0.25)] hover:shadow-[0_12px_48px_rgba(249,115,22,0.35)] focus:outline-none focus-visible:outline-none focus:ring-0">
+            <div className="opacity-0 animate-slide-up flex justify-center px-6" style={{ animationDelay: '0.4s' }}>
+              <button 
+                onClick={() => document.getElementById('assessment')?.scrollIntoView({ behavior: 'smooth' })}
+                className="group cursor-pointer relative inline-flex items-center justify-center w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-6 bg-brand-orange text-white text-lg sm:text-[1.25rem] font-bold rounded-2xl transition-all duration-300 hover:bg-brand-orange/90 active:scale-[0.98] shadow-[0_12px_48px_rgba(249,115,22,0.3)] hover:shadow-[0_16px_64px_rgba(249,115,22,0.4)] focus:outline-none"
+              >
                 Start your journey
                 <svg
-                  className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
+                  className="ml-3 w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 group-hover:translate-x-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -46,63 +54,34 @@ const HeroBanner: React.FC = () => {
                 </svg>
               </button>
             </div>
-
-            {/* Trust indicators */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-slate-500 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards]">
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-green-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>Professional therapists</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-green-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>Safe & confidential</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-green-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>Trauma-focused</span>
-              </div>
-            </div>
           </div>
+          
+          {/* ... existing headline and CTA ... skipping to trust indicators for precise replacement */}
 
-          {/* Right side - Premium Mental Wellness Illustration */}
-          <div className="relative w-full h-[500px] md:h-[600px] lg:h-[700px] order-1 lg:order-2 opacity-0 animate-[fadeIn_1.2s_ease-out_0.3s_forwards]">
-            <WellnessHeroIllustration />
+          {/* Trust indicators */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4 text-xs sm:text-sm md:text-base text-slate-500 opacity-0 animate-slide-up" style={{ animationDelay: '0.6s' }}>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Professional therapists</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Safe & confidential</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Trauma-focused</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Subtle bottom gradient for smooth transition */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white/60 to-transparent pointer-events-none" />
     </section>
   );
 };
