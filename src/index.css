@@ -6,19 +6,19 @@
   --font-sans: Arial, Helvetica, sans-serif;
   --font-heading: Arial, Helvetica, sans-serif;
 
-  --color-brand-blue: #212e5e;
+  --color-brand-blue: #601ff9;
   --color-brand-orange: #f97316;
   --color-brand-yellow: #fbbf24;
 
   /* Compatibility Mappings */
-  --color-brand-blue-50: #f8fafc;
-  --color-brand-blue-100: #f1f5f9;
+  --color-brand-blue-50: #f5f0ff;
+  --color-brand-blue-100: #ede5ff;
   --color-brand-blue-500: var(--color-brand-blue);
-  --color-brand-blue-600: #1a254d;
-  --color-brand-blue-900: #141c3b;
+  --color-brand-blue-600: #5019d9;
+  --color-brand-blue-900: #3a0fa3;
   --color-brand-orange-500: var(--color-brand-orange);
   --color-brand-yellow-500: var(--color-brand-yellow);
-  
+
   --color-brand-purple: #8b5cf6;
   --color-brand-pink: #f472b6;
   --color-brand-white: #ffffff;

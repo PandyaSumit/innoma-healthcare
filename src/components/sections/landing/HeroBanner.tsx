@@ -20,8 +20,8 @@ const HeroBanner: React.FC = () => {
         <div className="max-w-3xl mx-auto space-y-6 md:space-y-10">
           {/* Headline */}
           <div className="space-y-8 opacity-0 animate-[slide-up_1s_ease-out_0.2s_forwards]">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold text-brand-blue-500 tracking-tight leading-[1.05] text-white">
-              Build a <span className="text-brand-orange-500">healthier</span>{" "}
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.05] text-white">
+              Build a <span className="text-brand-orange">healthier</span>{" "}
               mind
             </h1>
             <p className="text-xl md:text-2xl font-light text-slate-200 leading-relaxed font-medium max-w-2xl mx-auto">
@@ -33,7 +33,7 @@ const HeroBanner: React.FC = () => {
           {/* Single CTA */}
           <div className="opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
             <button
-              className="group relative inline-flex items-center justify-center px-10 py-5 bg-orange-500 text-white text-[1.125rem] font-bold rounded-md transition-all duration-300 hover:bg-orange-600 hover:px-12 active:scale-[0.98] shadow-[0_0_40px_rgba(249,115,22,0.2)] hover:shadow-[0_0_60px_rgba(249,115,22,0.4)] focus:outline-none focus-visible:outline-none focus:ring-0"
+              className="group relative inline-flex items-center justify-center px-10 py-5 bg-brand-orange text-white text-[1.125rem] font-bold rounded-md transition-all duration-300 hover:bg-brand-orange/90 hover:px-12 active:scale-[0.98] shadow-[0_0_40px_rgba(249,115,22,0.2)] hover:shadow-[0_0_60px_rgba(249,115,22,0.4)] focus:outline-none focus-visible:outline-none focus:ring-0"
             >
               Start your journey
               <svg
