@@ -2,17 +2,40 @@ import React from "react";
 
 const HeroBanner: React.FC = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-brand-blue-900 to-slate-900">
       {/* Immersive Background */}
       <div className="absolute inset-0 z-0">
+        {/* Option 1: Peaceful sunrise with nature - Uncomment to use */}
+        {/* <img
+          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&auto=format&fit=crop&q=80"
+          alt="Peaceful sunrise over mountains with calm environment"
+          className="w-full h-full object-cover opacity-75 scale-105 animate-[slowZoom_20s_ease-out_infinite_alternate]"
+        /> */}
+
+        {/* Option 2: Hands touching with natural light - Uncomment to use */}
+        {/* <img
+          src="https://images.unsplash.com/photo-1527689368864-3a821dbccc34?w=1920&auto=format&fit=crop&q=80"
+          alt="Caring hands with natural light"
+          className="w-full h-full object-cover opacity-75 scale-105 animate-[slowZoom_20s_ease-out_infinite_alternate]"
+        /> */}
+
+        {/* Option 3: Peaceful garden with flowers and plants - Uncomment to use */}
+        {/* <img
+          src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&auto=format&fit=crop&q=80"
+          alt="Peaceful garden with flowers and natural elements"
+          className="w-full h-full object-cover opacity-75 scale-105 animate-[slowZoom_20s_ease-out_infinite_alternate]"
+        /> */}
+
+        {/* Option 4: Calm therapy setting with plants - Currently Active */}
         <img
-          src="https://cdn.lanars.com/thumbnails/main_preview/toa-heftiba-_UIVmIBB3JU-unsplash_1wrererere_cases_main_medium_x2_804Nmip.webp"
-          alt="Peaceful and calm environment"
-          className="w-full h-full object-cover opacity-60 scale-105 animate-[slowZoom_20s_ease-out_infinite_alternate]"
+          src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=1920&auto=format&fit=crop&q=80"
+          alt="Calm healing environment with natural plants and warm light"
+          className="w-full h-full object-cover opacity-80 scale-105 animate-[slowZoom_20s_ease-out_infinite_alternate]"
         />
-        {/* Soft Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-950/70 to-slate-950"></div>
-        <div className="absolute inset-0 bg-slate-950/0 backdrop-blur-[2px]"></div>
+
+        {/* Lighter overlay with purple brand tint for better image visibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-blue-900/30 via-slate-900/50 to-slate-950/80"></div>
+        <div className="absolute inset-0 bg-brand-blue-900/10"></div>
       </div>
 
       {/* Content Area */}
