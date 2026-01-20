@@ -40,13 +40,13 @@ const TherapistsCarousel: React.FC = () => {
         <div className="mb-16">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-8 h-1 bg-brand-orange rounded-full"></span>
-            <span className="text-xs font-bold tracking-widest uppercase text-brand-blue/60">OUR CORE TEAM</span>
+            <span className="text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">OUR CORE TEAM</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-brand-blue-900 tracking-tight leading-tight mb-6">
             Personalized care from <br />
             <span className="text-brand-orange">trusted specialists.</span>
           </h2>
-          <p className="text-lg md:text-xl text-brand-blue/70 max-w-2xl leading-relaxed">
+          <p className="text-lg md:text-xl text-brand-blue-900/70 max-w-2xl leading-relaxed">
             We are a team of trauma survivors, trauma experts, and frontline heroes!
           </p>
         </div>

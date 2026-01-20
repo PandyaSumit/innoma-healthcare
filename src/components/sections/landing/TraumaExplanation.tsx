@@ -8,9 +8,9 @@ const TraumaExplanation: React.FC = () => {
         <div className="mb-16 md:mb-20 text-left lg:text-center">
           <div className="flex items-center lg:justify-center gap-2 mb-4">
             <span className="w-8 h-1 bg-brand-orange rounded-full"></span>
-            <span className="text-xs font-bold tracking-widest uppercase text-brand-blue/60">OUR MISSION</span>
+            <span className="text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">OUR MISSION</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight max-w-3xl lg:mx-auto">
+          <h2 className="text-3xl md:text-5xl font-bold text-brand-blue-900 tracking-tight leading-tight max-w-3xl lg:mx-auto">
             Understanding Trauma and our 
             <span className="text-brand-orange"> Holistic Approach</span>
           </h2>
@@ -21,13 +21,13 @@ const TraumaExplanation: React.FC = () => {
           
           {/* FLOWCHART 1: HOW TRAUMA WORKS */}
           <div className="bg-slate-50/80 backdrop-blur rounded-[2.5rem] p-6 md:p-10 border border-white shadow-card flex flex-col items-center">
-            <h3 className="text-2xl font-bold text-brand-blue mb-10 self-start lg:self-center">How Trauma Works</h3>
+            <h3 className="text-2xl font-bold text-brand-blue-900 mb-10 self-start lg:self-center">How Trauma Works</h3>
             
             <div className="w-full flex flex-col items-center">
               {/* Node: Trauma */}
               <div className="bg-white border-2 border-red-50 rounded-2xl px-8 py-4 shadow-flow min-w-[180px] text-center">
                 <p className="text-[10px] font-black text-red-400 uppercase tracking-widest mb-1">Source</p>
-                <p className="font-bold text-brand-blue text-xl">Trauma</p>
+                <p className="font-bold text-brand-blue-900 text-xl">Trauma</p>
               </div>
 
               {/* Arrow Down */}
@@ -37,8 +37,8 @@ const TraumaExplanation: React.FC = () => {
 
               {/* Node: Coping Mechanisms */}
               <div className="bg-white border border-slate-200 rounded-2xl px-10 py-5 shadow-flow min-w-[220px] text-center">
-                <p className="text-[10px] font-black text-brand-blue/40 uppercase tracking-widest mb-1">Response</p>
-                <p className="font-bold text-brand-blue text-lg">Coping Mechanisms</p>
+                <p className="text-[10px] font-black text-brand-blue-900/40 uppercase tracking-widest mb-1">Response</p>
+                <p className="font-bold text-brand-blue-900 text-lg">Coping Mechanisms</p>
               </div>
 
               {/* Branching SVG for 3 categories */}
@@ -65,20 +65,20 @@ const TraumaExplanation: React.FC = () => {
               {/* Node: Outcome */}
               <div className="bg-white border-2 border-red-50 rounded-2xl p-6 shadow-md w-full text-center">
                 <p className="text-[10px] font-black text-red-500 uppercase tracking-widest mb-1">Outcome</p>
-                <p className="font-bold text-brand-blue text-lg md:text-xl italic font-serif">Symptoms / Dysfunctionalities</p>
+                <p className="font-bold text-brand-blue-900 text-lg md:text-xl italic font-serif">Symptoms / Dysfunctionalities</p>
               </div>
             </div>
           </div>
 
           {/* FLOWCHART 2: HOW TOT WORKS */}
           <div className="bg-slate-50/80 backdrop-blur rounded-[2.5rem] p-6 md:p-10 border border-white shadow-card flex flex-col items-center">
-            <h3 className="text-2xl font-bold text-brand-blue mb-10 self-start lg:self-center">How TOT Works</h3>
+            <h3 className="text-2xl font-bold text-brand-blue-900 mb-10 self-start lg:self-center">How TOT Works</h3>
             
             <div className="w-full flex flex-col items-center">
               {/* Step 1 */}
               <div className="bg-white border border-slate-200 rounded-2xl px-8 py-4 shadow-flow min-w-[240px] text-center">
-                <p className="text-[10px] font-black text-brand-blue/30 uppercase tracking-widest mb-1">Step 01</p>
-                <p className="font-bold text-brand-blue">Identification of Symptoms</p>
+                <p className="text-[10px] font-black text-brand-blue-900/30 uppercase tracking-widest mb-1">Step 01</p>
+                <p className="font-bold text-brand-blue-900">Identification of Symptoms</p>
               </div>
 
               {/* Branching Down to categories */}
@@ -106,8 +106,8 @@ const TraumaExplanation: React.FC = () => {
 
               {/* Step 2 */}
               <div className="bg-white border border-slate-200 rounded-2xl px-6 py-4 shadow-flow text-center max-w-[320px]">
-                <p className="text-[10px] font-black text-brand-blue/30 uppercase tracking-widest mb-1">Step 02</p>
-                <p className="font-bold text-brand-blue text-[13px] italic">Symptom Management Through Therapy/Medication</p>
+                <p className="text-[10px] font-black text-brand-blue-900/30 uppercase tracking-widest mb-1">Step 02</p>
+                <p className="font-bold text-brand-blue-900 text-[13px] italic">Symptom Management Through Therapy/Medication</p>
               </div>
 
               {/* Green Arrow */}
@@ -118,7 +118,7 @@ const TraumaExplanation: React.FC = () => {
               {/* Step 3 */}
               <div className="bg-white border border-green-100 rounded-2xl px-6 py-4 shadow-flow text-center max-w-[320px]">
                 <p className="text-[10px] font-black text-green-500 uppercase tracking-widest mb-1">Step 03</p>
-                <p className="font-bold text-brand-blue text-[13px] italic">Exploration Of Coping Mechanisms And Patterns</p>
+                <p className="font-bold text-brand-blue-900 text-[13px] italic">Exploration Of Coping Mechanisms And Patterns</p>
               </div>
 
               {/* Final Arrow */}

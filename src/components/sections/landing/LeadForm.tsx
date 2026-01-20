@@ -70,13 +70,13 @@ const LeadForm: React.FC = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-3xl font-bold text-brand-blue mb-4">Thank You!</h3>
+                  <h3 className="text-3xl font-bold text-brand-blue-900 mb-4">Thank You!</h3>
                   <p className="text-gray-500 text-lg">
                     We've received your information. A care specialist will reach out to you within 24 hours.
                   </p>
                   <button 
                     onClick={() => setIsSubmitted(false)}
-                    className="mt-8 px-8 py-3 rounded-md border border-gray-200 text-brand-blue font-bold hover:bg-gray-50 transition-colors"
+                    className="mt-8 px-8 py-3 rounded-md border border-gray-200 text-brand-blue-900 font-bold hover:bg-gray-50 transition-colors"
                   >
                     Send another message
                   </button>
@@ -95,7 +95,7 @@ const LeadForm: React.FC = () => {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Jane Doe"
-                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 sm:px-5 sm:py-4 text-brand-blue placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 sm:px-5 sm:py-4 text-brand-blue-900 placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
                     />
                   </div>
                   
@@ -111,7 +111,7 @@ const LeadForm: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="jane@example.com"
-                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 sm:px-5 sm:py-4 text-brand-blue placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 sm:px-5 sm:py-4 text-brand-blue-900 placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
                     />
                   </div>
 
@@ -127,7 +127,7 @@ const LeadForm: React.FC = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+91 00000 00000"
-                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 sm:px-5 sm:py-4 text-brand-blue placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 sm:px-5 sm:py-4 text-brand-blue-900 placeholder:text-gray-300 focus:outline-none focus:border-brand-blue/50 focus:bg-white transition-all font-medium"
                     />
                   </div>
 

@@ -26,14 +26,14 @@ const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
       {/* Content */}
       <div className="p-4 sm:p-6">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xl font-bold text-brand-blue line-clamp-1">
+          <h3 className="text-xl font-bold text-brand-blue-900 line-clamp-1">
             {therapist.name}
           </h3>
           <div className="flex items-center gap-1 text-brand-yellow">
             <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
               <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
             </svg>
-            <span className="text-sm font-bold text-brand-blue/60">{therapist.rating}</span>
+            <span className="text-sm font-bold text-brand-blue-900/60">{therapist.rating}</span>
           </div>
         </div>
         

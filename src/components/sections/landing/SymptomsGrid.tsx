@@ -53,9 +53,9 @@ const SymptomsGrid: React.FC = () => {
         <div className="mb-20">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-8 h-1 bg-brand-orange rounded-full"></span>
-            <span className="text-xs font-bold tracking-widest uppercase text-brand-blue/60">OUR EXPERTISE</span>
+            <span className="text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">OUR EXPERTISE</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight max-w-2xl">
+          <h2 className="text-4xl md:text-5xl font-bold text-brand-blue-900 tracking-tight leading-tight max-w-2xl">
             Specialized care for <br />
             <span className="text-brand-orange">your unique journey.</span>
           </h2>
@@ -67,11 +67,11 @@ const SymptomsGrid: React.FC = () => {
               key={symptom.id}
               className="group p-8 rounded-xl bg-gray-50 border border-gray-100 hover:border-brand-blue/20 hover:bg-white hover:shadow-xl transition-all duration-300"
             >
-              <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center mb-6 border border-gray-100 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 text-brand-blue">
+              <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center mb-6 border border-gray-100 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 text-brand-blue-900">
                 {symptom.icon}
               </div>
               
-              <h3 className="text-xl font-bold mb-3 text-brand-blue">
+              <h3 className="text-xl font-bold mb-3 text-brand-blue-900">
                 {symptom.name}
               </h3>
               
@@ -79,7 +79,7 @@ const SymptomsGrid: React.FC = () => {
                 {symptom.description}
               </p>
               
-              <div className="flex items-center gap-2 text-xs font-bold text-brand-blue hover:text-brand-orange transition-colors cursor-pointer">
+              <div className="flex items-center gap-2 text-xs font-bold text-brand-blue-900 hover:text-brand-orange transition-colors cursor-pointer">
                 Learn More
                 <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

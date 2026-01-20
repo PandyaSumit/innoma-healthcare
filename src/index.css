@@ -14,8 +14,10 @@
   --color-brand-blue-50: #f5f0ff;
   --color-brand-blue-100: #ede5ff;
   --color-brand-blue-500: var(--color-brand-blue);
-  --color-brand-blue-600: #5019d9;
-  --color-brand-blue-900: #3a0fa3;
+  --color-brand-blue-600: #4a14cc;
+  --color-brand-blue-700: #3d11aa;
+  --color-brand-blue-800: #300d88;
+  --color-brand-blue-900: #1a0852;
   --color-brand-orange-500: var(--color-brand-orange);
   --color-brand-yellow-500: var(--color-brand-yellow);
 
