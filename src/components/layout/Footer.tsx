@@ -207,7 +207,7 @@ const Footer: React.FC = () => {
             <span>© 2026 Innoma Healthcare</span>
             <span className="hidden sm:block">•</span>
             <span>All rights reserved</span>
-          </div>claude/implement-color-system-h1YLY
+          </div>
 
           <div className="flex gap-8 text-[11px] font-semibold uppercase tracking-widest text-white/80">
             {["Twitter", "LinkedIn", "Instagram"].map((social) => (
