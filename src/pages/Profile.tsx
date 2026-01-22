@@ -33,10 +33,14 @@ const therapistSchema = yup.object().shape({
 const Profile = () => {
   const { user } = useAuth();
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'details' | 'security' | 'display' | 'professional'>('details');
 
   const isTherapist = user?.role === 'therapist';
   const isPatient = user?.role === 'patient';
+
+  // Set default tab based on user role
+  const [activeTab, setActiveTab] = useState<'details' | 'security' | 'display' | 'professional'>(
+    isTherapist ? 'professional' : 'details'
+  );
 
   // Initialize form values based on user role
   const getInitialValues = () => {
@@ -112,10 +116,10 @@ const Profile = () => {
   };
 
   return (
-    <div className="animate-fade-in pb-20 px-4 pt-6 space-y-8">
+    <div className="animate-fade-in min-h-[calc(100vh-8rem)] pb-20 px-4 pt-6 space-y-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-healthcare-text">Profile Details</h1>
-        <button 
+        <button
           onClick={() => formik.handleSubmit()}
           className="px-6 py-2.5 bg-brand-blue text-white rounded-lg font-bold text-sm shadow-md hover:opacity-90 transition-all cursor-pointer border-none"
         >
@@ -197,11 +201,11 @@ const Profile = () => {
       </div>
 
       {/* Content Area */}
-      <div className="py-2">
+      <div className="py-2 min-h-[500px]">
         <form onSubmit={formik.handleSubmit}>
           {/* THERAPIST: Professional Info Tab */}
           {isTherapist && activeTab === 'professional' && (
-            <div className="space-y-12 animate-slide-up">
+            <div className="space-y-12 animate-slide-up min-h-[400px]">
               <section className="space-y-6">
                 <h3 className="text-base font-bold text-healthcare-text">Professional Information</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8">
@@ -274,7 +278,7 @@ const Profile = () => {
 
           {/* THERAPIST: Specializations & Languages Tab */}
           {isTherapist && activeTab === 'details' && (
-            <div className="space-y-12 animate-slide-up">
+            <div className="space-y-12 animate-slide-up min-h-[400px]">
               <section className="space-y-6">
                 <h3 className="text-base font-bold text-healthcare-text">Specializations</h3>
                 <div className="flex flex-wrap gap-2">
@@ -333,7 +337,7 @@ const Profile = () => {
 
           {/* PATIENT: Personal Details Tab */}
           {isPatient && activeTab === 'details' && (
-            <div className="space-y-12 animate-slide-up">
+            <div className="space-y-12 animate-slide-up min-h-[400px]">
               <section className="space-y-6">
                 <h3 className="text-base font-bold text-healthcare-text">Personal Information</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-8">
@@ -429,7 +433,7 @@ const Profile = () => {
 
           {/* SHARED: Security & Privacy Tab */}
           {activeTab === 'security' && (
-            <div className="space-y-10 animate-slide-up">
+            <div className="space-y-10 animate-slide-up min-h-[400px]">
               <div className="p-6 bg-brand-blue/5 border border-brand-blue/10 rounded-2xl flex items-start gap-4">
                 <div className="p-2 bg-white rounded-lg shadow-sm">
                   <svg className="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -469,7 +473,7 @@ const Profile = () => {
 
           {/* PATIENT: Profile Display Tab / THERAPIST: Professional Bio Tab */}
           {activeTab === 'display' && (
-            <div className="space-y-8 animate-slide-up">
+            <div className="space-y-8 animate-slide-up min-h-[400px]">
               <InfoField label={isTherapist ? 'Professional Bio' : 'Bio / About Me'} isEditable>
                 <textarea
                   name="bio"
