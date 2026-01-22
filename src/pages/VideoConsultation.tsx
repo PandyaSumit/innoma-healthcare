@@ -17,7 +17,7 @@ const VideoConsultation = () => {
   );
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: number;
     if (sessionStarted && !sessionEnded) {
       timer = setInterval(() => {
         setElapsedTime((prev) => prev + 1);
