@@ -125,8 +125,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        <div className="flex-grow overflow-auto p-8">
-          <div className="mx-auto">
+        <div className="flex-grow overflow-auto p-8 flex flex-col">
+          <div className="mx-auto flex-grow w-full">
             {children}
           </div>
         </div>

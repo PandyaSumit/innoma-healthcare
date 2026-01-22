@@ -116,7 +116,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="animate-fade-in min-h-[calc(100vh-8rem)] pb-20 px-4 pt-6 space-y-8">
+    <div className="animate-fade-in h-full flex flex-col pb-20 px-4 pt-6 space-y-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-healthcare-text">Profile Details</h1>
         <button
@@ -201,8 +201,8 @@ const Profile = () => {
       </div>
 
       {/* Content Area */}
-      <div className="py-2 min-h-[500px]">
-        <form onSubmit={formik.handleSubmit}>
+      <div className="py-2 flex-grow flex flex-col">
+        <form onSubmit={formik.handleSubmit} className="h-full">
           {/* THERAPIST: Professional Info Tab */}
           {isTherapist && activeTab === 'professional' && (
             <div className="space-y-12 animate-slide-up min-h-[400px]">
