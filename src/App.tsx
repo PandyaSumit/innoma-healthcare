@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import Header from './components/layout/Header';
 import LandingPage from './pages/LandingPage';
 import Footer from './components/layout/Footer';
@@ -8,19 +8,30 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import AppLayout from './components/layout/AppLayout';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import TherapistDirectory from './pages/TherapistDirectory';
-import TherapistProfile from './pages/TherapistProfile';
-import BookAppointment from './pages/BookAppointment';
-import Checkout from './pages/Checkout';
-import Confirmation from './pages/Confirmation';
-import Appointments from './pages/Appointments';
-import VideoConsultation from './pages/VideoConsultation';
-import Support from './pages/Support';
-import Settings from './pages/Settings';
 import About from './pages/About';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import TherapistDashboard from './pages/TherapistDashboard';
+
+// Coming Soon Component
+const ComingSoon = ({ title }: { title: string }) => (
+  <div className="flex flex-col items-center justify-center min-h-[400px] p-10 bg-white rounded-3xl shadow-clinical border border-healthcare-border animate-fade-in text-center">
+    <div className="w-20 h-20 bg-brand-blue/5 rounded-full flex items-center justify-center mb-6">
+      <svg className="w-10 h-10 text-brand-blue animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <h2 className="text-3xl font-bold text-healthcare-text mb-3">{title}</h2>
+    <p className="text-healthcare-text-muted max-w-md mx-auto">
+      We're working hard to bring you this feature. Stay tuned for updates!
+    </p>
+    <div className="mt-8">
+      <Link to="/dashboard" className="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold shadow-lg hover:opacity-90 transition-all no-underline inline-block">
+        Back to Dashboard
+      </Link>
+    </div>
+  </div>
+);
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -96,12 +107,12 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Therapist Directory - Public */}
+        {/* Therapist Directory - Coming Soon */}
         <Route path="/therapists" element={
           <>
             <Header />
-            <main className="flex-grow pt-24">
-              <TherapistDirectory />
+            <main className="flex-grow pt-24 px-8 pb-12">
+              <ComingSoon title="Therapist Directory" />
             </main>
             <Footer />
           </>
@@ -110,8 +121,8 @@ function AppRoutes() {
         <Route path="/therapists/:id" element={
           <>
             <Header />
-            <main className="flex-grow pt-24">
-              <TherapistProfile />
+            <main className="flex-grow pt-24 px-8 pb-12">
+              <ComingSoon title="Therapist Profile" />
             </main>
             <Footer />
           </>
@@ -137,7 +148,7 @@ function AppRoutes() {
         <Route path="/appointments" element={
           <ProtectedRoute>
             <AppLayout>
-              <Appointments />
+              <ComingSoon title="Appointments" />
             </AppLayout>
           </ProtectedRoute>
         } />
@@ -145,7 +156,7 @@ function AppRoutes() {
         <Route path="/settings" element={
           <ProtectedRoute>
             <AppLayout>
-              <Settings />
+              <ComingSoon title="Settings" />
             </AppLayout>
           </ProtectedRoute>
         } />
@@ -153,19 +164,20 @@ function AppRoutes() {
         <Route path="/support" element={
           <ProtectedRoute>
             <AppLayout>
-              <Support />
+              <ComingSoon title="Support" />
             </AppLayout>
           </ProtectedRoute>
         } />
 
-        {/* Booking Flow - Protected */}
+        {/* Booking Flow - Coming Soon */}
         <Route path="/book/:therapistId" element={
           <ProtectedRoute>
             <>
               <Header />
-              <main className="flex-grow pt-24">
-                <BookAppointment />
+              <main className="flex-grow pt-24 px-8">
+                <ComingSoon title="Booking System" />
               </main>
+              <Footer />
             </>
           </ProtectedRoute>
         } />
@@ -174,9 +186,10 @@ function AppRoutes() {
           <ProtectedRoute>
             <>
               <Header />
-              <main className="flex-grow pt-24">
-                <Checkout />
+              <main className="flex-grow pt-24 px-8">
+                <ComingSoon title="Checkout" />
               </main>
+              <Footer />
             </>
           </ProtectedRoute>
         } />
@@ -185,28 +198,28 @@ function AppRoutes() {
           <ProtectedRoute>
             <>
               <Header />
-              <main className="flex-grow pt-24">
-                <Confirmation />
+              <main className="flex-grow pt-24 px-8">
+                <ComingSoon title="Order Confirmation" />
               </main>
+              <Footer />
             </>
           </ProtectedRoute>
         } />
 
-        {/* Video Consultation - Full Screen */}
+        {/* Video Consultation - Coming Soon */}
         <Route path="/join/:appointmentId" element={
           <ProtectedRoute>
-            <VideoConsultation />
+            <div className="min-h-screen bg-healthcare-surface flex items-center justify-center p-8">
+              <ComingSoon title="Video Consultation" />
+            </div>
           </ProtectedRoute>
         } />
 
-        {/* Legacy Routes */}
+        {/* Legacy Routes - Coming Soon */}
         <Route path="/assessments" element={
           <ProtectedRoute>
             <AppLayout>
-              <div className="p-10 bg-white rounded-2xl shadow-clinical border border-healthcare-border">
-                <h2 className="text-2xl font-bold text-healthcare-text mb-4">Assessments Portal</h2>
-                <p className="text-healthcare-text-muted">Book your free assessment from the therapist directory.</p>
-              </div>
+              <ComingSoon title="Assessments Portal" />
             </AppLayout>
           </ProtectedRoute>
         } />
@@ -214,10 +227,7 @@ function AppRoutes() {
         <Route path="/sessions" element={
           <ProtectedRoute>
             <AppLayout>
-              <div className="p-10 bg-white rounded-2xl shadow-clinical border border-healthcare-border">
-                <h2 className="text-2xl font-bold text-healthcare-text mb-4">Your Sessions</h2>
-                <p className="text-healthcare-text-muted">View all your sessions in the Appointments page.</p>
-              </div>
+              <ComingSoon title="Your Sessions" />
             </AppLayout>
           </ProtectedRoute>
         } />
