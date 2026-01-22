@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UPCOMING_APPOINTMENTS, PAST_APPOINTMENTS, Appointment } from '../data/appointments';
+import { UPCOMING_APPOINTMENTS, PAST_APPOINTMENTS } from '../data/appointments';
+import type { Appointment } from '../data/appointments';
 
 const Appointments = () => {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');

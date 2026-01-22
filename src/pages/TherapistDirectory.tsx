@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { THERAPISTS, SPECIALIZATIONS, LANGUAGES, LOCATIONS, Therapist } from '../data/therapists';
+import { THERAPISTS, SPECIALIZATIONS, LANGUAGES, LOCATIONS } from '../data/therapists';
+import type { Therapist } from '../data/therapists';
 
 const TherapistDirectory = () => {
   const [searchQuery, setSearchQuery] = useState('');
