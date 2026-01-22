@@ -1,6 +1,8 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -12,6 +14,9 @@ const loginSchema = yup.object().shape({
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const [loginError, setLoginError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -20,8 +25,19 @@ const Login = () => {
       remember: false
     },
     validationSchema: loginSchema,
-    onSubmit: () => {
-      navigate('/dashboard');
+    onSubmit: async (values) => {
+      setIsLoading(true);
+      setLoginError('');
+
+      const result = await login(values.email, values.password);
+
+      setIsLoading(false);
+
+      if (result.success) {
+        navigate('/dashboard');
+      } else {
+        setLoginError(result.error || 'Login failed. Please try again.');
+      }
     },
   });
 
@@ -82,7 +98,22 @@ const Login = () => {
               <p className="text-base text-healthcare-text-muted font-medium">Access your professional clinical dashboard</p>
             </div>
 
+            {/* Login Credentials Info Box */}
+            <div className="mb-6 p-4 bg-healthcare-lavender/20 border border-healthcare-lavender/30 rounded-lg">
+              <p className="text-xs font-semibold text-healthcare-text mb-2">Demo Credentials:</p>
+              <div className="space-y-1 text-xs text-healthcare-text-muted">
+                <p><strong>Patient:</strong> patient@innoma.com / Patient@123</p>
+                <p><strong>Therapist:</strong> therapist@innoma.com / Therapist@123</p>
+              </div>
+            </div>
+
             <form onSubmit={formik.handleSubmit} className="space-y-6">
+              {loginError && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-600 font-medium">{loginError}</p>
+                </div>
+              )}
+
               <div className="space-y-2">
                 <label className="block text-sm font-semibold text-healthcare-text tracking-tight ml-1">Email Address</label>
                 <div className="relative">
@@ -143,9 +174,10 @@ const Login = () => {
               <div className="pt-4 space-y-4">
                 <button
                   type="submit"
-                  className="w-full bg-brand-blue text-white py-3.5 rounded-lg font-bold text-base hover:bg-healthcare-text active:scale-[0.99] transition-all cursor-pointer border-none"
+                  disabled={isLoading}
+                  className="w-full bg-brand-blue text-white py-3.5 rounded-lg font-bold text-base hover:bg-healthcare-text active:scale-[0.99] transition-all cursor-pointer border-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Log In
+                  {isLoading ? 'Logging in...' : 'Log In'}
                 </button>
                </div>
             </form>
