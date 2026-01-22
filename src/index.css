@@ -6,37 +6,46 @@
   --font-sans: Arial, Helvetica, sans-serif;
   --font-heading: Arial, Helvetica, sans-serif;
 
-  --color-brand-blue: #601ff9;
+  --color-brand-blue: #1E40AF;
   --color-brand-orange: #f97316;
   --color-brand-yellow: #fbbf24;
 
+  /* Healthcare Premium Palette - Supporting Colors */
+  --color-healthcare-lavender: #8b5cf6;
+  --color-healthcare-lavender-muted: #fbfaff;
+  --color-healthcare-blue: #3b82f6;
+  --color-healthcare-neutral: #ffffff;
+  --color-healthcare-surface: #f9fafb;
+  --color-healthcare-border: #f0f1f3;
+  --color-healthcare-text: #1a1c21;
+  --color-healthcare-text-muted: #64748b;
+
   /* Compatibility Mappings */
-  --color-brand-blue-50: #f5f0ff;
-  --color-brand-blue-100: #ede5ff;
+  --color-brand-blue-50: var(--color-healthcare-lavender-muted);
+  --color-brand-blue-100: #f3f0ff;
   --color-brand-blue-500: var(--color-brand-blue);
-  --color-brand-blue-600: #4a14cc;
-  --color-brand-blue-700: #3d11aa;
-  --color-brand-blue-800: #300d88;
-  --color-brand-blue-900: #1a0852;
+  --color-brand-blue-600: #7c3aed;
+  --color-brand-blue-700: #6d28d9;
+  --color-brand-blue-800: #5b21b6;
+  --color-brand-blue-900: #4c1d95;
   --color-brand-orange-500: var(--color-brand-orange);
   --color-brand-yellow-500: var(--color-brand-yellow);
 
-  --color-brand-purple: #8b5cf6;
-  --color-brand-pink: #f472b6;
-  --color-brand-white: #ffffff;
+  --color-primary: var(--color-healthcare-lavender);
+  --color-secondary: var(--color-healthcare-blue);
+  --color-surface: var(--color-healthcare-neutral);
 
-  --color-primary: var(--color-brand-blue);
-  --color-secondary: var(--color-brand-orange);
-  --color-accent: var(--color-brand-yellow);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-3xl: 40px;
 
-  --radius-none: 0px;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 24px;
-  --radius-3xl: 32px;
-  --radius-full: 9999px;
+  --shadow-clinical:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-clinical-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
 
   @keyframes slide-up {
     from {
@@ -79,21 +88,37 @@
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
   }
 
   @keyframes sway {
-    0%, 100% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
   }
 
   @keyframes pulse-slow {
-    0%, 100% { opacity: 0.7; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.05); }
+    0%,
+    100% {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
   }
 }
-
 
 /* Global Layout & Spacing */
 html,

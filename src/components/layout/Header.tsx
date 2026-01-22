@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -13,10 +16,12 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const isHomePage = location.pathname === '/';
+
   const navLinks = [
-    { name: 'Expertise', href: '#specializations' },
-    { name: 'Specialists', href: '#therapists' },
-    { name: 'FAQ', href: '#faq' },
+    { name: 'Expertise', href: isHomePage ? '#specializations' : '/#specializations' },
+    { name: 'Specialists', href: isHomePage ? '#therapists' : '/#therapists' },
+    { name: 'FAQ', href: isHomePage ? '#faq' : '/#faq' },
   ];
 
   return (
@@ -32,11 +37,11 @@ const Header: React.FC = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <a href="#home" className="flex items-center gap-2 group cursor-pointer no-underline">
+              <Link to="/" className="flex items-center gap-2 group cursor-pointer no-underline">
                 <span className={`text-2xl font-bold tracking-tight transition-colors ${isScrolled ? 'text-brand-blue-900' : 'text-slate-900'}`}>
                   Innoma <span className="text-brand-orange">Healthcare</span>
                 </span>
-              </a>
+              </Link>
             </div>
 
             {/* Desktop Navigation */}
@@ -58,12 +63,17 @@ const Header: React.FC = () => {
 
             {/* CTA Buttons */}
             <div className="hidden lg:flex items-center gap-6">
-              <button className={`text-sm font-semibold transition-colors cursor-pointer ${
-                isScrolled ? 'text-brand-blue-900 hover:text-brand-orange' : 'text-slate-700 hover:text-brand-blue-900'
-              }`}>
+              <Link 
+                to="/login"
+                className={`text-sm font-semibold transition-colors cursor-pointer no-underline ${
+                  isScrolled ? 'text-brand-blue-900 hover:text-brand-orange' : 'text-slate-700 hover:text-brand-blue-900'
+                }`}
+              >
                 Sign In
-              </button>
-              <button className={`inline-flex items-center justify-center px-6 py-2.5 rounded-md text-sm font-bold transition-all cursor-pointer ${
+              </Link>
+              <button 
+                onClick={() => navigate('/signup')}
+                className={`inline-flex items-center justify-center px-6 py-2.5 rounded-md text-sm font-bold transition-all cursor-pointer border-none ${
                 isScrolled 
                   ? 'bg-brand-blue text-white hover:bg-brand-blue/90 shadow-sm' 
                   : 'bg-brand-blue text-white hover:bg-brand-blue-900'
@@ -75,7 +85,7 @@ const Header: React.FC = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className={`lg:hidden p-2 transition-colors cursor-pointer ${
+              className={`lg:hidden p-2 transition-colors cursor-pointer bg-transparent border-none ${
                 isScrolled ? 'text-brand-blue-900' : 'text-slate-700'
               }`}
               aria-label="Open menu"
@@ -107,7 +117,7 @@ const Header: React.FC = () => {
             <span className="text-sm font-bold text-brand-blue-900">Menu</span>
             <button 
               onClick={() => setIsMobileMenuOpen(false)}
-              className="p-2 text-brand-blue-900 hover:text-brand-orange transition-colors cursor-pointer"
+              className="p-2 text-brand-blue-900 hover:text-brand-orange transition-colors cursor-pointer bg-transparent border-none"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -129,10 +139,22 @@ const Header: React.FC = () => {
           </nav>
 
           <div className="mt-auto p-6 bg-gray-50 flex flex-col gap-3">
-            <button className="w-full py-3 text-sm font-bold text-brand-blue-900 border border-brand-blue/20 rounded-md hover:bg-white transition-colors">
+            <button 
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                navigate('/login');
+              }}
+              className="w-full py-3 text-sm font-bold text-brand-blue-900 border border-brand-blue/20 rounded-md hover:bg-white transition-colors bg-transparent cursor-pointer"
+            >
               Sign In
             </button>
-            <button className="w-full py-3 rounded-md bg-brand-blue text-white text-sm font-bold hover:bg-brand-blue/90 transition-colors shadow-md">
+            <button 
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                navigate('/signup');
+              }}
+              className="w-full py-3 rounded-md bg-brand-blue text-white text-sm font-bold hover:bg-brand-blue/90 transition-colors shadow-md border-none cursor-pointer"
+            >
               Book Free Session
             </button>
           </div>
