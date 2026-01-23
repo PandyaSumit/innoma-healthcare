@@ -1,5 +1,4 @@
 import React from "react";
-import WellnessHeroIllustration from "./WellnessHeroIllustration";
 
 const HeroBanner: React.FC = () => {
   return (
