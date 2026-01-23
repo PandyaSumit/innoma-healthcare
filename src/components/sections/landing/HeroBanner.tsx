@@ -8,13 +8,13 @@ const HeroBanner: React.FC = () => {
 
       {/* Background Illustration Layer */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <img src="public/sunrise.jpeg" alt="" className="w-full h-full object-cover opacity-60 scale-105 animate-[slowZoom_20s_ease-out_infinite_alternate]"/>
+        <img src="/sunrise.jpeg" alt="" className="w-full h-full object-cover opacity-60 scale-105 animate-[slowZoom_20s_ease-out_infinite_alternate]"/>
       </div>
 
       {/* Hand Image Layer - Above Background */}
       <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-start">
         <img
-          src="public/hand1.png"
+          src="/hand1.png"
           alt=""
           className="w-full h-full object-cover"
         />
