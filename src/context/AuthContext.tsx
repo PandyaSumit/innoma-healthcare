@@ -1,30 +1,35 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { DUMMY_USERS } from '../data/dummyUsers';
-import type { User, UserRole } from '../data/dummyUsers';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { DUMMY_USERS } from "../data/dummyUsers";
+import type { User, UserRole } from "../data/dummyUsers";
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  login: (
+    email: string,
+    password: string,
+  ) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Check for existing session on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem('innoma_user');
+    const storedUser = localStorage.getItem("innoma_user");
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
       } catch (error) {
-        console.error('Failed to parse stored user:', error);
-        localStorage.removeItem('innoma_user');
+        console.error("Failed to parse stored user:", error);
+        localStorage.removeItem("innoma_user");
       }
     }
     setIsLoading(false);
@@ -32,7 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (
     email: string,
-    password: string
+    password: string,
   ): Promise<{ success: boolean; error?: string }> => {
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -48,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         profile: DUMMY_USERS.patient.profile,
       };
       setUser(userData);
-      localStorage.setItem('innoma_user', JSON.stringify(userData));
+      localStorage.setItem("innoma_user", JSON.stringify(userData));
       return { success: true };
     }
 
@@ -63,16 +68,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         profile: DUMMY_USERS.therapist.profile,
       };
       setUser(userData);
-      localStorage.setItem('innoma_user', JSON.stringify(userData));
+      localStorage.setItem("innoma_user", JSON.stringify(userData));
       return { success: true };
     }
 
-    return { success: false, error: 'Invalid email or password' };
+    return { success: false, error: "Invalid email or password" };
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('innoma_user');
+    localStorage.removeItem("innoma_user");
   };
 
   return (
@@ -93,7 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

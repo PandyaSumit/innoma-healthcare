@@ -1,9 +1,34 @@
+export interface Patient {
+  id: string;
+  name: string;
+  photo: string;
+  age: number;
+  gender: string;
+  occupation: string;
+  email: string;
+  phone: string;
+  since: string;
+  status: 'Active' | 'Inactive';
+  lastVisit: string;
+  upcomingSession?: string;
+  diagnosis?: string[];
+  notes?: string;
+  totalSessions: number;
+}
+
 export interface Appointment {
   id: string;
+  // Therapist Details (for Patient View)
   therapistId: string;
   therapistName: string;
   therapistPhoto: string;
   specialization: string;
+
+  // Patient Details (for Therapist View)
+  patientId?: string;
+  patientName?: string;
+  patientPhoto?: string;
+
   date: string; // ISO date string
   time: string;
   duration: number; // in minutes
@@ -18,6 +43,58 @@ export interface Appointment {
   invoiceNumber?: string;
 }
 
+export const MOCK_PATIENTS: Patient[] = [
+  {
+    id: 'patient-001',
+    name: 'Priya Sharma',
+    photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+    age: 28,
+    gender: 'Female',
+    occupation: 'Software Engineer',
+    email: 'priya.sharma@example.com',
+    phone: '+91 98765 43210',
+    since: 'Jan 2024',
+    status: 'Active',
+    lastVisit: '2024-03-15',
+    upcomingSession: '2024-03-22',
+    diagnosis: ['Anxiety', 'Work Stress'],
+    totalSessions: 8,
+    notes: 'Patient is responding well to CBT. Focus on work-life boundaries.'
+  },
+  {
+    id: 'patient-002',
+    name: 'Rahul Verma',
+    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
+    age: 34,
+    gender: 'Male',
+    occupation: 'Marketing Manager',
+    email: 'rahul.v@example.com',
+    phone: '+91 98765 12345',
+    since: 'Feb 2024',
+    status: 'Active',
+    lastVisit: '2024-03-10',
+    upcomingSession: '2024-03-24',
+    diagnosis: ['Depression', 'Insomnia'],
+    totalSessions: 4,
+    notes: 'Sleep patterns improving. Recommended mindfulness exercises before bed.'
+  },
+  {
+    id: 'patient-003',
+    name: 'Anonymous User',
+    photo: 'https://ui-avatars.com/api/?name=Anonymous&background=random',
+    age: 25,
+    gender: 'Other',
+    occupation: 'Student',
+    email: 'anon@example.com',
+    phone: '+91 98765 67890',
+    since: 'Mar 2024',
+    status: 'Inactive',
+    lastVisit: '2024-03-01',
+    totalSessions: 1,
+    notes: 'Initial assessment completed. Not yet scheduled follow-up.'
+  }
+];
+
 export const UPCOMING_APPOINTMENTS: Appointment[] = [
   {
     id: 'apt-001',
@@ -25,6 +102,9 @@ export const UPCOMING_APPOINTMENTS: Appointment[] = [
     therapistName: 'Dr. Anjali Mehta',
     therapistPhoto: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400',
     specialization: 'Anxiety & Trauma',
+    patientId: 'patient-001',
+    patientName: 'Priya Sharma',
+    patientPhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
     date: '2026-01-25',
     time: '14:00',
     duration: 50,
@@ -42,6 +122,9 @@ export const UPCOMING_APPOINTMENTS: Appointment[] = [
     therapistName: 'Dr. Rajesh Kumar',
     therapistPhoto: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400',
     specialization: 'Stress Management',
+    patientId: 'patient-002',
+    patientName: 'Rahul Verma',
+    patientPhoto: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
     date: '2026-01-28',
     time: '10:00',
     duration: 50,
@@ -59,6 +142,9 @@ export const UPCOMING_APPOINTMENTS: Appointment[] = [
     therapistName: 'Dr. Arjun Reddy',
     therapistPhoto: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400',
     specialization: 'Sleep Disorders',
+    patientId: 'patient-003',
+    patientName: 'Anonymous User',
+    patientPhoto: 'https://ui-avatars.com/api/?name=Anonymous&background=random',
     date: '2026-02-01',
     time: '16:00',
     duration: 50,
@@ -78,6 +164,9 @@ export const PAST_APPOINTMENTS: Appointment[] = [
     therapistName: 'Dr. Anjali Mehta',
     therapistPhoto: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400',
     specialization: 'Anxiety & Trauma',
+    patientId: 'patient-001',
+    patientName: 'Priya Sharma',
+    patientPhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
     date: '2026-01-15',
     time: '14:00',
     duration: 50,
@@ -95,6 +184,9 @@ export const PAST_APPOINTMENTS: Appointment[] = [
     therapistName: 'Dr. Neha Desai',
     therapistPhoto: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400',
     specialization: 'Work Stress',
+    patientId: 'patient-002',
+    patientName: 'Rahul Verma',
+    patientPhoto: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
     date: '2026-01-10',
     time: '11:00',
     duration: 50,
@@ -113,6 +205,9 @@ export const PAST_APPOINTMENTS: Appointment[] = [
     therapistName: 'Dr. Anjali Mehta',
     therapistPhoto: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400',
     specialization: 'Anxiety & Trauma',
+    patientId: 'patient-001',
+    patientName: 'Priya Sharma',
+    patientPhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
     date: '2026-01-18',
     time: '14:00',
     duration: 50,
@@ -131,6 +226,9 @@ export const PAST_APPOINTMENTS: Appointment[] = [
     therapistName: 'Dr. Vikram Singh',
     therapistPhoto: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400',
     specialization: 'OCD',
+    patientId: 'patient-003',
+    patientName: 'Anonymous User',
+    patientPhoto: 'https://ui-avatars.com/api/?name=Anonymous&background=random',
     date: '2025-12-20',
     time: '15:00',
     duration: 50,

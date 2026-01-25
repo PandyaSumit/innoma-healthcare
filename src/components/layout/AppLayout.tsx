@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import Sidebar from './Sidebar';
-import MobileHeader from './MobileHeader';
+import React, { useState } from "react";
+import Sidebar from "./Sidebar";
+import MobileHeader from "./MobileHeader";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -29,9 +29,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
         {/* Page Content */}
         <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
-          <div className="mx-auto w-full">
-            {children}
-          </div>
+          <div className="mx-auto w-full">{children}</div>
         </div>
       </main>
     </div>

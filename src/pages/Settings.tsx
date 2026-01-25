@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const Settings = () => {
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
     whatsappNotifications: true,
-    reminderFrequency: '24h',
+    reminderFrequency: "24h",
     marketingEmails: false,
   });
 
   const [privacySettings, setPrivacySettings] = useState({
-    profileVisibility: 'private',
+    profileVisibility: "private",
     shareDataForResearch: false,
   });
 
@@ -26,28 +26,48 @@ const Settings = () => {
       <div>
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-healthcare-text mb-2">Settings</h1>
-          <p className="text-healthcare-text-muted">Manage your account preferences and notifications</p>
+          <h1 className="text-3xl font-bold text-healthcare-text mb-2">
+            Settings
+          </h1>
+          <p className="text-healthcare-text-muted">
+            Manage your account preferences and notifications
+          </p>
         </div>
 
         {/* Save Confirmation */}
         {saved && (
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
-            <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            <svg
+              className="w-6 h-6 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
             </svg>
-            <span className="text-green-800 font-semibold">Settings saved successfully!</span>
+            <span className="text-green-800 font-semibold">
+              Settings saved successfully!
+            </span>
           </div>
         )}
 
         {/* Notification Settings */}
         <div className="bg-white rounded-lg border border-healthcare-border p-6 mb-6">
-          <h2 className="text-xl font-bold text-healthcare-text mb-6">Notification Preferences</h2>
+          <h2 className="text-xl font-bold text-healthcare-text mb-6">
+            Notification Preferences
+          </h2>
 
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-healthcare-text mb-1">Email Notifications</h3>
+                <h3 className="font-semibold text-healthcare-text mb-1">
+                  Email Notifications
+                </h3>
                 <p className="text-sm text-healthcare-text-muted">
                   Receive booking confirmations and session reminders via email
                 </p>
@@ -70,7 +90,9 @@ const Settings = () => {
 
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-healthcare-text mb-1">WhatsApp Notifications</h3>
+                <h3 className="font-semibold text-healthcare-text mb-1">
+                  WhatsApp Notifications
+                </h3>
                 <p className="text-sm text-healthcare-text-muted">
                   Get instant reminders and updates on WhatsApp
                 </p>
@@ -97,17 +119,22 @@ const Settings = () => {
               </label>
               <div className="space-y-2">
                 {[
-                  { value: '24h', label: '24 hours before session' },
-                  { value: '12h', label: '12 hours and 1 hour before' },
-                  { value: '1h', label: '1 hour before session only' },
-                  { value: 'none', label: 'No reminders' },
+                  { value: "24h", label: "24 hours before session" },
+                  { value: "12h", label: "12 hours and 1 hour before" },
+                  { value: "1h", label: "1 hour before session only" },
+                  { value: "none", label: "No reminders" },
                 ].map((option) => (
-                  <label key={option.value} className="flex items-center gap-3 cursor-pointer">
+                  <label
+                    key={option.value}
+                    className="flex items-center gap-3 cursor-pointer"
+                  >
                     <input
                       type="radio"
                       name="reminderFrequency"
                       value={option.value}
-                      checked={notificationSettings.reminderFrequency === option.value}
+                      checked={
+                        notificationSettings.reminderFrequency === option.value
+                      }
                       onChange={(e) =>
                         setNotificationSettings({
                           ...notificationSettings,
@@ -125,7 +152,9 @@ const Settings = () => {
             <div className="pt-6 border-t border-healthcare-border">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-semibold text-healthcare-text mb-1">Marketing Emails</h3>
+                  <h3 className="font-semibold text-healthcare-text mb-1">
+                    Marketing Emails
+                  </h3>
                   <p className="text-sm text-healthcare-text-muted">
                     Receive updates about new features and wellness tips
                   </p>
@@ -150,7 +179,7 @@ const Settings = () => {
         </div>
 
         {/* Privacy Settings */}
-        <div className="bg-white rounded-lg border border-healthcare-border p-6 mb-6">
+        {/* <div className="bg-white rounded-lg border border-healthcare-border p-6 mb-6">
           <h2 className="text-xl font-bold text-healthcare-text mb-6">Privacy & Security</h2>
 
           <div className="space-y-6">
@@ -220,16 +249,19 @@ const Settings = () => {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Danger Zone */}
         <div className="bg-red-50 rounded-lg border border-red-200 p-6">
           <h2 className="text-xl font-bold text-red-800 mb-4">Danger Zone</h2>
           <div className="space-y-4">
             <div>
-              <h3 className="font-semibold text-red-800 mb-2">Delete Account</h3>
+              <h3 className="font-semibold text-red-800 mb-2">
+                Delete Account
+              </h3>
               <p className="text-sm text-red-700 mb-4">
-                Permanently delete your account and all associated data. This action cannot be undone.
+                Permanently delete your account and all associated data. This
+                action cannot be undone.
               </p>
               <button className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors">
                 Delete My Account
