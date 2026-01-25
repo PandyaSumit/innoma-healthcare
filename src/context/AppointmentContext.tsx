@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Appointment, UPCOMING_APPOINTMENTS, PAST_APPOINTMENTS } from '../data/appointments';
+import type { Appointment } from '../data/appointments';
+import { UPCOMING_APPOINTMENTS, PAST_APPOINTMENTS } from '../data/appointments';
 
 // Re-export the Appointment type for consumers
 export type { Appointment };

@@ -13,12 +13,7 @@ const AppointmentCard = ({
   onReschedule,
   onCancel,
   isPast,
-}: {
-  appointment: Appointment;
-  onReschedule: (apt: Appointment) => void;
-  onCancel: (apt: Appointment) => void;
-  isPast: boolean;
-}) => {
+}: AppointmentCardProps) => {
   const appointmentDate = new Date(`${appointment.date}T${appointment.time}`);
   
   const now = new Date();

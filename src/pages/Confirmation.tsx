@@ -1,4 +1,4 @@
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useBooking } from '../context/BookingContext';
 import { useAppointments } from '../context/AppointmentContext';
@@ -6,7 +6,6 @@ import { useToast } from '../context/ToastContext';
 
 const Confirmation = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { booking, clearBooking } = useBooking();
   const { addAppointment } = useAppointments();
   const { success } = useToast();

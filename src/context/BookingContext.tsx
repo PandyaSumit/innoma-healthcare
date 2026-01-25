@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Therapist } from '../data/therapists';
+import type { Therapist } from '../data/therapists';
 
 export type PackageType = 'single' | 'starter' | 'professional';
 

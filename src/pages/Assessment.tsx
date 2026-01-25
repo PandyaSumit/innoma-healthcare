@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { THERAPISTS, SPECIALIZATIONS } from '../data/therapists';
+import { THERAPISTS } from '../data/therapists';
 import { useBooking } from '../context/BookingContext';
 import { useAppointments } from '../context/AppointmentContext';
 import { useToast } from '../context/ToastContext';
@@ -55,10 +55,6 @@ const Assessment = () => {
 
   const formatDate = (date: Date) => {
     return date.toISOString().split('T')[0];
-  };
-
-  const formatDisplayDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   };
 
   const toggleConcern = (concernId: string) => {

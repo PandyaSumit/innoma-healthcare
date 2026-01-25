@@ -30,7 +30,6 @@ const VideoConsultation = () => {
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Device test state
-  const [deviceTestComplete, setDeviceTestComplete] = useState(false);
   const [cameraWorking, setCameraWorking] = useState<boolean | null>(null);
   const [micWorking, setMicWorking] = useState<boolean | null>(null);
   const [speakerWorking, setSpeakerWorking] = useState<boolean | null>(null);
@@ -92,17 +91,17 @@ const VideoConsultation = () => {
 
   const handleStartSession = () => {
     setSessionStarted(true);
-    showToast('Connected to session', 'success');
+    showToast({ type: 'success', title: 'Connected to session' });
   };
 
   const handleEndSession = () => {
     setSessionStarted(false);
     setSessionEnded(true);
-    showToast('Session ended', 'info');
+    showToast({ type: 'info', title: 'Session ended' });
   };
 
   const handleSubmitFeedback = () => {
-    showToast('Thank you for your feedback!', 'success');
+    showToast({ type: 'success', title: 'Thank you for your feedback!' });
     navigate('/appointments');
   };
 

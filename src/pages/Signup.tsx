@@ -430,7 +430,7 @@ const Signup = () => {
                       {otpValues.map((value, index) => (
                         <input
                           key={index}
-                          ref={(el) => (otpRefs.current[index] = el)}
+                          ref={(el) => { otpRefs.current[index] = el; }}
                           type="text"
                           inputMode="numeric"
                           maxLength={1}

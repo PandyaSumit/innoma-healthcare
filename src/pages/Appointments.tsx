@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppointments, Appointment } from '../context/AppointmentContext';
+import { useAppointments, type Appointment } from '../context/AppointmentContext';
 import { useToast } from '../context/ToastContext';
 import AppointmentCard from '../components/AppointmentCard';
 
@@ -143,7 +143,7 @@ const Appointments = () => {
           }}
           onConfirm={(date, time) => {
             rescheduleAppointment(selectedAppointment.id, date, time);
-            showToast('Appointment rescheduled successfully!', 'success');
+            showToast({ type: 'success', title: 'Appointment rescheduled successfully!' });
           }}
         />
       )}
@@ -158,7 +158,7 @@ const Appointments = () => {
           }}
           onConfirm={() => {
             cancelAppointment(selectedAppointment.id);
-            showToast('Appointment cancelled successfully', 'info');
+            showToast({ type: 'info', title: 'Appointment cancelled successfully' });
           }}
         />
       )}
