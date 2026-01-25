@@ -8,6 +8,9 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import AppLayout from './components/layout/AppLayout';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { BookingProvider } from './context/BookingContext';
+import { AppointmentProvider } from './context/AppointmentContext';
+import { ToastProvider } from './context/ToastContext';
 import About from './pages/About';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
@@ -21,6 +24,8 @@ import BookAppointment from './pages/BookAppointment';
 import Checkout from './pages/Checkout';
 import Confirmation from './pages/Confirmation';
 import VideoConsultation from './pages/VideoConsultation';
+import Assessment from './pages/Assessment';
+import MobileBottomNav from './components/layout/MobileBottomNav';
 
 // Coming Soon Component
 const ComingSoon = ({ title }: { title: string }) => (
@@ -241,13 +246,22 @@ function AppRoutes() {
           </ProtectedRoute>
         } />
 
-        {/* Assessment Booking Shortcut */}
+        {/* Assessment Booking */}
         <Route path="/assessment" element={
           <ProtectedRoute>
-            <Navigate to="/therapists" replace />
+            <>
+              <Header />
+              <main className="flex-grow pt-24 px-4 md:px-8 pb-24 md:pb-12">
+                <Assessment />
+              </main>
+              <Footer />
+            </>
           </ProtectedRoute>
         } />
       </Routes>
+
+      {/* Mobile Bottom Navigation - Only show on protected routes */}
+      <MobileBottomNav />
     </div>
   );
 }
@@ -255,7 +269,13 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <ToastProvider>
+        <BookingProvider>
+          <AppointmentProvider>
+            <AppRoutes />
+          </AppointmentProvider>
+        </BookingProvider>
+      </ToastProvider>
     </AuthProvider>
   );
 }
