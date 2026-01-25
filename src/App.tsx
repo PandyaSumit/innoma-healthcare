@@ -148,7 +148,7 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main className="flex-grow pt-24 px-8 pb-12">
+              <main className="flex-grow pt-24">
                 <TherapistDirectory />
               </main>
               <Footer />
@@ -161,7 +161,7 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main className="flex-grow pt-24 px-8 pb-12">
+              <main className="flex-grow pt-24">
                 <TherapistProfile />
               </main>
               <Footer />

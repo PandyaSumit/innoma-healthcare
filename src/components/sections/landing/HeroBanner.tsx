@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const HeroBanner: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <section className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden">
       {/* Background image */}
@@ -52,12 +54,8 @@ const HeroBanner: React.FC = () => {
             style={{ animationDelay: "0.4s" }}
           >
             <button
-              onClick={() =>
-                document
-                  .getElementById("assessment")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 sm:px-12 py-4 sm:py-5 bg-brand-orange text-white text-base sm:text-lg font-semibold rounded-2xl transition-all duration-300 hover:bg-brand-orange/90 active:scale-[0.98] shadow-[0_14px_48px_rgba(249,115,22,0.35)]"
+              onClick={() => navigate("/therapists")}
+              className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 sm:px-12 py-4 sm:py-5 bg-brand-orange text-white text-base sm:text-lg font-semibold rounded-xl cursor-pointer transition-all duration-300 hover:bg-brand-orange/90 active:scale-[0.98] shadow-[0_14px_48px_rgba(249,115,22,0.35)]"
             >
               Start your journey
               <svg
