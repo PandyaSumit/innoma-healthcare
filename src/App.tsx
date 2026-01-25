@@ -15,6 +15,12 @@ import TherapistDashboard from './pages/TherapistDashboard';
 import Appointments from './pages/Appointments';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
+import TherapistDirectory from './pages/TherapistDirectory';
+import TherapistProfile from './pages/TherapistProfile';
+import BookAppointment from './pages/BookAppointment';
+import Checkout from './pages/Checkout';
+import Confirmation from './pages/Confirmation';
+import VideoConsultation from './pages/VideoConsultation';
 
 // Coming Soon Component
 const ComingSoon = ({ title }: { title: string }) => (
@@ -115,7 +121,7 @@ function AppRoutes() {
           <>
             <Header />
             <main className="flex-grow pt-24 px-8 pb-12">
-              <ComingSoon title="Therapist Directory" />
+              <TherapistDirectory />
             </main>
             <Footer />
           </>
@@ -125,7 +131,7 @@ function AppRoutes() {
           <>
             <Header />
             <main className="flex-grow pt-24 px-8 pb-12">
-              <ComingSoon title="Therapist Profile" />
+              <TherapistProfile/>
             </main>
             <Footer />
           </>
@@ -178,7 +184,7 @@ function AppRoutes() {
             <>
               <Header />
               <main className="flex-grow pt-24 px-8">
-                <ComingSoon title="Booking System" />
+                <BookAppointment/>
               </main>
               <Footer />
             </>
@@ -190,7 +196,7 @@ function AppRoutes() {
             <>
               <Header />
               <main className="flex-grow pt-24 px-8">
-                <ComingSoon title="Checkout" />
+                <Checkout/>
               </main>
               <Footer />
             </>
@@ -202,7 +208,7 @@ function AppRoutes() {
             <>
               <Header />
               <main className="flex-grow pt-24 px-8">
-                <ComingSoon title="Order Confirmation" />
+                <Confirmation/>
               </main>
               <Footer />
             </>
@@ -213,7 +219,7 @@ function AppRoutes() {
         <Route path="/join/:appointmentId" element={
           <ProtectedRoute>
             <div className="min-h-screen bg-healthcare-surface flex items-center justify-center p-8">
-              <ComingSoon title="Video Consultation" />
+              <VideoConsultation/>
             </div>
           </ProtectedRoute>
         } />
