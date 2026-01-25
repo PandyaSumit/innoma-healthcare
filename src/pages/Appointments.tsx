@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppointments, type Appointment } from '../context/AppointmentContext';
+import type { Appointment } from '../data/appointments';
+import { useAppointments } from '../context/AppointmentContext';
 import { useToast } from '../context/ToastContext';
 import AppointmentCard from '../components/AppointmentCard';
 

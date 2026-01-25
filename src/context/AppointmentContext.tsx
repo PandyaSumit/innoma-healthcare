@@ -2,9 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { Appointment } from '../data/appointments';
 import { UPCOMING_APPOINTMENTS, PAST_APPOINTMENTS } from '../data/appointments';
 
-// Re-export the Appointment type for consumers
-export type { Appointment };
-
 interface AppointmentContextType {
   appointments: Appointment[];
   upcomingAppointments: Appointment[];
