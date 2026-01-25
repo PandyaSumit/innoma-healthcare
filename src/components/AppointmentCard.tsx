@@ -14,11 +14,24 @@ const AppointmentCard = ({
   isPast: boolean;
 }) => {
   const appointmentDate = new Date(`${appointment.date}T${appointment.time}`);
-  
+
   const now = new Date();
   const timeDiff = appointmentDate.getTime() - now.getTime();
   const minutesDiff = Math.floor(timeDiff / (1000 * 60));
   const canJoin = minutesDiff <= 15 && minutesDiff >= 0;
+
+  // Format time for display
+  const formatTime = (time: string) => {
+    const match = time.match(/(\d{1,2}):(\d{2})/);
+    if (match) {
+      let hours = parseInt(match[1]);
+      const minutes = match[2];
+      const period = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      return `${hours}:${minutes} ${period}`;
+    }
+    return time;
+  };
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 hover:border-blue-300 transition-all overflow-hidden">
@@ -42,9 +55,9 @@ const AppointmentCard = ({
                   </svg>
                   {appointmentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                 </span>
-                <span className="text-gray-300">•</span>
-                <span className="font-medium text-gray-700">{appointment.time}</span>
-                <span className="text-gray-300">•</span>
+                <span className="text-gray-300">|</span>
+                <span className="font-medium text-gray-700">{formatTime(appointment.time)}</span>
+                <span className="text-gray-300">|</span>
                 <span className="text-gray-600">{appointment.duration}m</span>
               </div>
             </div>
@@ -54,16 +67,34 @@ const AppointmentCard = ({
           <div className="flex gap-2 sm:w-auto">
             {!isPast ? (
               <>
-                <Link
-                  to={`/join/${appointment.id}`}
-                  className={`flex-1 sm:flex-none px-5 py-2 ${
-                    canJoin 
-                      ? 'bg-green-600 hover:bg-green-700 shadow-sm' 
-                      : 'bg-[#1E40AF]'
-                  } text-white text-sm font-semibold rounded-md transition-all text-center no-underline whitespace-nowrap`}
-                >
-                  {canJoin ? '▶ Join' : 'View'}
-                </Link>
+                {appointment.meetingLink ? (
+                  <a
+                    href={appointment.meetingLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex-1 sm:flex-none px-5 py-2 ${
+                      canJoin
+                        ? 'bg-green-600 hover:bg-green-700 shadow-sm animate-pulse'
+                        : 'bg-[#1E40AF] hover:bg-[#1E40AF]/90'
+                    } text-white text-sm font-semibold rounded-md transition-all text-center no-underline whitespace-nowrap flex items-center justify-center gap-2`}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    {canJoin ? 'Join Now' : 'Join Session'}
+                  </a>
+                ) : (
+                  <Link
+                    to={`/join/${appointment.id}`}
+                    className={`flex-1 sm:flex-none px-5 py-2 ${
+                      canJoin
+                        ? 'bg-green-600 hover:bg-green-700 shadow-sm'
+                        : 'bg-[#1E40AF]'
+                    } text-white text-sm font-semibold rounded-md transition-all text-center no-underline whitespace-nowrap`}
+                  >
+                    {canJoin ? 'Join' : 'View'}
+                  </Link>
+                )}
                 <button
                   onClick={() => onReschedule(appointment)}
                   disabled={appointment.reschedulesLeft === 0}
@@ -104,6 +135,30 @@ const AppointmentCard = ({
             )}
           </div>
         </div>
+
+        {/* Meeting Link Display for upcoming appointments */}
+        {!isPast && appointment.meetingLink && (
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg p-3">
+              <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-green-700 font-medium">Meeting Link</p>
+                <p className="text-sm text-green-800 truncate">{appointment.meetingLink}</p>
+              </div>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(appointment.meetingLink || '');
+                  alert('Meeting link copied!');
+                }}
+                className="px-2 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded hover:bg-green-200 transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Mobile Actions Menu */}
         {!isPast && (
@@ -148,6 +203,14 @@ const AppointmentCard = ({
         {appointment.fee === 0 && (
           <span className="px-2.5 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-md">
             FREE SESSION
+          </span>
+        )}
+        {!isPast && appointment.meetingLink && (
+          <span className="px-2.5 py-1 bg-purple-50 text-purple-700 text-xs font-medium rounded-md flex items-center gap-1">
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Video Session
           </span>
         )}
       </div>

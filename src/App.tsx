@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import AppLayout from "./components/layout/AppLayout";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { BookingProvider } from "./context/BookingContext";
 import About from "./pages/About";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -323,7 +324,9 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <BookingProvider>
+        <AppRoutes />
+      </BookingProvider>
     </AuthProvider>
   );
 }

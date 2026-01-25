@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { THERAPISTS } from "../data/therapists";
 
 const TherapistProfile = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
 
   const therapist = THERAPISTS.find((t) => t.id === id);

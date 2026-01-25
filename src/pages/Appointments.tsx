@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useBooking } from "../context/BookingContext";
 import { UPCOMING_APPOINTMENTS, PAST_APPOINTMENTS } from "../data/appointments";
 import type { Appointment } from "../data/appointments";
 import AppointmentCard from "../components/AppointmentCard";
@@ -11,15 +12,11 @@ import { CancelModal } from "../components/appointments/CancelModal";
 
 const Appointments = () => {
   const { user } = useAuth();
+  const { bookedAppointments } = useBooking();
   const isTherapist = user?.role === "therapist";
 
-  // Tabs for Patient: 'upcoming', 'past'
-  // Tabs for Therapist: 'upcoming', 'patients', 'past'
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Tabs for Patient: 'upcoming', 'past'
-  // Tabs for Therapist: 'upcoming', 'patients', 'past'
-  // Get tab from URL or default to 'upcoming'
   const tabParam = searchParams.get("tab");
   const validTabs = ["upcoming", "past", "patients"];
   const activeTab = validTabs.includes(tabParam || "")
@@ -29,18 +26,51 @@ const Appointments = () => {
   const setActiveTab = (tab: "upcoming" | "past" | "patients") => {
     setSearchParams({ tab });
   };
+
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] =
     useState<Appointment | null>(null);
 
-  // Filter appointments based on role (Mock filtering since data is static)
-  // In a real app, this would be handled by the backend
-  const filteredUpcoming = isTherapist
-    ? UPCOMING_APPOINTMENTS // Show all upcoming for therapist (or filter by therapistId if we had mult users)
-    : UPCOMING_APPOINTMENTS; // Show all for patient (mock)
+  // Combine static appointments with dynamically booked ones
+  const now = new Date();
 
-  const filteredPast = isTherapist ? PAST_APPOINTMENTS : PAST_APPOINTMENTS;
+  // For patient view
+  const patientUpcoming = [
+    ...UPCOMING_APPOINTMENTS.filter(apt => apt.patientId === 'patient-001'),
+    ...bookedAppointments.filter(apt => {
+      const aptDate = new Date(`${apt.date}T${apt.time}`);
+      return aptDate >= now && apt.status === 'Upcoming';
+    })
+  ];
+
+  const patientPast = [
+    ...PAST_APPOINTMENTS.filter(apt => apt.patientId === 'patient-001'),
+    ...bookedAppointments.filter(apt => {
+      const aptDate = new Date(`${apt.date}T${apt.time}`);
+      return aptDate < now || apt.status === 'Completed';
+    })
+  ];
+
+  // For therapist view - show all appointments
+  const therapistUpcoming = [
+    ...UPCOMING_APPOINTMENTS,
+    ...bookedAppointments.filter(apt => {
+      const aptDate = new Date(`${apt.date}T${apt.time}`);
+      return aptDate >= now && apt.status === 'Upcoming';
+    })
+  ];
+
+  const therapistPast = [
+    ...PAST_APPOINTMENTS,
+    ...bookedAppointments.filter(apt => {
+      const aptDate = new Date(`${apt.date}T${apt.time}`);
+      return aptDate < now || apt.status === 'Completed';
+    })
+  ];
+
+  const filteredUpcoming = isTherapist ? therapistUpcoming : patientUpcoming;
+  const filteredPast = isTherapist ? therapistPast : patientPast;
 
   const currentList =
     activeTab === "upcoming" ? filteredUpcoming : filteredPast;
@@ -56,7 +86,6 @@ const Appointments = () => {
   };
 
   const handleViewNotes = (appointment: Appointment) => {
-    // Placeholder for viewing notes logic
     console.log("View notes for", appointment.id);
   };
 
@@ -65,12 +94,12 @@ const Appointments = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-healthcare-text mb-2">
-          {isTherapist ? "Practice Management" : "My Appointments"}
+          {isTherapist ? "Practice Management" : "My Sessions"}
         </h1>
         <p className="text-healthcare-text-muted">
           {isTherapist
             ? "Manage your sessions and patient records"
-            : "Manage your therapy sessions and view appointment history"}
+            : "View and manage your therapy sessions"}
         </p>
       </div>
 
@@ -85,6 +114,11 @@ const Appointments = () => {
           }`}
         >
           {isTherapist ? "Upcoming Sessions" : "Upcoming"}
+          {filteredUpcoming.length > 0 && (
+            <span className="ml-2 px-2 py-0.5 bg-brand-blue/10 text-brand-blue text-xs font-bold rounded-full">
+              {filteredUpcoming.length}
+            </span>
+          )}
           {activeTab === "upcoming" && (
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue animate-fade-in" />
           )}
@@ -114,7 +148,7 @@ const Appointments = () => {
               : "text-healthcare-text-muted hover:text-healthcare-text"
           }`}
         >
-          {isTherapist ? "Session History" : "Past"}
+          {isTherapist ? "Session History" : "Past Sessions"}
           {activeTab === "past" && (
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue animate-fade-in" />
           )}
@@ -165,14 +199,14 @@ const Appointments = () => {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-healthcare-text mb-2">
-                No appointments found
+                No {activeTab === "upcoming" ? "upcoming" : "past"} sessions
               </h3>
               <p className="text-healthcare-text-muted mb-6 max-w-md mx-auto">
                 {activeTab === "upcoming"
                   ? isTherapist
-                    ? "You have no upcoming sessions scheduled for today."
-                    : "You have no upcoming appointments. Book your first session to start your journey."
-                  : "No past appointment history available."}
+                    ? "You have no upcoming sessions scheduled."
+                    : "Book your first session to start your wellness journey."
+                  : "No past session history available."}
               </p>
               {!isTherapist && activeTab === "upcoming" && (
                 <Link
@@ -198,6 +232,24 @@ const Appointments = () => {
             </div>
           )}
         </>
+      )}
+
+      {/* Meeting Link Info for Patient */}
+      {!isTherapist && activeTab === "upcoming" && filteredUpcoming.length > 0 && (
+        <div className="mt-8 bg-green-50 border border-green-200 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <svg className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <p className="text-sm font-semibold text-green-800">About Meeting Links</p>
+              <p className="text-sm text-green-700">
+                Each session includes a unique meeting link. Click "Join Session" to access your video consultation.
+                Links become active 15 minutes before your scheduled time.
+              </p>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Reschedule Modal */}
