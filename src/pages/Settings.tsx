@@ -22,8 +22,8 @@ const Settings = () => {
   };
 
   return (
-    <div className="p-6 md:p-10">
-      <div className="max-w-4xl mx-auto">
+    <div>
+      <div>
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-healthcare-text mb-2">Settings</h1>

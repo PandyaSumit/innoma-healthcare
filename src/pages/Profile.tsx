@@ -118,7 +118,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="animate-fade-in h-full flex flex-col pb-20 px-4 pt-6 space-y-8">
+    <div className="animate-fade-in h-full flex flex-col pb-20 space-y-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-healthcare-text">Profile Details</h1>
         <button

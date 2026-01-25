@@ -12,6 +12,9 @@ import About from './pages/About';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import TherapistDashboard from './pages/TherapistDashboard';
+import Appointments from './pages/Appointments';
+import Settings from './pages/Settings';
+import Support from './pages/Support';
 
 // Coming Soon Component
 const ComingSoon = ({ title }: { title: string }) => (
@@ -148,7 +151,7 @@ function AppRoutes() {
         <Route path="/appointments" element={
           <ProtectedRoute>
             <AppLayout>
-              <ComingSoon title="Appointments" />
+              <Appointments/>
             </AppLayout>
           </ProtectedRoute>
         } />
@@ -156,7 +159,7 @@ function AppRoutes() {
         <Route path="/settings" element={
           <ProtectedRoute>
             <AppLayout>
-              <ComingSoon title="Settings" />
+              <Settings/>
             </AppLayout>
           </ProtectedRoute>
         } />
@@ -164,7 +167,7 @@ function AppRoutes() {
         <Route path="/support" element={
           <ProtectedRoute>
             <AppLayout>
-              <ComingSoon title="Support" />
+              <Support/>
             </AppLayout>
           </ProtectedRoute>
         } />

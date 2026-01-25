@@ -1,5 +1,3 @@
-
-
 const Dashboard = () => {
   const stats = [
     { label: 'Care Progress', value: '24%', detail: 'Step 2 of 5 completing' },

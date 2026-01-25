@@ -15,7 +15,7 @@ const TherapistDashboard = () => {
   const upcomingPatients = UPCOMING_APPOINTMENTS.slice(0, 3);
 
   return (
-    <div className="p-6 md:p-10">
+    <div>
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-healthcare-text mb-2">Welcome back, {user?.profile?.name}!</h1>

@@ -64,8 +64,8 @@ const Support = () => {
   };
 
   return (
-    <div className="p-6 md:p-10">
-      <div className="max-w-5xl mx-auto">
+    <div>
+      <div>
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-healthcare-text mb-2">Support Center</h1>
@@ -76,7 +76,7 @@ const Support = () => {
         <div className="flex gap-2 mb-8 border-b border-healthcare-border">
           <button
             onClick={() => setActiveTab('faq')}
-            className={`px-6 py-3 font-semibold transition-colors relative ${
+            className={`px-6 py-3 font-semibold transition-colors relative cursor-pointer ${
               activeTab === 'faq'
                 ? 'text-brand-blue'
                 : 'text-healthcare-text-muted hover:text-healthcare-text'
@@ -87,7 +87,7 @@ const Support = () => {
           </button>
           <button
             onClick={() => setActiveTab('contact')}
-            className={`px-6 py-3 font-semibold transition-colors relative ${
+            className={`px-6 py-3 font-semibold transition-colors relative cursor-pointer ${
               activeTab === 'contact'
                 ? 'text-brand-blue'
                 : 'text-healthcare-text-muted hover:text-healthcare-text'
@@ -100,7 +100,7 @@ const Support = () => {
           </button>
           <button
             onClick={() => setActiveTab('tickets')}
-            className={`px-6 py-3 font-semibold transition-colors relative ${
+            className={`px-6 py-3 font-semibold transition-colors relative cursor-pointer ${
               activeTab === 'tickets'
                 ? 'text-brand-blue'
                 : 'text-healthcare-text-muted hover:text-healthcare-text'
@@ -296,7 +296,7 @@ const Support = () => {
               <p className="text-healthcare-text-muted mb-6">You haven't submitted any support tickets yet</p>
               <button
                 onClick={() => setActiveTab('contact')}
-                className="px-6 py-3 bg-brand-blue text-white rounded-lg font-semibold hover:bg-healthcare-text transition-colors"
+                className="px-6 py-3 bg-brand-blue text-white rounded-lg font-semibold hover:bg-healthcare-text transition-colors cursor-pointer"
               >
                 Create Ticket
               </button>

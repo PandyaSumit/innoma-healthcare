@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UPCOMING_APPOINTMENTS, PAST_APPOINTMENTS } from '../data/appointments';
 import type { Appointment } from '../data/appointments';
+import AppointmentCard from '../components/AppointmentCard';
 
 const Appointments = () => {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -22,7 +23,7 @@ const Appointments = () => {
   };
 
   return (
-    <div className="p-6 md:p-10">
+    <div>
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-healthcare-text mb-2">My Appointments</h1>
@@ -127,177 +128,7 @@ const Appointments = () => {
   );
 };
 
-// Appointment Card Component
-const AppointmentCard = ({
-  appointment,
-  onReschedule,
-  onCancel,
-  isPast,
-}: {
-  appointment: Appointment;
-  onReschedule: (apt: Appointment) => void;
-  onCancel: (apt: Appointment) => void;
-  isPast: boolean;
-}) => {
-  const appointmentDate = new Date(`${appointment.date}T${appointment.time}`);
-  const formattedDate = appointmentDate.toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
 
-  const now = new Date();
-  const timeDiff = appointmentDate.getTime() - now.getTime();
-  const minutesDiff = Math.floor(timeDiff / (1000 * 60));
-  const canJoin = minutesDiff <= 15 && minutesDiff >= 0;
-
-  return (
-    <div className="bg-white rounded-lg border border-healthcare-border p-6 hover:shadow-md transition-shadow">
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Therapist Info */}
-        <div className="flex gap-4 flex-1">
-          <img
-            src={appointment.therapistPhoto}
-            alt={appointment.therapistName}
-            className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
-          />
-          <div className="flex-1 min-w-0">
-            <h3 className="text-xl font-bold text-healthcare-text mb-1">{appointment.therapistName}</h3>
-            <p className="text-sm text-healthcare-text-muted mb-3">{appointment.specialization}</p>
-
-            <div className="flex flex-wrap gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-healthcare-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-                <span className="text-healthcare-text font-medium">{formattedDate}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-healthcare-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span className="text-healthcare-text font-medium">{appointment.time}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-healthcare-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span className="text-healthcare-text font-medium">{appointment.duration} min</span>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3 mt-3">
-              <span className="px-3 py-1 bg-healthcare-lavender/30 text-brand-blue text-xs font-semibold rounded-full">
-                {appointment.type}
-              </span>
-              {appointment.fee === 0 && (
-                <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
-                  Free Assessment
-                </span>
-              )}
-              {isPast && appointment.rating && (
-                <div className="flex items-center gap-1">
-                  <span className="text-xs text-healthcare-text-muted">Your rating:</span>
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className={`w-3 h-3 ${i < appointment.rating! ? 'text-yellow-400' : 'text-gray-300'}`}
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex flex-col gap-3 lg:w-48">
-          {!isPast ? (
-            <>
-              {canJoin ? (
-                <Link
-                  to={`/join/${appointment.id}`}
-                  className="px-6 py-2.5 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors text-center no-underline"
-                >
-                  Join Now
-                </Link>
-              ) : (
-                <Link
-                  to={`/join/${appointment.id}`}
-                  className="px-6 py-2.5 bg-brand-blue text-white rounded-lg font-semibold hover:bg-healthcare-text transition-colors text-center no-underline"
-                >
-                  View Details
-                </Link>
-              )}
-              <button
-                onClick={() => onReschedule(appointment)}
-                disabled={appointment.reschedulesLeft === 0}
-                className="px-6 py-2.5 border-2 border-brand-blue text-brand-blue rounded-lg font-semibold hover:bg-brand-blue hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Reschedule ({appointment.reschedulesLeft} left)
-              </button>
-              <button
-                onClick={() => onCancel(appointment)}
-                className="px-6 py-2.5 border border-red-500 text-red-500 rounded-lg font-semibold hover:bg-red-50 transition-colors"
-              >
-                Cancel
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to={`/book/${appointment.therapistId}`}
-                className="px-6 py-2.5 bg-brand-blue text-white rounded-lg font-semibold hover:bg-healthcare-text transition-colors text-center no-underline"
-              >
-                Book Again
-              </Link>
-              {appointment.sessionNotes && (
-                <button className="px-6 py-2.5 border-2 border-healthcare-border text-healthcare-text rounded-lg font-semibold hover:bg-healthcare-surface transition-colors">
-                  View Notes
-                </button>
-              )}
-              {appointment.invoiceNumber && (
-                <button className="px-6 py-2.5 border-2 border-healthcare-border text-healthcare-text rounded-lg font-semibold hover:bg-healthcare-surface transition-colors">
-                  Download Invoice
-                </button>
-              )}
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Session Notes Preview (Past) */}
-      {isPast && appointment.sessionNotes && (
-        <div className="mt-6 pt-6 border-t border-healthcare-border">
-          <h4 className="text-sm font-bold text-healthcare-text mb-2">Session Notes</h4>
-          <p className="text-sm text-healthcare-text-muted">{appointment.sessionNotes}</p>
-        </div>
-      )}
-    </div>
-  );
-};
 
 // Reschedule Modal
 const RescheduleModal = ({
