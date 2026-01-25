@@ -1,12 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Appointment } from '../data/appointments';
 
-interface AppointmentCardProps {
-  appointment: Appointment;
-  onReschedule: (apt: Appointment) => void;
-  onCancel: (apt: Appointment) => void;
-  isPast: boolean;
-}
 
 const AppointmentCard = ({
   appointment,
@@ -65,7 +59,7 @@ const AppointmentCard = ({
                   className={`flex-1 sm:flex-none px-5 py-2 ${
                     canJoin 
                       ? 'bg-green-600 hover:bg-green-700 shadow-sm' 
-                      : 'bg-blue-600 hover:bg-blue-700'
+                      : 'bg-[#1E40AF]'
                   } text-white text-sm font-semibold rounded-md transition-all text-center no-underline whitespace-nowrap`}
                 >
                   {canJoin ? '▶ Join' : 'View'}
@@ -73,7 +67,7 @@ const AppointmentCard = ({
                 <button
                   onClick={() => onReschedule(appointment)}
                   disabled={appointment.reschedulesLeft === 0}
-                  className="hidden sm:block px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="hidden sm:block px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md transition-all disabled:opacity-30 cursor-pointer"
                   title="Reschedule"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +76,7 @@ const AppointmentCard = ({
                 </button>
                 <button
                   onClick={() => onCancel(appointment)}
-                  className="hidden sm:block px-3 py-2 text-red-600 hover:bg-red-50 rounded-md transition-all"
+                  className="hidden sm:block px-3 py-2 text-red-600 hover:bg-red-50 rounded-md transition-all cursor-pointer"
                   title="Cancel"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,6 +1,6 @@
 const Dashboard = () => {
   const stats = [
-    { label: 'Care Progress', value: '24%', detail: 'Step 2 of 5 completing' },
+    // { label: 'Care Progress', value: '24%', detail: 'Step 2 of 5 completing' },
     { label: 'Next Session', value: 'Jan 24', detail: '10:30 AM with Dr. Aris' },
     { label: 'Assessments', value: '1 Pending', detail: 'Clinical intake form' }
   ];
@@ -30,9 +30,9 @@ const Dashboard = () => {
           <h3 className="text-xl font-bold text-healthcare-text mb-6">Upcoming Care Path</h3>
           <div className="space-y-6">
             {[
-              { title: 'Clinical Assessment', time: 'Completed', type: 'Intake' },
+              { title: 'Need Assessment', time: 'Completed', type: 'Intake' },
               { title: 'Therapist Matching', time: 'In Progress', type: 'Assignment' },
-              { title: 'First Healing Session', time: 'Scheduled', type: 'Consultation' }
+              { title: 'First Therapy Session', time: 'Scheduled', type: 'Consultation' }
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-4">
                 <div className={`w-3 h-3 rounded-full ${i === 0 ? 'bg-green-400' : i === 1 ? 'bg-brand-blue animate-pulse' : 'bg-healthcare-border'}`} />
