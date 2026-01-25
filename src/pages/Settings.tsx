@@ -8,11 +8,6 @@ const Settings = () => {
     marketingEmails: false,
   });
 
-  const [privacySettings, setPrivacySettings] = useState({
-    profileVisibility: "private",
-    shareDataForResearch: false,
-  });
-
   const [saved, setSaved] = useState(false);
 
   const handleSave = () => {
