@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { THERAPISTS } from "../data/therapists";
 
 const TherapistProfile = () => {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
   const [isFavorite, setIsFavorite] = useState(false);
+  const isInApp = location.pathname.startsWith("/find-therapist");
+  const backPath = isInApp ? "/find-therapist" : "/therapists";
 
   const therapist = THERAPISTS.find((t) => t.id === id);
 
@@ -16,7 +19,7 @@ const TherapistProfile = () => {
             Therapist not found
           </h2>
           <Link
-            to="/therapists"
+            to={backPath}
             className="px-6 py-3 rounded-lg bg-brand-blue text-white font-semibold"
           >
             Back to directory
