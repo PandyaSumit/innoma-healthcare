@@ -143,7 +143,7 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Therapist Directory - Coming Soon */}
+        {/* Therapist Directory - Public (for non-logged-in users) */}
         <Route
           path="/therapists"
           element={
@@ -171,6 +171,29 @@ function AppRoutes() {
         />
 
         {/* Protected Routes - Wrapped in AppLayout */}
+
+        {/* Find Therapist - Inside app for logged-in patients */}
+        <Route
+          path="/find-therapist"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <TherapistDirectory />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/find-therapist/:id"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <TherapistProfile />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/dashboard"
           element={
@@ -226,18 +249,14 @@ function AppRoutes() {
           }
         />
 
-        {/* Booking Flow - Coming Soon */}
+        {/* Booking Flow - Inside AppLayout */}
         <Route
           path="/book/:therapistId"
           element={
             <ProtectedRoute>
-              <>
-                <Header />
-                <main className="flex-grow pt-24 px-8">
-                  <BookAppointment />
-                </main>
-                <Footer />
-              </>
+              <AppLayout>
+                <BookAppointment />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -246,13 +265,9 @@ function AppRoutes() {
           path="/checkout"
           element={
             <ProtectedRoute>
-              <>
-                <Header />
-                <main className="flex-grow pt-24 px-8">
-                  <Checkout />
-                </main>
-                <Footer />
-              </>
+              <AppLayout>
+                <Checkout />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -261,13 +276,9 @@ function AppRoutes() {
           path="/confirmation"
           element={
             <ProtectedRoute>
-              <>
-                <Header />
-                <main className="flex-grow pt-24 px-8">
-                  <Confirmation />
-                </main>
-                <Footer />
-              </>
+              <AppLayout>
+                <Confirmation />
+              </AppLayout>
             </ProtectedRoute>
           }
         />

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import type { Therapist } from "../../data/therapists";
 
 interface TherapistCardProps {
@@ -6,6 +6,11 @@ interface TherapistCardProps {
 }
 
 const TherapistCard = ({ therapist }: TherapistCardProps) => {
+  const location = useLocation();
+  const isInApp = location.pathname.startsWith("/find-therapist");
+  const profilePath = isInApp
+    ? `/find-therapist/${therapist.id}`
+    : `/therapists/${therapist.id}`;
   return (
     <div
       className="
@@ -111,7 +116,7 @@ const TherapistCard = ({ therapist }: TherapistCardProps) => {
         </div>
 
         <Link
-          to={`/therapists/${therapist.id}`}
+          to={profilePath}
           className="
             w-full sm:w-auto
             text-center

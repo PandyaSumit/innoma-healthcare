@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -8,6 +9,8 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isPatient = user?.role === "patient";
 
   const navItems = [
     {
@@ -29,8 +32,31 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         </svg>
       ),
     },
+    ...(isPatient
+      ? [
+          {
+            name: "Find Therapist",
+            path: "/find-therapist",
+            icon: (
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            ),
+          },
+        ]
+      : []),
     {
-      name: "Appointments",
+      name: isPatient ? "My Sessions" : "Appointments",
       path: "/appointments",
       icon: (
         <svg
@@ -187,14 +213,21 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4 space-y-2 overflow-y-auto overflow-x-hidden">
-          {navItems.map((item) => (
+          {navItems.map((item) => {
+            const isActive =
+              item.path === "/find-therapist"
+                ? ["/find-therapist", "/therapists", "/book", "/checkout", "/confirmation"].some(
+                    (p) => location.pathname.startsWith(p)
+                  )
+                : location.pathname === item.path;
+            return (
             <Link
               key={item.name}
               to={item.path}
               onClick={handleNavClick}
               title={!isOpen ? item.name : undefined}
-              className={`flex items-center px-3 py-3 rounded-lg no-underline transition-all ${
-                location.pathname === item.path
+              className={`flex items-center px-3 py-3 rounded-lg no-underline ${
+                isActive
                   ? "bg-blue-50 text-blue-600 font-semibold"
                   : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
               } ${!isOpen ? "lg:justify-center " : "gap-3"}`}
@@ -206,7 +239,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 {item.name}
               </span>
             </Link>
-          ))}
+            );
+          })}
         </nav>
 
         {/* Logout Button */}
