@@ -290,34 +290,34 @@ const TherapistDashboard = () => {
       </div>
 
       {/* Meeting Links Info */}
-      <div className="bg-gradient-to-r from-green-50 to-brand-blue/5 rounded-2xl border border-green-200 p-6">
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-            <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="bg-gradient-to-r from-green-50 to-brand-blue/5 rounded-xl border border-green-200 p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-start gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
           </div>
-          <div>
-            <h3 className="text-lg font-bold text-healthcare-text mb-2">Video Sessions</h3>
-            <p className="text-sm text-healthcare-text-muted mb-4">
+          <div className="min-w-0">
+            <h3 className="text-base sm:text-lg font-bold text-healthcare-text mb-1.5">Video Sessions</h3>
+            <p className="text-xs sm:text-sm text-healthcare-text-muted mb-3">
               Each booked session includes a unique meeting link. You can join sessions 15 minutes before the scheduled time.
               Meeting links are automatically generated when patients complete their booking.
             </p>
-            <div className="flex items-center gap-4 text-sm">
-              <span className="flex items-center gap-2 text-green-700 font-medium">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm">
+              <span className="flex items-center gap-1.5 text-green-700 font-medium">
+                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 Secure video calls
               </span>
-              <span className="flex items-center gap-2 text-green-700 font-medium">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <span className="flex items-center gap-1.5 text-green-700 font-medium">
+                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 HIPAA compliant
               </span>
-              <span className="flex items-center gap-2 text-green-700 font-medium">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <span className="flex items-center gap-1.5 text-green-700 font-medium">
+                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 50 min sessions

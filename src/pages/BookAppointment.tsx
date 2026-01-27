@@ -31,11 +31,11 @@ const BookAppointment = () => {
 
   if (!therapist) {
     return (
-      <div className="min-h-screen bg-healthcare-surface flex items-center justify-center">
+      <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-healthcare-text mb-4">Therapist not found</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-healthcare-text mb-4">Therapist not found</h2>
           <Link
-            to="/therapists"
+            to="/find-therapist"
             className="px-6 py-3 bg-brand-blue text-white rounded-lg font-semibold hover:bg-healthcare-text transition-colors"
           >
             Back to Directory
@@ -80,58 +80,59 @@ const BookAppointment = () => {
   };
 
   return (
-    <div className="min-h-screen bg-healthcare-surface">
+    <div>
       {/* Header */}
-      <div className="bg-white border-b border-healthcare-border">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-healthcare-text-muted hover:text-healthcare-text transition-colors mb-4"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back
-          </button>
-          <h1 className="text-3xl font-bold text-healthcare-text">Book Appointment</h1>
-          <p className="text-healthcare-text-muted mt-2">Complete the steps below to schedule your session</p>
-        </div>
+      <div className="mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-healthcare-text-muted hover:text-healthcare-text transition-colors mb-3"
+        >
+          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          <span className="text-sm">Back</span>
+        </button>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-healthcare-text">Book Appointment</h1>
+        <p className="text-sm text-healthcare-text-muted mt-1">Complete the steps below to schedule your session</p>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div>
         {/* Progress Steps */}
-        <div className="mb-8">
-          <div className="flex items-center justify-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex items-center justify-center gap-2 sm:gap-4">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold text-xs sm:text-sm">
                 1
               </div>
-              <span className="text-sm font-semibold text-healthcare-text">Select Package</span>
+              <span className="hidden sm:inline text-sm font-semibold text-healthcare-text">Select Package</span>
+              <span className="sm:hidden text-xs font-semibold text-healthcare-text">Package</span>
             </div>
-            <div className="h-px w-16 bg-healthcare-border" />
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold">
+            <div className="h-px w-6 sm:w-16 bg-healthcare-border" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold text-xs sm:text-sm">
                 2
               </div>
-              <span className="text-sm font-semibold text-healthcare-text">Choose Date & Time</span>
+              <span className="hidden sm:inline text-sm font-semibold text-healthcare-text">Choose Date & Time</span>
+              <span className="sm:hidden text-xs font-semibold text-healthcare-text">Schedule</span>
             </div>
-            <div className="h-px w-16 bg-healthcare-border" />
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-healthcare-neutral/20 text-healthcare-text-muted flex items-center justify-center font-bold">
+            <div className="h-px w-6 sm:w-16 bg-healthcare-border" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-200 text-healthcare-text-muted flex items-center justify-center font-bold text-xs sm:text-sm">
                 3
               </div>
-              <span className="text-sm font-medium text-healthcare-text-muted">Payment</span>
+              <span className="hidden sm:inline text-sm font-medium text-healthcare-text-muted">Payment</span>
+              <span className="sm:hidden text-xs font-medium text-healthcare-text-muted">Pay</span>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6">
             {/* Step 1: Package Selection */}
-            <section className="bg-white rounded-lg border border-healthcare-border p-6">
-              <h2 className="text-2xl font-bold text-healthcare-text mb-2">Step 1: Select Package</h2>
-              <p className="text-sm text-healthcare-text-muted mb-6">Choose the package that works best for you</p>
+            <section className="bg-white rounded-xl border border-healthcare-border p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-healthcare-text mb-1">Select Package</h2>
+              <p className="text-sm text-healthcare-text-muted mb-5">Choose the package that works best for you</p>
 
               <div className="space-y-4">
                 {PACKAGES.map((pkg) => (
@@ -152,10 +153,10 @@ const BookAppointment = () => {
                         onChange={(e) => setSelectedPackage(e.target.value)}
                         className="w-5 h-5 text-brand-blue focus:ring-brand-blue"
                       />
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-1">
-                          <h3 className="text-lg font-bold text-healthcare-text">{pkg.name}</h3>
-                          <p className="text-xl font-bold text-healthcare-text">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1 gap-2">
+                          <h3 className="text-base sm:text-lg font-semibold text-healthcare-text">{pkg.name}</h3>
+                          <p className="text-lg sm:text-xl font-bold text-healthcare-text whitespace-nowrap">
                             ₹{pkg.price}
                             {pkg.id !== 'single' && (
                               <span className="text-sm text-healthcare-text-muted font-normal">/month</span>
@@ -171,8 +172,8 @@ const BookAppointment = () => {
             </section>
 
             {/* Step 2: Date Selection */}
-            <section className="bg-white rounded-lg border border-healthcare-border p-6">
-              <h2 className="text-2xl font-bold text-healthcare-text mb-2">Step 2: Select Date</h2>
+            <section className="bg-white rounded-xl border border-healthcare-border p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-healthcare-text mb-1">Select Date</h2>
               <p className="text-sm text-healthcare-text-muted mb-6">
                 Choose your preferred appointment date
               </p>
@@ -206,7 +207,7 @@ const BookAppointment = () => {
               {/* Time Slot Selection */}
               {selectedDate && (
                 <div className="pt-6 border-t border-healthcare-border">
-                  <h3 className="text-lg font-bold text-healthcare-text mb-4">Available Time Slots</h3>
+                  <h3 className="text-base sm:text-lg font-semibold text-healthcare-text mb-4">Available Time Slots</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                     {availableTimeSlots.map((time) => {
                       const isSelected = selectedTime === time;
@@ -232,8 +233,8 @@ const BookAppointment = () => {
 
           {/* Summary Sidebar */}
           <div>
-            <div className="bg-white rounded-lg border border-healthcare-border p-6 sticky top-8">
-              <h3 className="text-xl font-bold text-healthcare-text mb-6">Booking Summary</h3>
+            <div className="bg-white rounded-xl border border-healthcare-border p-4 sm:p-6 sticky top-8">
+              <h3 className="text-lg sm:text-xl font-semibold text-healthcare-text mb-4 sm:mb-6">Booking Summary</h3>
 
               {/* Therapist Info */}
               <div className="flex gap-4 mb-6 pb-6 border-b border-healthcare-border">

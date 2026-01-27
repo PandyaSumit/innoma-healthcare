@@ -92,11 +92,11 @@ const Appointments = () => {
   return (
     <div className="mx-auto w-full">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-healthcare-text mb-2">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-healthcare-text mb-1">
           {isTherapist ? "Practice Management" : "My Sessions"}
         </h1>
-        <p className="text-healthcare-text-muted">
+        <p className="text-sm text-healthcare-text-muted">
           {isTherapist
             ? "Manage your sessions and patient records"
             : "View and manage your therapy sessions"}
@@ -104,10 +104,10 @@ const Appointments = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-8 border-b border-healthcare-border overflow-x-auto no-scrollbar">
+      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 border-b border-healthcare-border overflow-x-auto no-scrollbar">
         <button
           onClick={() => setActiveTab("upcoming")}
-          className={`px-6 py-3 font-semibold transition-colors relative whitespace-nowrap cursor-pointer ${
+          className={`px-3 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold transition-colors relative whitespace-nowrap cursor-pointer ${
             activeTab === "upcoming"
               ? "text-brand-blue"
               : "text-healthcare-text-muted hover:text-healthcare-text"
@@ -115,19 +115,19 @@ const Appointments = () => {
         >
           {isTherapist ? "Upcoming Sessions" : "Upcoming"}
           {filteredUpcoming.length > 0 && (
-            <span className="ml-2 px-2 py-0.5 bg-brand-blue/10 text-brand-blue text-xs font-bold rounded-full">
+            <span className="ml-1.5 sm:ml-2 px-1.5 sm:px-2 py-0.5 bg-brand-blue/10 text-brand-blue text-xs font-bold rounded-full">
               {filteredUpcoming.length}
             </span>
           )}
           {activeTab === "upcoming" && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue animate-fade-in" />
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue" />
           )}
         </button>
 
         {isTherapist && (
           <button
             onClick={() => setActiveTab("patients")}
-            className={`px-6 py-3 font-semibold transition-colors relative whitespace-nowrap cursor-pointer ${
+            className={`px-3 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold transition-colors relative whitespace-nowrap cursor-pointer ${
               activeTab === "patients"
                 ? "text-brand-blue"
                 : "text-healthcare-text-muted hover:text-healthcare-text"
@@ -135,14 +135,14 @@ const Appointments = () => {
           >
             My Patients
             {activeTab === "patients" && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue animate-fade-in" />
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue" />
             )}
           </button>
         )}
 
         <button
           onClick={() => setActiveTab("past")}
-          className={`px-6 py-3 font-semibold transition-colors relative whitespace-nowrap cursor-pointer ${
+          className={`px-3 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold transition-colors relative whitespace-nowrap cursor-pointer ${
             activeTab === "past"
               ? "text-brand-blue"
               : "text-healthcare-text-muted hover:text-healthcare-text"
@@ -150,7 +150,7 @@ const Appointments = () => {
         >
           {isTherapist ? "Session History" : "Past Sessions"}
           {activeTab === "past" && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue animate-fade-in" />
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue" />
           )}
         </button>
       </div>
@@ -182,8 +182,8 @@ const Appointments = () => {
               )}
             </div>
           ) : (
-            <div className="bg-white rounded-[16px] border border-healthcare-border p-12 text-center shadow-sm">
-              <div className="w-16 h-16 bg-healthcare-surface rounded-full flex items-center justify-center mx-auto mb-4 text-healthcare-text-muted">
+            <div className="bg-white rounded-xl border border-healthcare-border p-8 sm:p-12 text-center shadow-sm">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-healthcare-surface rounded-full flex items-center justify-center mx-auto mb-4 text-healthcare-text-muted">
                 <svg
                   className="w-8 h-8"
                   fill="none"

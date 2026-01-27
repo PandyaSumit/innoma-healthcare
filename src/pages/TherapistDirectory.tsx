@@ -94,34 +94,31 @@ const TherapistDirectory = () => {
   };
 
   return (
-    <div className="min-h-screen bg-healthcare-surface/50">
+    <div>
       {/* Header Banner */}
-      <div className="bg-white border-b border-healthcare-border relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/5 to-transparent pointer-events-none"></div>
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-healthcare-text mb-4 tracking-tight">
-            Find Your Therapist
-          </h1>
-          <p className="text-lg md:text-xl text-healthcare-text-muted max-w-2xl leading-relaxed">
-            Browse our verified mental health professionals and find the perfect
-            match for your journey to better mental health.
-          </p>
-        </div>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-healthcare-text mb-2 tracking-tight">
+          Find Your Therapist
+        </h1>
+        <p className="text-sm sm:text-base text-healthcare-text-muted max-w-2xl leading-relaxed">
+          Browse our verified mental health professionals and find the perfect
+          match for your journey to better mental health.
+        </p>
       </div>
 
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div>
         {/* Search Bar & Mobile Filter Toggle */}
-        <div className="flex flex-col lg:flex-row gap-4 mb-8">
+        <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
           <div className="relative flex-1">
             <input
               type="text"
-              placeholder="Search by name, specialization, or keyword..."
+              placeholder="Search by name, specialization..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-14 pr-4 py-4 rounded-2xl border border-healthcare-border focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/10 outline-none text-healthcare-text bg-white shadow-sm transition-all text-lg"
+              className="w-full pl-10 sm:pl-14 pr-4 py-3 sm:py-4 rounded-xl sm:rounded-2xl border border-healthcare-border focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/10 outline-none text-healthcare-text bg-white shadow-sm transition-all text-sm sm:text-base"
             />
             <svg
-              className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-healthcare-text-muted"
+              className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 text-healthcare-text-muted"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -189,8 +186,8 @@ const TherapistDirectory = () => {
         </div>
 
         {/* Results Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-          <p className="text-healthcare-text text-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3 sm:gap-4">
+          <p className="text-healthcare-text text-sm sm:text-base">
             Showing{" "}
             <span className="font-bold">{filteredTherapists.length}</span>{" "}
             results
@@ -235,8 +232,8 @@ const TherapistDirectory = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-healthcare-border p-16 text-center shadow-sm">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-healthcare-surface rounded-full mb-6">
+          <div className="bg-white rounded-xl border border-healthcare-border p-8 sm:p-16 text-center shadow-sm">
+            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-healthcare-surface rounded-full mb-4 sm:mb-6">
               <svg
                 className="w-10 h-10 text-healthcare-text-muted"
                 fill="none"

@@ -69,9 +69,9 @@ const Confirmation = () => {
 
   if (!therapist || !pkg || !date || !time) {
     return (
-      <div className="min-h-screen bg-healthcare-surface flex items-center justify-center">
+      <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-healthcare-text mb-4">Invalid confirmation details</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-healthcare-text mb-4">Invalid confirmation details</h2>
           <Link
             to="/dashboard"
             className="px-6 py-3 bg-brand-blue text-white rounded-lg font-semibold hover:bg-healthcare-text transition-colors"
@@ -97,48 +97,48 @@ const Confirmation = () => {
   };
 
   return (
-    <div className="min-h-screen bg-healthcare-surface">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div>
+      <div className="max-w-4xl mx-auto">
         {/* Success Animation */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
-            <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full mb-4 sm:mb-6">
+            <svg className="w-9 h-9 sm:w-12 sm:h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-4xl font-bold text-healthcare-text mb-3">Appointment Confirmed!</h1>
-          <p className="text-lg text-healthcare-text-muted">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-healthcare-text mb-2">Appointment Confirmed!</h1>
+          <p className="text-sm sm:text-base text-healthcare-text-muted">
             Your session with {therapist.name} has been successfully booked
           </p>
         </div>
 
         {/* Confirmation Details Card */}
-        <div className="bg-white rounded-lg border border-healthcare-border overflow-hidden mb-6">
+        <div className="bg-white rounded-xl border border-healthcare-border overflow-hidden mb-6">
           {/* Header with Pattern */}
-          <div className="bg-gradient-to-r from-brand-blue to-healthcare-lavender p-8 text-white">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-gradient-to-r from-brand-blue to-healthcare-lavender p-4 sm:p-6 lg:p-8 text-white">
+            <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm opacity-90 mb-1">Booking Reference</p>
-                <p className="text-2xl font-bold">{invoiceNumber}</p>
+                <p className="text-xs sm:text-sm opacity-90 mb-0.5">Booking Reference</p>
+                <p className="text-lg sm:text-2xl font-bold break-all">{invoiceNumber}</p>
               </div>
               <div className="text-right">
-                <p className="text-sm opacity-90 mb-1">Total Paid</p>
-                <p className="text-2xl font-bold">&#8377;{total}</p>
+                <p className="text-xs sm:text-sm opacity-90 mb-0.5">Total Paid</p>
+                <p className="text-lg sm:text-2xl font-bold">&#8377;{total}</p>
               </div>
             </div>
           </div>
 
           {/* Therapist & Session Details */}
-          <div className="p-8">
-            <div className="flex gap-6 mb-8">
+          <div className="p-4 sm:p-6 lg:p-8">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-6 sm:mb-8">
               <img
                 src={therapist.photo}
                 alt={therapist.name}
-                className="w-24 h-24 rounded-lg object-cover"
+                className="w-16 h-16 sm:w-24 sm:h-24 rounded-lg object-cover"
               />
-              <div className="flex-1">
-                <h2 className="text-2xl font-bold text-healthcare-text mb-2">{therapist.name}</h2>
-                <p className="text-healthcare-text-muted mb-3">{therapist.qualifications}</p>
+              <div className="flex-1 min-w-0">
+                <h2 className="text-lg sm:text-2xl font-bold text-healthcare-text mb-1 sm:mb-2">{therapist.name}</h2>
+                <p className="text-sm text-healthcare-text-muted mb-2 sm:mb-3">{therapist.qualifications}</p>
                 <div className="flex items-center gap-2">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
@@ -159,8 +159,8 @@ const Confirmation = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="p-4 bg-healthcare-surface rounded-lg">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+              <div className="p-3 sm:p-4 bg-healthcare-surface rounded-lg">
                 <div className="flex items-start gap-3">
                   <svg
                     className="w-6 h-6 text-brand-blue flex-shrink-0"
@@ -251,26 +251,28 @@ const Confirmation = () => {
             </div>
 
             {/* Meeting Link Section */}
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
+              <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-bold text-green-800 mb-2">Your Meeting Link</h3>
-                  <p className="text-sm text-green-700 mb-3">
+                <div className="flex-1 min-w-0 w-full">
+                  <h3 className="text-base sm:text-lg font-bold text-green-800 mb-1.5">Your Meeting Link</h3>
+                  <p className="text-xs sm:text-sm text-green-700 mb-3">
                     Use this link to join your video session at the scheduled time. The link will be active 15 minutes before your appointment.
                   </p>
-                  <div className="flex items-center gap-2 bg-white border border-green-200 rounded-lg p-3">
-                    <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                    </svg>
-                    <code className="flex-1 text-sm text-green-800 break-all">{meetingLink}</code>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-white border border-green-200 rounded-lg p-2.5 sm:p-3">
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                      </svg>
+                      <code className="flex-1 text-xs sm:text-sm text-green-800 break-all">{meetingLink}</code>
+                    </div>
                     <button
                       onClick={copyMeetingLink}
-                      className="px-3 py-1.5 bg-green-600 text-white text-sm font-semibold rounded-md hover:bg-green-700 transition-colors flex-shrink-0"
+                      className="px-3 py-1.5 bg-green-600 text-white text-xs sm:text-sm font-semibold rounded-md hover:bg-green-700 transition-colors flex-shrink-0"
                     >
                       Copy
                     </button>
@@ -280,8 +282,8 @@ const Confirmation = () => {
             </div>
 
             {/* Next Steps */}
-            <div className="bg-healthcare-lavender/20 rounded-lg border border-healthcare-lavender/30 p-6">
-              <h3 className="text-lg font-bold text-healthcare-text mb-4">Next Steps</h3>
+            <div className="bg-healthcare-lavender/20 rounded-lg border border-healthcare-lavender/30 p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-bold text-healthcare-text mb-3 sm:mb-4">Next Steps</h3>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-sm font-bold">
@@ -321,22 +323,22 @@ const Confirmation = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <Link
             to="/appointments"
-            className="px-8 py-3 bg-brand-blue text-white rounded-lg font-bold hover:bg-healthcare-text transition-colors text-center no-underline"
+            className="px-6 sm:px-8 py-3 bg-brand-blue text-white rounded-lg font-bold hover:bg-healthcare-text transition-colors text-center no-underline text-sm sm:text-base"
           >
             View My Sessions
           </Link>
           <button
             onClick={() => window.print()}
-            className="px-8 py-3 border-2 border-brand-blue text-brand-blue rounded-lg font-bold hover:bg-brand-blue hover:text-white transition-colors"
+            className="px-6 sm:px-8 py-3 border-2 border-brand-blue text-brand-blue rounded-lg font-bold hover:bg-brand-blue hover:text-white transition-colors text-sm sm:text-base"
           >
             Download Receipt
           </button>
           <Link
-            to="/therapists"
-            className="px-8 py-3 border-2 border-healthcare-border text-healthcare-text rounded-lg font-bold hover:bg-healthcare-surface transition-colors text-center no-underline"
+            to="/find-therapist"
+            className="px-6 sm:px-8 py-3 border-2 border-healthcare-border text-healthcare-text rounded-lg font-bold hover:bg-healthcare-surface transition-colors text-center no-underline text-sm sm:text-base"
           >
             Browse Therapists
           </Link>

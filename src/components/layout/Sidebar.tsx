@@ -173,7 +173,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       >
         {/* Logo Section */}
         <div
-          className={`h-16 flex items-center border-b border-gray-100 ${isOpen ? "px-6 justify-between" : "lg:justify-center px-4 justify-between"}`}
+          className={`h-14 sm:h-16 flex items-center border-b border-gray-100 ${isOpen ? "px-4 sm:px-6 justify-between" : "lg:justify-center px-4 justify-between"}`}
         >
           <Link
             to="/"
