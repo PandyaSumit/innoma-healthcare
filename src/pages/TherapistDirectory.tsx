@@ -1,9 +1,12 @@
 import { useState, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { THERAPISTS } from "../data/therapists";
 import TherapistCard from "../components/therapists/TherapistCard";
 import FilterBar from "../components/therapists/FilterBar";
 
 const TherapistDirectory = () => {
+  const location = useLocation();
+  const isInApp = location.pathname.startsWith("/find-therapist");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialization, setSelectedSpecialization] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");
@@ -71,10 +74,10 @@ const TherapistDirectory = () => {
   };
 
   return (
-    <div className="min-h-screen bg-healthcare-surface">
+    <div className={isInApp ? "" : "min-h-screen bg-healthcare-surface"}>
       {/* ================= HEADER ================= */}
-      <div className="bg-white border-b border-healthcare-border">
-        <div className="px-5 sm:px-8 lg:px-12 py-6 sm:py-8">
+      <div className={isInApp ? "mb-6" : "bg-white border-b border-healthcare-border"}>
+        <div className={isInApp ? "" : "px-5 sm:px-8 lg:px-12 py-6 sm:py-8"}>
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-healthcare-text mb-1">
             Find a therapist
           </h1>
@@ -137,7 +140,10 @@ const TherapistDirectory = () => {
 
       {/* ================= FILTER BAR ================= */}
       {showFilters && (
-        <div className="px-5 sm:px-8 lg:px-12 py-4 border-b border-healthcare-border bg-white">
+        <div className={isInApp
+          ? "py-4 mb-4 border-b border-healthcare-border"
+          : "px-5 sm:px-8 lg:px-12 py-4 border-b border-healthcare-border bg-white"
+        }>
           <FilterBar
             selectedSpecialization={selectedSpecialization}
             setSelectedSpecialization={setSelectedSpecialization}
@@ -153,7 +159,7 @@ const TherapistDirectory = () => {
       )}
 
       {/* ================= RESULTS ================= */}
-      <div className="px-5 sm:px-8 lg:px-12 py-6">
+      <div className={isInApp ? "py-2" : "px-5 sm:px-8 lg:px-12 py-6"}>
         {/* Results header */}
         <div className="flex items-center justify-between mb-4">
           <p className="text-sm text-healthcare-text">
