@@ -37,36 +37,36 @@ const Appointments = () => {
 
   // For patient view
   const patientUpcoming = [
-    ...UPCOMING_APPOINTMENTS.filter(apt => apt.patientId === 'patient-001'),
-    ...bookedAppointments.filter(apt => {
+    ...UPCOMING_APPOINTMENTS.filter((apt) => apt.patientId === "patient-001"),
+    ...bookedAppointments.filter((apt) => {
       const aptDate = new Date(`${apt.date}T${apt.time}`);
-      return aptDate >= now && apt.status === 'Upcoming';
-    })
+      return aptDate >= now && apt.status === "Upcoming";
+    }),
   ];
 
   const patientPast = [
-    ...PAST_APPOINTMENTS.filter(apt => apt.patientId === 'patient-001'),
-    ...bookedAppointments.filter(apt => {
+    ...PAST_APPOINTMENTS.filter((apt) => apt.patientId === "patient-001"),
+    ...bookedAppointments.filter((apt) => {
       const aptDate = new Date(`${apt.date}T${apt.time}`);
-      return aptDate < now || apt.status === 'Completed';
-    })
+      return aptDate < now || apt.status === "Completed";
+    }),
   ];
 
   // For therapist view - show all appointments
   const therapistUpcoming = [
     ...UPCOMING_APPOINTMENTS,
-    ...bookedAppointments.filter(apt => {
+    ...bookedAppointments.filter((apt) => {
       const aptDate = new Date(`${apt.date}T${apt.time}`);
-      return aptDate >= now && apt.status === 'Upcoming';
-    })
+      return aptDate >= now && apt.status === "Upcoming";
+    }),
   ];
 
   const therapistPast = [
     ...PAST_APPOINTMENTS,
-    ...bookedAppointments.filter(apt => {
+    ...bookedAppointments.filter((apt) => {
       const aptDate = new Date(`${apt.date}T${apt.time}`);
-      return aptDate < now || apt.status === 'Completed';
-    })
+      return aptDate < now || apt.status === "Completed";
+    }),
   ];
 
   const filteredUpcoming = isTherapist ? therapistUpcoming : patientUpcoming;
@@ -235,22 +235,37 @@ const Appointments = () => {
       )}
 
       {/* Meeting Link Info for Patient */}
-      {!isTherapist && activeTab === "upcoming" && filteredUpcoming.length > 0 && (
-        <div className="mt-8 bg-green-50 border border-green-200 rounded-xl p-4">
-          <div className="flex items-start gap-3">
-            <svg className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <div>
-              <p className="text-sm font-semibold text-green-800">About Meeting Links</p>
-              <p className="text-sm text-green-700">
-                Each session includes a unique meeting link. Click "Join Session" to access your video consultation.
-                Links become active 15 minutes before your scheduled time.
-              </p>
+      {!isTherapist &&
+        activeTab === "upcoming" &&
+        filteredUpcoming.length > 0 && (
+          <div className="mt-8 bg-green-50 border border-green-200 rounded-xl p-4">
+            <div className="flex items-start gap-3">
+              <svg
+                className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <div>
+                <p className="text-sm font-semibold text-green-800">
+                  About Meeting Links
+                </p>
+                <p className="text-sm text-green-700">
+                  Each session includes a unique meeting link. Click "Join
+                  Session" to access your video consultation. Links become
+                  active 15 minutes before your scheduled time.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Reschedule Modal */}
       {showRescheduleModal && selectedAppointment && (

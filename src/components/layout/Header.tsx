@@ -4,17 +4,9 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const isHomePage = location.pathname === "/";
 
@@ -23,45 +15,48 @@ const Header: React.FC = () => {
       name: "Expertise",
       href: isHomePage ? "#specializations" : "/#specializations",
     },
-    {
-      name: "Find Therapist",
-      href: "/therapists",
-    },
+    { name: "Find Therapist", href: "/therapists" },
     { name: "FAQ", href: isHomePage ? "#faq" : "/#faq" },
   ];
 
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Prevent body scroll when menu open
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "auto";
+  }, [isMobileMenuOpen]);
+
   return (
     <>
+      {/* ================= HEADER ================= */}
       <header
-        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 inset-x-0 z-[100] transition-all duration-300 ${
           isScrolled
-            ? "bg-white border-b border-gray-100 py-4 shadow-sm"
-            : "bg-white/10 backdrop-blur-md py-6 border-b border-white/5"
+            ? "bg-white border-b border-gray-100 shadow-sm"
+            : "bg-white backdrop-blur-md border-b border-white/5"
         }`}
       >
-        <nav className="mx-auto px-6 md:px-12">
-          <div className="flex items-center justify-between">
+        <nav className="mx-auto px-5 sm:px-6 md:px-12">
+          <div className="flex items-center justify-between h-[72px]">
             {/* Logo */}
-            <div className="flex-shrink-0">
-              <Link
-                to="/"
-                className="flex items-center gap-2 group cursor-pointer no-underline"
-              >
-                <span
-                  className={`text-2xl font-bold tracking-tight transition-colors ${isScrolled ? "text-brand-blue-900" : "text-slate-900"}`}
-                >
-                  Innoma <span className="text-brand-orange">Healthcare</span>
-                </span>
-              </Link>
-            </div>
+            <Link
+              to="/"
+              className="text-xl sm:text-2xl font-bold tracking-tight text-brand-blue-900 no-underline"
+            >
+              Innoma <span className="text-brand-orange">Healthcare</span>
+            </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Nav */}
             <div className="hidden lg:flex items-center gap-10">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.href}
-                  className={`text-sm font-medium transition-colors no-underline ${
+                  className={`text-sm font-semibold transition-colors no-underline ${
                     isScrolled
                       ? "text-brand-blue-900 hover:text-brand-orange"
                       : "text-slate-700 hover:text-brand-blue-900"
@@ -72,25 +67,22 @@ const Header: React.FC = () => {
               ))}
             </div>
 
-            {/* CTA Buttons */}
+            {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-6">
-              <Link
-                to="/login"
-                className={`text-sm font-semibold transition-colors cursor-pointer no-underline ${
+              <button
+                onClick={() => navigate("/login")}
+                className={`text-sm font-semibold transition-colors bg-transparent border-none cursor-pointer ${
                   isScrolled
                     ? "text-brand-blue-900 hover:text-brand-orange"
                     : "text-slate-700 hover:text-brand-blue-900"
                 }`}
               >
                 Sign In
-              </Link>
+              </button>
+
               <button
                 onClick={() => navigate("/signup")}
-                className={`inline-flex items-center justify-center px-6 py-2.5 rounded-md text-sm font-bold transition-all cursor-pointer border-none ${
-                  isScrolled
-                    ? "bg-brand-blue text-white hover:bg-brand-blue/90 shadow-sm"
-                    : "bg-brand-blue text-white hover:bg-brand-blue-900"
-                }`}
+                className="px-6 py-2.5 rounded-md text-sm font-bold bg-brand-blue text-white hover:bg-brand-blue/90 transition shadow-sm cursor-pointer border-none"
               >
                 Book Free Session
               </button>
@@ -98,11 +90,11 @@ const Header: React.FC = () => {
 
             {/* Mobile Menu Button */}
             <button
+              aria-label="Open menu"
               onClick={() => setIsMobileMenuOpen(true)}
-              className={`lg:hidden p-2 transition-colors cursor-pointer bg-transparent border-none ${
+              className={`lg:hidden p-2 bg-transparent border-none cursor-pointer ${
                 isScrolled ? "text-brand-blue-900" : "text-slate-700"
               }`}
-              aria-label="Open menu"
             >
               <svg
                 className="w-6 h-6"
@@ -122,26 +114,27 @@ const Header: React.FC = () => {
         </nav>
       </header>
 
-      {/* Mobile Menu Overlay */}
+      {/* ================= MOBILE OVERLAY ================= */}
       <div
-        className={`fixed inset-0 z-[110] bg-brand-blue/20 backdrop-blur-sm transition-opacity duration-300 ${
+        className={`fixed inset-0 z-[110] bg-black/30 backdrop-blur-sm transition-opacity ${
           isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsMobileMenuOpen(false)}
       />
 
-      {/* Mobile Drawer */}
+      {/* ================= MOBILE DRAWER ================= */}
       <div
-        className={`fixed top-0 right-0 bottom-0 w-[280px] z-[120] bg-white shadow-xl transition-transform duration-300 ease-out flex flex-col ${
+        className={`fixed top-0 right-0 bottom-0 w-[280px] z-[120] bg-white shadow-xl transition-transform duration-300 ${
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
-          <div className="p-6 flex items-center justify-between border-b border-gray-100">
+          {/* Drawer header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-100">
             <span className="text-sm font-bold text-brand-blue-900">Menu</span>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="p-2 text-brand-blue-900 hover:text-brand-orange transition-colors cursor-pointer bg-transparent border-none"
+              className="p-2 bg-transparent border-none cursor-pointer text-brand-blue-900 hover:text-brand-orange transition"
             >
               <svg
                 className="w-6 h-6"
@@ -159,35 +152,38 @@ const Header: React.FC = () => {
             </button>
           </div>
 
+          {/* Nav links */}
           <nav className="flex flex-col p-6 gap-4">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-lg font-semibold text-brand-blue-900 hover:text-brand-orange transition-colors no-underline"
+                className="text-lg font-semibold text-brand-blue-900 hover:text-brand-orange transition no-underline"
               >
                 {link.name}
               </a>
             ))}
           </nav>
 
+          {/* Bottom CTA */}
           <div className="mt-auto p-6 bg-gray-50 flex flex-col gap-3">
             <button
               onClick={() => {
                 setIsMobileMenuOpen(false);
                 navigate("/login");
               }}
-              className="w-full py-3 text-sm font-bold text-brand-blue-900 border border-brand-blue/20 rounded-md hover:bg-white transition-colors bg-transparent cursor-pointer"
+              className="w-full py-3 text-sm font-bold border border-brand-blue/20 rounded-md text-brand-blue-900 hover:bg-white transition cursor-pointer bg-transparent"
             >
               Sign In
             </button>
+
             <button
               onClick={() => {
                 setIsMobileMenuOpen(false);
                 navigate("/signup");
               }}
-              className="w-full py-3 rounded-md bg-brand-blue text-white text-sm font-bold hover:bg-brand-blue/90 transition-colors shadow-md border-none cursor-pointer"
+              className="w-full py-3 rounded-md bg-brand-blue text-white text-sm font-bold hover:bg-brand-blue/90 transition shadow-md cursor-pointer border-none"
             >
               Book Free Session
             </button>

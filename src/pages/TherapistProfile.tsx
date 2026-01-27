@@ -6,6 +6,7 @@ const TherapistProfile = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const [isFavorite, setIsFavorite] = useState(false);
+
   const isInApp = location.pathname.startsWith("/find-therapist");
   const backPath = isInApp ? "/find-therapist" : "/therapists";
 
@@ -15,12 +16,10 @@ const TherapistProfile = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-healthcare-surface">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold text-healthcare-text mb-4">
-            Therapist not found
-          </h2>
+          <h2 className="text-xl font-semibold mb-4">Therapist not found</h2>
           <Link
             to={backPath}
-            className="px-6 py-3 rounded-lg bg-brand-blue text-white font-semibold"
+            className="px-5 py-2.5 rounded-lg bg-brand-blue text-white"
           >
             Back to directory
           </Link>
@@ -31,22 +30,19 @@ const TherapistProfile = () => {
 
   return (
     <div className="bg-healthcare-surface min-h-screen">
-      <div className="mx-auto px-4 py-8 space-y-8">
-        {/* Profile Header */}
-        <section className="bg-white rounded-xl border border-healthcare-border p-5 sm:p-6 md:p-8">
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-            {/* Image */}
-            <div className="flex justify-center md:justify-start">
-              <img
-                src={therapist.photo}
-                alt={therapist.name}
-                className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover"
-              />
-            </div>
+      <div className="mx-auto px-5 sm:px-8 py-8 space-y-8">
+        {/* ================= HEADER ================= */}
+        <section className="bg-white border border-healthcare-border rounded-xl p-6 sm:p-8">
+          <div className="flex flex-col sm:flex-row gap-6">
+            {/* Photo */}
+            <img
+              src={therapist.photo}
+              alt={therapist.name}
+              className="w-28 h-28 sm:w-32 sm:h-32 rounded-xl object-cover shrink-0"
+            />
 
             {/* Info */}
             <div className="flex-1 space-y-4">
-              {/* Name + Fav */}
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h1 className="text-xl sm:text-2xl font-semibold text-healthcare-text">
@@ -103,26 +99,25 @@ const TherapistProfile = () => {
                 <span className="font-semibold text-healthcare-text">
                   {therapist.rating}
                 </span>
-
                 <span className="text-healthcare-text-muted">
                   ({therapist.reviewCount} reviews)
                 </span>
               </div>
 
               {/* Stats */}
-              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-healthcare-text-muted">
-                <p>
-                  <span className="font-semibold text-healthcare-text">
+              <div className="flex flex-wrap gap-6 text-sm text-healthcare-text-muted">
+                <span>
+                  <strong className="text-healthcare-text">
                     {therapist.experience}
-                  </span>{" "}
+                  </strong>{" "}
                   yrs experience
-                </p>
-                <p>
-                  <span className="font-semibold text-healthcare-text">
+                </span>
+                <span>
+                  <strong className="text-healthcare-text">
                     {therapist.patientCount}+
-                  </span>{" "}
+                  </strong>{" "}
                   patients
-                </p>
+                </span>
               </div>
 
               {/* Availability */}
@@ -136,17 +131,17 @@ const TherapistProfile = () => {
               </div>
 
               {/* CTA */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-3">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Link
                   to={`/book/${therapist.id}`}
-                  className="w-full sm:w-auto text-center px-6 py-3 rounded-lg bg-brand-blue text-white font-semibold"
+                  className="px-6 py-3 rounded-lg bg-brand-blue text-white text-sm font-semibold text-center"
                 >
                   Book appointment
                 </Link>
 
                 <Link
                   to="/assessment"
-                  className="w-full sm:w-auto text-center px-6 py-3 rounded-lg border border-brand-blue text-brand-blue font-semibold hover:bg-brand-blue hover:text-white transition"
+                  className="px-6 py-3 rounded-lg border border-brand-blue text-brand-blue text-sm font-semibold text-center hover:bg-brand-blue hover:text-white transition"
                 >
                   Free assessment
                 </Link>
@@ -155,32 +150,29 @@ const TherapistProfile = () => {
           </div>
         </section>
 
-        {/* Main Grid */}
+        {/* ================= CONTENT GRID ================= */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main */}
+          {/* Main content */}
           <div className="lg:col-span-2 space-y-6">
-            {[
-              { title: "About", content: therapist.bio },
-              { title: "Treatment approach", content: therapist.approach },
-            ].map((section) => (
-              <div
-                key={section.title}
-                className="bg-white rounded-[14px] border border-healthcare-border p-6"
-              >
-                <h2 className="text-lg font-semibold text-healthcare-text mb-3">
-                  {section.title}
-                </h2>
-                <p className="text-healthcare-text-muted leading-relaxed">
-                  {section.content}
-                </p>
-              </div>
-            ))}
+            {/* About */}
+            <section className="bg-white border border-healthcare-border rounded-xl p-6">
+              <h2 className="text-lg font-semibold mb-3">About</h2>
+              <p className="text-healthcare-text-muted leading-relaxed">
+                {therapist.bio}
+              </p>
+            </section>
+
+            {/* Approach */}
+            <section className="bg-white border border-healthcare-border rounded-xl p-6">
+              <h2 className="text-lg font-semibold mb-3">Treatment approach</h2>
+              <p className="text-healthcare-text-muted leading-relaxed">
+                {therapist.approach}
+              </p>
+            </section>
 
             {/* Specializations */}
-            <div className="bg-white rounded-[14px] border border-healthcare-border p-6">
-              <h2 className="text-lg font-semibold text-healthcare-text mb-4">
-                Specializations
-              </h2>
+            <section className="bg-white border border-healthcare-border rounded-xl p-6">
+              <h2 className="text-lg font-semibold mb-4">Specializations</h2>
               <div className="flex flex-wrap gap-2">
                 {therapist.specializations.map((spec) => (
                   <span
@@ -191,13 +183,11 @@ const TherapistProfile = () => {
                   </span>
                 ))}
               </div>
-            </div>
+            </section>
 
             {/* Languages */}
-            <div className="bg-white rounded-[14px] border border-healthcare-border p-6">
-              <h2 className="text-lg font-semibold text-healthcare-text mb-4">
-                Languages spoken
-              </h2>
+            <section className="bg-white border border-healthcare-border rounded-xl p-6">
+              <h2 className="text-lg font-semibold mb-4">Languages spoken</h2>
               <div className="flex flex-wrap gap-2">
                 {therapist.languages.map((lang) => (
                   <span
@@ -208,16 +198,14 @@ const TherapistProfile = () => {
                   </span>
                 ))}
               </div>
-            </div>
+            </section>
           </div>
 
           {/* Sidebar */}
           <aside className="space-y-6">
-            <div className="bg-white rounded-[14px] border border-healthcare-border p-6">
-              <h3 className="text-sm font-semibold text-healthcare-text mb-4">
-                Quick info
-              </h3>
-              <div className="space-y-3 text-sm text-healthcare-text-muted">
+            <div className="bg-white border border-healthcare-border rounded-xl p-6">
+              <h3 className="text-sm font-semibold mb-4">Quick info</h3>
+              <div className="space-y-2 text-sm text-healthcare-text-muted">
                 <p>Experience: {therapist.experience} yrs</p>
                 <p>Patients helped: {therapist.patientCount}+</p>
                 <p>Gender: {therapist.gender}</p>
@@ -225,8 +213,8 @@ const TherapistProfile = () => {
               </div>
             </div>
 
-            <div className="bg-healthcare-lavender/20 rounded-[14px] border border-healthcare-lavender/30 p-6">
-              <h3 className="text-sm font-semibold text-healthcare-text mb-3">
+            <div className="bg-healthcare-lavender/20 border border-healthcare-lavender/30 rounded-xl p-6">
+              <h3 className="text-sm font-semibold mb-3">
                 Need help choosing?
               </h3>
               <p className="text-sm text-healthcare-text-muted mb-4">
@@ -234,7 +222,7 @@ const TherapistProfile = () => {
               </p>
               <Link
                 to="/support"
-                className="block text-center px-4 py-2 rounded-lg border border-brand-blue text-brand-blue font-semibold hover:bg-brand-blue hover:text-white transition"
+                className="block text-center px-4 py-2 rounded-lg border border-brand-blue text-brand-blue text-sm font-semibold hover:bg-brand-blue hover:text-white transition"
               >
                 Contact support
               </Link>

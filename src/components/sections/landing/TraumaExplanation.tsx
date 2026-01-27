@@ -1,155 +1,231 @@
-import React from 'react';
+import React from "react";
 
 const TraumaExplanation: React.FC = () => {
   return (
-    <section className="py-16 md:py-24 bg-white overflow-hidden" id="mission">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
-        {/* Section Header */}
-        <div className="mb-16 md:mb-20 text-left lg:text-center">
+    <section
+      id="mission"
+      className="py-14 sm:py-16 md:py-24 bg-white overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-12">
+        {/* ================= HEADER ================= */}
+        <div className="mb-14 sm:mb-16 md:mb-20 text-left lg:text-center">
           <div className="flex items-center lg:justify-center gap-2 mb-4">
-            <span className="w-8 h-1 bg-brand-orange rounded-full"></span>
-            <span className="text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">OUR MISSION</span>
+            <span className="w-8 h-1 bg-brand-orange rounded-full" />
+            <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">
+              OUR MISSION
+            </span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-brand-blue-900 tracking-tight leading-tight max-w-3xl lg:mx-auto">
-            Understanding Trauma and our 
+
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue-900 tracking-tight leading-tight max-w-3xl lg:mx-auto">
+            Understanding Trauma and our
             <span className="text-brand-orange"> Holistic Approach</span>
           </h2>
         </div>
 
-        {/* Flowcharts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-start mb-16">
-          
-          {/* FLOWCHART 1: HOW TRAUMA WORKS */}
-          <div className="bg-slate-50/80 backdrop-blur rounded-[2.5rem] p-6 md:p-10 border border-white shadow-card flex flex-col items-center">
-            <h3 className="text-2xl font-bold text-brand-blue-900 mb-10 self-start lg:self-center">How Trauma Works</h3>
-            
+        {/* ================= FLOWCHART GRID ================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 mb-16">
+          {/* ================= TRAUMA FLOW ================= */}
+          <div className="bg-slate-50/80 backdrop-blur rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-6 md:p-10 border border-white shadow-card flex flex-col items-center">
+            <h3 className="text-xl sm:text-2xl font-bold text-brand-blue-900 mb-8">
+              How Trauma Works
+            </h3>
+
             <div className="w-full flex flex-col items-center">
-              {/* Node: Trauma */}
-              <div className="bg-white border-2 border-red-50 rounded-2xl px-8 py-4 shadow-flow min-w-[180px] text-center">
-                <p className="text-[10px] font-black text-red-400 uppercase tracking-widest mb-1">Source</p>
-                <p className="font-bold text-brand-blue-900 text-xl">Trauma</p>
+              {/* Trauma */}
+              <div className="bg-white border-2 border-red-50 rounded-2xl px-6 py-4 shadow-flow w-full max-w-[260px] text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-red-400 mb-1">
+                  Source
+                </p>
+                <p className="font-bold text-brand-blue-900 text-lg sm:text-xl">
+                  Trauma
+                </p>
               </div>
 
-              {/* Arrow Down */}
-              <div className="h-10 w-px bg-red-200 relative my-2">
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-red-200"></div>
+              {/* Arrow */}
+              <div className="h-8 sm:h-10 w-px bg-red-200 relative my-2">
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-red-200" />
               </div>
 
-              {/* Node: Coping Mechanisms */}
-              <div className="bg-white border border-slate-200 rounded-2xl px-10 py-5 shadow-flow min-w-[220px] text-center">
-                <p className="text-[10px] font-black text-brand-blue-900/40 uppercase tracking-widest mb-1">Response</p>
-                <p className="font-bold text-brand-blue-900 text-lg">Coping Mechanisms</p>
+              {/* Coping */}
+              <div className="bg-white border border-slate-200 rounded-2xl px-6 py-4 shadow-flow w-full max-w-[300px] text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-brand-blue-900/40 mb-1">
+                  Response
+                </p>
+                <p className="font-bold text-brand-blue-900 text-base sm:text-lg">
+                  Coping Mechanisms
+                </p>
               </div>
 
-              {/* Branching SVG for 3 categories */}
-              <div className="w-full max-w-[380px] h-12">
-                <svg viewBox="0 0 400 40" className="w-full h-full" preserveAspectRatio="none">
-                  <path d="M200 0 V15 M200 15 H50 V40 M200 15 H350 V40 M200 15 V40" stroke="#CBD5E1" strokeWidth="2" fill="none" />
-                </svg>
-              </div>
-
-              {/* 3 Categories: Addictions, Mental Illness, Physiological */}
-              <div className="grid grid-cols-3 gap-2 w-full max-w-[420px]">
-                {["Addictions", "Mental Illness", "Physiological Disorders"].map((item, i) => (
-                  <div key={i} className="bg-white/80 border border-slate-100 rounded-xl p-3 sm:p-2 text-center shadow-flow flex items-center justify-center min-h-[50px] sm:min-h-[auto]">
-                    <p className="text-[8px] sm:text-[12px] font-bold text-slate-500 uppercase leading-tight tracking-tight break-words w-full">{item}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Arrow Down */}
-              <div className="h-12 w-px bg-red-300 relative my-2">
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-red-300"></div>
-              </div>
-
-              {/* Node: Outcome */}
-              <div className="bg-white border-2 border-red-50 rounded-2xl p-6 shadow-md w-full text-center">
-                <p className="text-[10px] font-black text-red-500 uppercase tracking-widest mb-1">Outcome</p>
-                <p className="font-bold text-brand-blue-900 text-lg md:text-xl italic font-serif">Symptoms / Dysfunctionalities</p>
-              </div>
-            </div>
-          </div>
-
-          {/* FLOWCHART 2: HOW TOT WORKS */}
-          <div className="bg-slate-50/80 backdrop-blur rounded-[2.5rem] p-6 md:p-10 border border-white shadow-card flex flex-col items-center">
-            <h3 className="text-2xl font-bold text-brand-blue-900 mb-10 self-start lg:self-center">How TOT Works</h3>
-            
-            <div className="w-full flex flex-col items-center">
-              {/* Step 1 */}
-              <div className="bg-white border border-slate-200 rounded-2xl px-8 py-4 shadow-flow min-w-[240px] text-center">
-                <p className="text-[10px] font-black text-brand-blue-900/30 uppercase tracking-widest mb-1">Step 01</p>
-                <p className="font-bold text-brand-blue-900">Identification of Symptoms</p>
-              </div>
-
-              {/* Branching Down to categories */}
-              <div className="w-full max-w-[380px] h-10">
-                <svg viewBox="0 0 400 30" className="w-full h-full" preserveAspectRatio="none">
-                   <path d="M200 0 V10 M200 10 H50 V30 M200 10 H350 V30 M200 10 V30" stroke="#CBD5E1" strokeWidth="2" fill="none" />
+              {/* Branch */}
+              <div className="w-full max-w-[380px] h-10 sm:h-12">
+                <svg viewBox="0 0 400 40" className="w-full h-full">
+                  <path
+                    d="M200 0 V15 M200 15 H50 V40 M200 15 H350 V40 M200 15 V40"
+                    stroke="#CBD5E1"
+                    strokeWidth="2"
+                    fill="none"
+                  />
                 </svg>
               </div>
 
               {/* Categories */}
               <div className="grid grid-cols-3 gap-2 w-full max-w-[420px]">
-                {["Toxic Behaviours", "Mental Illness", "Addictions"].map((item, i) => (
-                  <div key={i} className="bg-white/80 border border-slate-100 rounded-xl p-3 text-center shadow-flow flex items-center justify-center">
-                    <p className="text-[8px] sm:text-[12px] font-bold text-slate-400 uppercase leading-tight tracking-tight break-words w-full">{item}</p>
+                {[
+                  "Addictions",
+                  "Mental Illness",
+                  "Physiological Disorders",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="bg-white/80 border border-slate-100 rounded-xl p-2 sm:p-3 shadow-flow text-center"
+                  >
+                    <p className="text-[9px] sm:text-[11px] md:text-xs font-bold text-slate-500 uppercase leading-tight">
+                      {item}
+                    </p>
                   </div>
                 ))}
               </div>
 
-              {/* Branching back Up */}
-              <div className="w-full max-w-[380px] h-10 transform rotate-180">
-                <svg viewBox="0 0 400 30" className="w-full h-full" preserveAspectRatio="none">
-                   <path d="M200 0 V10 M200 10 H50 V30 M200 10 H350 V30 M200 10 V30" stroke="#CBD5E1" strokeWidth="2" fill="none" />
+              {/* Arrow */}
+              <div className="h-10 w-px bg-red-300 relative my-3">
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-red-300" />
+              </div>
+
+              {/* Outcome */}
+              <div className="bg-white border-2 border-red-50 rounded-2xl p-5 shadow-md w-full max-w-[360px] text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-red-500 mb-1">
+                  Outcome
+                </p>
+                <p className="font-bold text-brand-blue-900 text-base sm:text-lg md:text-xl italic font-serif">
+                  Symptoms / Dysfunctionalities
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* ================= TOT FLOW ================= */}
+          <div className="bg-slate-50/80 backdrop-blur rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-6 md:p-10 border border-white shadow-card flex flex-col items-center">
+            <h3 className="text-xl sm:text-2xl font-bold text-brand-blue-900 mb-8">
+              How TOT Works
+            </h3>
+
+            <div className="w-full flex flex-col items-center">
+              {/* Step 1 */}
+              <div className="bg-white border border-slate-200 rounded-2xl px-6 py-4 shadow-flow w-full max-w-[300px] text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-brand-blue-900/30 mb-1">
+                  Step 01
+                </p>
+                <p className="font-bold text-brand-blue-900 text-sm sm:text-base">
+                  Identification of Symptoms
+                </p>
+              </div>
+
+              {/* Branch */}
+              <div className="w-full max-w-[380px] h-10">
+                <svg viewBox="0 0 400 30" className="w-full h-full">
+                  <path
+                    d="M200 0 V10 M200 10 H50 V30 M200 10 H350 V30 M200 10 V30"
+                    stroke="#CBD5E1"
+                    strokeWidth="2"
+                    fill="none"
+                  />
+                </svg>
+              </div>
+
+              {/* Categories */}
+              <div className="grid grid-cols-3 gap-2 w-full max-w-[420px]">
+                {["Toxic Behaviours", "Mental Illness", "Addictions"].map(
+                  (item) => (
+                    <div
+                      key={item}
+                      className="bg-white/80 border border-slate-100 rounded-xl p-2 sm:p-3 shadow-flow text-center"
+                    >
+                      <p className="text-[9px] sm:text-[11px] md:text-xs font-bold text-slate-400 uppercase leading-tight">
+                        {item}
+                      </p>
+                    </div>
+                  ),
+                )}
+              </div>
+
+              {/* Reverse branch */}
+              <div className="w-full max-w-[380px] h-10 rotate-180">
+                <svg viewBox="0 0 400 30" className="w-full h-full">
+                  <path
+                    d="M200 0 V10 M200 10 H50 V30 M200 10 H350 V30 M200 10 V30"
+                    stroke="#CBD5E1"
+                    strokeWidth="2"
+                    fill="none"
+                  />
                 </svg>
               </div>
 
               {/* Step 2 */}
-              <div className="bg-white border border-slate-200 rounded-2xl px-6 py-4 shadow-flow text-center max-w-[320px]">
-                <p className="text-[10px] font-black text-brand-blue-900/30 uppercase tracking-widest mb-1">Step 02</p>
-                <p className="font-bold text-brand-blue-900 text-[13px] italic">Symptom Management Through Therapy/Medication</p>
+              <div className="bg-white border border-slate-200 rounded-2xl px-6 py-4 shadow-flow w-full max-w-[320px] text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-brand-blue-900/30 mb-1">
+                  Step 02
+                </p>
+                <p className="font-bold text-brand-blue-900 text-xs sm:text-sm italic">
+                  Symptom Management Through Therapy / Medication
+                </p>
               </div>
 
-              {/* Green Arrow */}
-              <div className="h-10 w-px bg-green-200 relative my-2">
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-green-300"></div>
+              {/* Arrow */}
+              <div className="h-10 w-px bg-green-300 relative my-3">
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-green-400" />
               </div>
 
               {/* Step 3 */}
-              <div className="bg-white border border-green-100 rounded-2xl px-6 py-4 shadow-flow text-center max-w-[320px]">
-                <p className="text-[10px] font-black text-green-500 uppercase tracking-widest mb-1">Step 03</p>
-                <p className="font-bold text-brand-blue-900 text-[13px] italic">Exploration Of Coping Mechanisms And Patterns</p>
+              <div className="bg-white border border-green-100 rounded-2xl px-6 py-4 shadow-flow w-full max-w-[320px] text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-green-500 mb-1">
+                  Step 03
+                </p>
+                <p className="font-bold text-brand-blue-900 text-xs sm:text-sm italic">
+                  Exploration of Coping Mechanisms & Patterns
+                </p>
               </div>
 
               {/* Final Arrow */}
-              <div className="h-10 w-px bg-green-400 relative my-2">
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-green-500"></div>
+              <div className="h-10 w-px bg-green-500 relative my-3">
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-green-500" />
               </div>
 
-              {/* The Goal */}
-              <div className="bg-brand-blue rounded-2xl p-8 shadow-card w-full text-center">
-                <p className="text-[10px] font-black text-green-400 uppercase tracking-[0.3em] mb-2">The Goal</p>
-                <p className="font-bold text-white text-sm md:text-base uppercase tracking-wider">Identification and Processing of Root Trauma</p>
+              {/* Goal */}
+              <div className="bg-brand-blue rounded-2xl p-6 shadow-card w-full max-w-[420px] text-center">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-green-400 mb-2">
+                  The Goal
+                </p>
+                <p className="font-bold text-white text-xs sm:text-sm md:text-base uppercase tracking-wider">
+                  Identification and Processing of Root Trauma
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Support Text from SS */}
+        {/* ================= SUPPORT TEXT ================= */}
         <div className="max-w-4xl mx-auto space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <p className="text-slate-600 text-lg leading-relaxed border-l-4 border-brand-orange pl-6">
-              Trauma is the response of the brain to a specific event that overwhelms the central nervous system.
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-slate-600 text-base sm:text-lg">
+            <p className="border-l-4 border-brand-orange pl-6 leading-relaxed">
+              Trauma is the response of the brain to overwhelming experiences
+              that exceed the nervous system’s capacity.
             </p>
-            <p className="text-slate-600 text-lg leading-relaxed border-l-4 border-brand-blue pl-6">
-              We understand mental disorders as a coping mechanism used to keep trauma dissociated and keep us protected.
+
+            <p className="border-l-4 border-brand-blue pl-6 leading-relaxed">
+              Mental disorders often function as protective coping mechanisms
+              that keep traumatic experiences dissociated.
             </p>
           </div>
-          
-          <div className="bg-brand-blue rounded-3xl p-8 md:p-12 text-white shadow-2xl relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700"></div>
-            <p className="text-xl md:text-2xl font-medium leading-relaxed relative z-10">
-              Our therapy is based on a <span className="text-brand-orange font-bold underline decoration-2 underline-offset-8">holistic approach</span> of identifying and soothing symptoms while exploring underlying trauma to provide effective, long-lasting mental healthcare solutions.
+
+          <div className="bg-brand-blue rounded-3xl p-8 sm:p-10 md:p-12 text-white shadow-2xl relative overflow-hidden">
+            <p className="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed">
+              Our therapy follows a{" "}
+              <span className="text-brand-orange font-bold underline underline-offset-8">
+                holistic approach
+              </span>{" "}
+              — addressing symptoms while gently guiding individuals toward
+              understanding and processing the root trauma for long-term
+              healing.
             </p>
           </div>
         </div>

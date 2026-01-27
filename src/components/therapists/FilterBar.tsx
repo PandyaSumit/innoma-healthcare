@@ -24,15 +24,26 @@ const FilterBar = ({
   clearFilters,
 }: FilterBarProps) => {
   return (
-    <div className="bg-white rounded-2xl border border-healthcare-border p-4 shadow-sm mb-8">
-      <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
+    <div className="bg-white border border-healthcare-border rounded-xl p-4 mb-8">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-4">
         {/* Specialization */}
         <div className="flex-1 min-w-[200px]">
           <div className="relative">
             <select
               value={selectedSpecialization}
               onChange={(e) => setSelectedSpecialization(e.target.value)}
-              className="w-full pl-4 pr-10 py-2.5 rounded-xl border border-healthcare-border bg-healthcare-surface/30 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 outline-none text-healthcare-text text-sm font-medium appearance-none cursor-pointer hover:border-brand-blue/50 transition-colors"
+              className="
+                w-full
+                px-4 py-2.5
+                rounded-lg
+                border border-healthcare-border
+                bg-white
+                text-sm font-medium
+                text-healthcare-text
+                appearance-none
+                focus:ring-2 focus:ring-brand-blue/20
+                outline-none
+              "
             >
               <option value="">All Specializations</option>
               {SPECIALIZATIONS.map((spec) => (
@@ -41,6 +52,7 @@ const FilterBar = ({
                 </option>
               ))}
             </select>
+
             <svg
               className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-healthcare-text-muted pointer-events-none"
               fill="none"
@@ -63,7 +75,18 @@ const FilterBar = ({
             <select
               value={selectedLanguage}
               onChange={(e) => setSelectedLanguage(e.target.value)}
-              className="w-full pl-4 pr-10 py-2.5 rounded-xl border border-healthcare-border bg-healthcare-surface/30 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 outline-none text-healthcare-text text-sm font-medium appearance-none cursor-pointer hover:border-brand-blue/50 transition-colors"
+              className="
+                w-full
+                px-4 py-2.5
+                rounded-lg
+                border border-healthcare-border
+                bg-white
+                text-sm font-medium
+                text-healthcare-text
+                appearance-none
+                focus:ring-2 focus:ring-brand-blue/20
+                outline-none
+              "
             >
               <option value="">All Languages</option>
               {LANGUAGES.map((lang) => (
@@ -72,6 +95,7 @@ const FilterBar = ({
                 </option>
               ))}
             </select>
+
             <svg
               className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-healthcare-text-muted pointer-events-none"
               fill="none"
@@ -89,17 +113,29 @@ const FilterBar = ({
         </div>
 
         {/* Rating */}
-        <div className="flex-shrink-0 min-w-[140px]">
+        <div className="min-w-[140px]">
           <div className="relative">
             <select
               value={minRating}
               onChange={(e) => setMinRating(Number(e.target.value))}
-              className="w-full pl-4 pr-10 py-2.5 rounded-xl border border-healthcare-border bg-healthcare-surface/30 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 outline-none text-healthcare-text text-sm font-medium appearance-none cursor-pointer hover:border-brand-blue/50 transition-colors"
+              className="
+                w-full
+                px-4 py-2.5
+                rounded-lg
+                border border-healthcare-border
+                bg-white
+                text-sm font-medium
+                text-healthcare-text
+                appearance-none
+                focus:ring-2 focus:ring-brand-blue/20
+                outline-none
+              "
             >
-              <option value="0">All Ratings</option>
-              <option value="4">4+ Stars</option>
-              <option value="4.5">4.5+ Stars</option>
+              <option value={0}>All Ratings</option>
+              <option value={4}>4+ Stars</option>
+              <option value={4.5}>4.5+ Stars</option>
             </select>
+
             <svg
               className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-healthcare-text-muted pointer-events-none"
               fill="none"
@@ -116,42 +152,46 @@ const FilterBar = ({
           </div>
         </div>
 
-        {/* Price & Divider */}
-        <div className="hidden lg:block w-px h-8 bg-healthcare-border mx-2"></div>
+        {/* Fee Range */}
+        <div className="flex items-center gap-2 border border-healthcare-border rounded-lg px-3 py-2">
+          <span className="text-sm text-healthcare-text-muted">Fee</span>
 
-        {/* Price Range */}
-        <div className="flex-shrink-0 flex items-center gap-3 bg-healthcare-surface/30 border border-healthcare-border rounded-xl px-4 py-2">
-          <span className="text-sm font-bold text-healthcare-text-muted">
-            Fee:
-          </span>
           <input
             type="number"
-            placeholder="Min"
             value={feeRange[0]}
             onChange={(e) =>
               setFeeRange([parseInt(e.target.value) || 0, feeRange[1]])
             }
-            className="w-20 bg-transparent text-sm font-semibold text-healthcare-text outline-none border-none p-0 focus:ring-0"
+            className="w-20 text-sm text-healthcare-text bg-transparent outline-none"
+            placeholder="Min"
           />
-          <span className="text-healthcare-text-muted">-</span>
+
+          <span className="text-healthcare-text-muted">–</span>
+
           <input
             type="number"
-            placeholder="Max"
             value={feeRange[1]}
             onChange={(e) =>
               setFeeRange([feeRange[0], parseInt(e.target.value) || 10000])
             }
-            className="w-20 bg-transparent text-sm font-semibold text-healthcare-text outline-none border-none p-0 focus:ring-0 text-right"
+            className="w-20 text-sm text-healthcare-text bg-transparent outline-none text-right"
+            placeholder="Max"
           />
         </div>
-
-        {/* Divider */}
-        <div className="hidden lg:block w-px h-8 bg-healthcare-border mx-2"></div>
 
         {/* Reset */}
         <button
           onClick={clearFilters}
-          className="px-4 py-2.5 text-sm font-bold text-brand-blue hover:bg-brand-blue-50 rounded-xl transition-colors whitespace-nowrap"
+          className="
+            text-sm
+            font-medium
+            text-brand-blue
+            px-4 py-2
+            rounded-lg
+            hover:bg-brand-blue/10
+            transition
+            whitespace-nowrap
+          "
         >
           Reset
         </button>

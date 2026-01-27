@@ -8,34 +8,36 @@ interface TherapistCardProps {
 const TherapistCard = ({ therapist }: TherapistCardProps) => {
   const location = useLocation();
   const isInApp = location.pathname.startsWith("/find-therapist");
+
   const profilePath = isInApp
     ? `/find-therapist/${therapist.id}`
     : `/therapists/${therapist.id}`;
+
+  const specializations = therapist.specializations;
+
   return (
     <div
       className="
         bg-white
-        rounded-[14px]
         border border-healthcare-border
-        p-5 sm:p-6
+        rounded-xl
+        p-4 sm:p-6
         transition
         hover:shadow-md
       "
     >
-      {/* Top */}
-      <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
+      {/* ================= TOP ================= */}
+      <div className="flex gap-4 sm:gap-5">
         {/* Avatar */}
-        <div className="relative shrink-0">
-          <img
-            src={therapist.photo}
-            alt={therapist.name}
-            className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover"
-          />
-        </div>
+        <img
+          src={therapist.photo}
+          alt={therapist.name}
+          className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover shrink-0"
+        />
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          {/* Name + rating */}
+          {/* Name + Rating */}
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <h3 className="text-base sm:text-lg font-semibold text-healthcare-text truncate">
@@ -46,7 +48,8 @@ const TherapistCard = ({ therapist }: TherapistCardProps) => {
               </p>
             </div>
 
-            <div className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-lg bg-yellow-50 border border-yellow-200">
+            {/* Rating */}
+            <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-yellow-50 border border-yellow-200 shrink-0">
               <svg
                 className="w-4 h-4 text-yellow-500"
                 fill="currentColor"
@@ -54,7 +57,7 @@ const TherapistCard = ({ therapist }: TherapistCardProps) => {
               >
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
-              <span className="text-sm font-semibold text-healthcare-text">
+              <span className="text-sm font-medium text-healthcare-text">
                 {therapist.rating}
               </span>
             </div>
@@ -65,36 +68,37 @@ const TherapistCard = ({ therapist }: TherapistCardProps) => {
             {therapist.bio}
           </p>
 
-          {/* Tags Row */}
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            {/* Status pill */}
+          {/* ================= TAGS ================= */}
+          <div className="mt-3 flex items-center gap-2 overflow-hidden">
+            {/* Availability */}
             {therapist.availability === "Available Today" && (
-              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-green-50 text-green-700 border border-green-200 whitespace-nowrap">
+              <span className="px-2.5 py-1 text-[11px] font-medium rounded-full bg-green-50 text-green-700 border border-green-200 whitespace-nowrap">
                 Available today
               </span>
             )}
 
-            {/* Specializations */}
-            {therapist.specializations.slice(0, 3).map((spec) => (
-              <span
-                key={spec}
-                className="
-                  px-3 py-1
-                  text-xs font-medium
-                  rounded-full
-                  bg-healthcare-surface
-                  border border-healthcare-border
-                  text-healthcare-text-muted
-                  whitespace-nowrap
-                "
-              >
-                {spec}
+            {/* First specialization – always visible */}
+            {specializations[0] && (
+              <span className="px-2.5 py-1 text-[11px] font-medium rounded-full bg-healthcare-surface border border-healthcare-border text-healthcare-text-muted whitespace-nowrap">
+                {specializations[0]}
               </span>
-            ))}
+            )}
 
-            {therapist.specializations.length > 3 && (
-              <span className="text-xs text-healthcare-text-muted whitespace-nowrap">
-                +{therapist.specializations.length - 3} more
+            {/* Second specialization – desktop only */}
+            {specializations[1] && (
+              <span className="hidden sm:inline-flex px-2.5 py-1 text-[11px] font-medium rounded-full bg-healthcare-surface border border-healthcare-border text-healthcare-text-muted whitespace-nowrap">
+                {specializations[1]}
+              </span>
+            )}
+
+            {/* + more */}
+            {specializations.length > 1 && (
+              <span className="text-[11px] text-healthcare-text-muted whitespace-nowrap">
+                +
+                {specializations.length -
+                  (specializations.length >= 1 ? 1 : 0) -
+                  (specializations.length >= 2 ? 1 : 0)}{" "}
+                more
               </span>
             )}
           </div>
@@ -104,10 +108,10 @@ const TherapistCard = ({ therapist }: TherapistCardProps) => {
       {/* Divider */}
       <div className="my-5 border-t border-healthcare-border" />
 
-      {/* Bottom */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* ================= BOTTOM ================= */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-wide text-healthcare-text-muted">
+          <p className="text-[11px] uppercase tracking-wider text-healthcare-text-muted">
             Consultation fee
           </p>
           <p className="text-lg font-semibold text-healthcare-text">
@@ -124,7 +128,7 @@ const TherapistCard = ({ therapist }: TherapistCardProps) => {
             rounded-lg
             bg-brand-blue
             text-white
-            text-sm font-semibold
+            text-sm font-medium
             hover:opacity-90
             transition
             no-underline

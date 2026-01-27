@@ -1,61 +1,83 @@
-import React from 'react';
-import type { Therapist } from '../../../types';
-import TherapistCard from '../../ui/TherapistCard';
+import React from "react";
+import type { Therapist } from "../../../types";
+import TherapistCard from "../../ui/TherapistCard";
 
 const TherapistsCarousel: React.FC = () => {
-  // Mock therapist data
   const therapists: Therapist[] = [
     {
-      id: '1',
-      name: 'Dr. Sidharth Chattopadhyaya',
-      photo: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600&h=800',
-      specialization: 'Anxiety & Depression Specialist',
+      id: "1",
+      name: "Dr. Sidharth Chattopadhyaya",
+      photo:
+        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600&h=800",
+      specialization: "Anxiety & Depression Specialist",
       rating: 4.9,
       reviewCount: 127,
-      experience: '12 years',
+      experience: "12 years",
     },
     {
-      id: '2',
-      name: 'Dr. Eepsita',
-      photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600&h=800',
-      specialization: 'Relationship & Family Therapist',
+      id: "2",
+      name: "Dr. Eepsita",
+      photo:
+        "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600&h=800",
+      specialization: "Relationship & Family Therapist",
       rating: 4.8,
       reviewCount: 98,
-      experience: '10 years',
+      experience: "10 years",
     },
     {
-      id: '3',
-      name: 'Dr. Hitakanshi',
-      photo: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=600&h=800',
-      specialization: 'Trauma & PTSD Expert',
+      id: "3",
+      name: "Dr. Hitakanshi",
+      photo:
+        "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=600&h=800",
+      specialization: "Trauma & PTSD Expert",
       rating: 5.0,
       reviewCount: 156,
-      experience: '15 years',
+      experience: "15 years",
     },
   ];
 
   return (
-    <section id="therapists" className="py-10 sm:py-24 bg-gray-50 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-12">
-        <div className="mb-16">
+    <section
+      id="therapists"
+      className="py-14 sm:py-20 md:py-24 bg-gray-50 overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-12">
+        {/* ================= HEADER ================= */}
+        <div className="mb-12 sm:mb-16 max-w-3xl">
           <div className="flex items-center gap-2 mb-4">
-            <span className="w-8 h-1 bg-brand-orange rounded-full"></span>
-            <span className="text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">OUR CORE TEAM</span>
+            <span className="w-8 h-1 bg-brand-orange rounded-full" />
+            <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">
+              OUR CORE TEAM
+            </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-brand-blue-900 tracking-tight leading-tight mb-6">
+
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue-900 tracking-tight leading-tight mb-5">
             Personalized care from <br />
             <span className="text-brand-orange">trusted specialists.</span>
           </h2>
-          <p className="text-lg md:text-xl text-brand-blue-900/70 max-w-2xl leading-relaxed">
-            We are a team of trauma survivors, trauma experts, and frontline heroes!
+
+          <p className="text-base sm:text-lg md:text-xl text-brand-blue-900/70 leading-relaxed">
+            A collective of trauma experts, therapists, and frontline
+            professionals dedicated to compassionate care.
           </p>
         </div>
 
-        {/* Carousel Container */}
+        {/* ================= CAROUSEL ================= */}
         <div className="relative">
-          <div className="flex gap-6 sm:gap-8 overflow-x-auto xl:overflow-visible pb-0 sm:pb-12 snap-x lg:snap-none no-scrollbar px-2">
+          <div className="flex gap-5 sm:gap-6 lg:gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory lg:snap-none px-1 pb-2">
             {therapists.map((therapist) => (
-              <div key={therapist.id} className="snap-start flex-shrink-0 w-[90vw] sm:w-[85vw] md:w-1/2 lg:w-[380px] max-w-[380px]">
+              <div
+                key={therapist.id}
+                className="
+                  snap-start
+                  flex-shrink-0
+                  w-[88vw]
+                  sm:w-[70vw]
+                  md:w-[45vw]
+                  lg:w-[360px]
+                  xl:w-[380px]
+                "
+              >
                 <TherapistCard therapist={therapist} />
               </div>
             ))}
@@ -67,8 +89,3 @@ const TherapistsCarousel: React.FC = () => {
 };
 
 export default TherapistsCarousel;
-
-
-
-
-

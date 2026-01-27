@@ -92,7 +92,7 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main className="flex-grow pt-24">
+              <main className="">
                 <LandingPage />
               </main>
               <Footer />
