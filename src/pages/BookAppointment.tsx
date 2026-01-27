@@ -31,11 +31,11 @@ const BookAppointment = () => {
 
   if (!therapist) {
     return (
-      <div className="min-h-screen bg-healthcare-surface flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-healthcare-text mb-4">Therapist not found</h2>
           <Link
-            to="/therapists"
+            to="/find-therapist"
             className="px-6 py-3 bg-brand-blue text-white rounded-lg font-semibold hover:bg-healthcare-text transition-colors"
           >
             Back to Directory
@@ -80,47 +80,45 @@ const BookAppointment = () => {
   };
 
   return (
-    <div className="min-h-screen bg-healthcare-surface">
+    <div>
       {/* Header */}
-      <div className="bg-white border-b border-healthcare-border">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-healthcare-text-muted hover:text-healthcare-text transition-colors mb-4"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back
-          </button>
-          <h1 className="text-3xl font-bold text-healthcare-text">Book Appointment</h1>
-          <p className="text-healthcare-text-muted mt-2">Complete the steps below to schedule your session</p>
-        </div>
+      <div className="mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-healthcare-text-muted hover:text-healthcare-text transition-colors mb-4"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Back
+        </button>
+        <h1 className="text-2xl sm:text-3xl font-bold text-healthcare-text">Book Appointment</h1>
+        <p className="text-healthcare-text-muted mt-1">Complete the steps below to schedule your session</p>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div>
         {/* Progress Steps */}
         <div className="mb-8">
-          <div className="flex items-center justify-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold">
+          <div className="flex items-center justify-center gap-2 sm:gap-4">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold text-sm">
                 1
               </div>
-              <span className="text-sm font-semibold text-healthcare-text">Select Package</span>
+              <span className="text-xs sm:text-sm font-semibold text-healthcare-text hidden xs:inline">Select Package</span>
             </div>
-            <div className="h-px w-16 bg-healthcare-border" />
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold">
+            <div className="h-px w-8 sm:w-16 bg-healthcare-border" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold text-sm">
                 2
               </div>
-              <span className="text-sm font-semibold text-healthcare-text">Choose Date & Time</span>
+              <span className="text-xs sm:text-sm font-semibold text-healthcare-text hidden xs:inline">Date & Time</span>
             </div>
-            <div className="h-px w-16 bg-healthcare-border" />
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-healthcare-neutral/20 text-healthcare-text-muted flex items-center justify-center font-bold">
+            <div className="h-px w-8 sm:w-16 bg-healthcare-border" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-healthcare-neutral/20 text-healthcare-text-muted flex items-center justify-center font-bold text-sm">
                 3
               </div>
-              <span className="text-sm font-medium text-healthcare-text-muted">Payment</span>
+              <span className="text-xs sm:text-sm font-medium text-healthcare-text-muted hidden xs:inline">Payment</span>
             </div>
           </div>
         </div>

@@ -69,7 +69,7 @@ const Confirmation = () => {
 
   if (!therapist || !pkg || !date || !time) {
     return (
-      <div className="min-h-screen bg-healthcare-surface flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-healthcare-text mb-4">Invalid confirmation details</h2>
           <Link
@@ -97,8 +97,8 @@ const Confirmation = () => {
   };
 
   return (
-    <div className="min-h-screen bg-healthcare-surface">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div>
+      <div className="max-w-4xl mx-auto py-8">
         {/* Success Animation */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
@@ -106,7 +106,7 @@ const Confirmation = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-4xl font-bold text-healthcare-text mb-3">Appointment Confirmed!</h1>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-healthcare-text mb-3">Appointment Confirmed!</h1>
           <p className="text-lg text-healthcare-text-muted">
             Your session with {therapist.name} has been successfully booked
           </p>
