@@ -125,95 +125,75 @@ const Profile = () => {
   };
 
   return (
-    <div className="animate-fade-in h-full flex flex-col pb-20 space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-healthcare-text">
-          Profile Details
-        </h1>
-        <button
-          onClick={() => formik.handleSubmit()}
-          className="px-6 py-2.5 bg-brand-blue text-white rounded-lg font-bold text-sm shadow-md hover:opacity-90 transition-all cursor-pointer border-none"
-        >
-          Save Changes
-        </button>
-      </div>
+    <div className="animate-fade-in h-full flex flex-col pb-16 space-y-6 sm:space-y-8">
+      <div className="flex flex-col gap-5">
+        {/* Top row */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-healthcare-text">
+            Profile Details
+          </h1>
 
-      {/* Profile Overview Card */}
-      <div className="flex items-center gap-6 pb-6">
-        <div className="relative group">
-          <div className="w-20 h-20 rounded-full bg-healthcare-surface border-2 border-healthcare-border overflow-hidden">
-            {avatarPreview || user?.profile?.avatar ? (
-              <img
-                src={avatarPreview || user?.profile?.avatar}
-                alt="Avatar"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-brand-blue/30">
-                {user?.profile?.name?.charAt(0)?.toUpperCase() || "U"}
-              </div>
-            )}
-          </div>
-          <label className="absolute bottom-0 right-0 w-6 h-6 bg-brand-blue text-white rounded-full flex items-center justify-center shadow-md border border-white cursor-pointer hover:scale-110 transition-all">
-            <svg
-              className="w-3.4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            <input
-              type="file"
-              className="hidden"
-              accept="image/png, image/jpeg"
-              onChange={handleAvatarChange}
-            />
-          </label>
+          <button
+            onClick={() => formik.handleSubmit()}
+            className="px-5 py-2 text-sm font-semibold bg-brand-blue text-white rounded-md hover:opacity-90 transition"
+          >
+            Save changes
+          </button>
         </div>
 
-        <div className="space-y-1">
-          <div className="flex items-center gap-3">
-            <h2 className="text-xl font-bold text-healthcare-text">
-              {formik.values.fullName}
-            </h2>
-            <span className="px-2.5 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-md uppercase tracking-wider border border-emerald-100">
-              {isTherapist ? "Therapist" : "Patient"}
-            </span>
-          </div>
-          <div className="flex items-center gap-4 text-sm text-healthcare-text-muted">
-            <span className="flex items-center gap-1.5">
-              <span className="font-medium">ID:</span>{" "}
-              {user?.profile?.id || "N/A"}
-            </span>
-            <span className="text-healthcare-border">|</span>
-            <span className="flex items-center gap-1.5">
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+        {/* Profile row */}
+        <div className="flex items-center gap-4 sm:gap-6">
+          {/* Avatar */}
+          <div className="relative shrink-0">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-healthcare-border bg-healthcare-surface">
+              {avatarPreview || user?.profile?.avatar ? (
+                <img
+                  src={avatarPreview || user?.profile?.avatar}
+                  alt="Avatar"
+                  className="w-full h-full object-cover"
                 />
-              </svg>
-              {formik.values.phone}
-            </span>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-lg font-semibold text-brand-blue/40">
+                  {user?.profile?.name?.charAt(0)?.toUpperCase() || "U"}
+                </div>
+              )}
+            </div>
+
+            {/* Upload */}
+            <label className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs shadow cursor-pointer hover:opacity-90">
+              +
+              <input
+                type="file"
+                className="hidden"
+                accept="image/png, image/jpeg"
+                onChange={handleAvatarChange}
+              />
+            </label>
+          </div>
+
+          {/* Info */}
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-base sm:text-lg font-semibold text-healthcare-text">
+                {formik.values.fullName}
+              </h2>
+
+              <span className="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase tracking-wide">
+                {isTherapist ? "Therapist" : "Patient"}
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-3 text-xs sm:text-sm text-healthcare-text-muted">
+              <span>ID: {user?.profile?.id || "N/A"}</span>
+              <span className="hidden sm:inline">•</span>
+              <span>{formik.values.phone}</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-healthcare-border overflow-x-auto no-scrollbar">
+      <div className="flex gap-3 mb-6 border-b border-healthcare-border overflow-x-auto no-scrollbar">
         <div className="flex min-w-max">
           {(isTherapist
             ? [
@@ -233,13 +213,16 @@ const Profile = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-6 py-4 text-sm font-semibold transition-all border-b-2 bg-transparent cursor-pointer whitespace-nowrap flex items-center gap-2 ${
+              className={`px-4 cursor-pointer sm:px-6 py-3 text-sm sm:text-base font-semibold whitespace-nowrap relative transition ${
                 activeTab === tab.id
-                  ? "text-brand-blue border-brand-blue"
-                  : "text-healthcare-text-muted border-transparent hover:text-healthcare-text"
+                  ? "text-brand-blue"
+                  : "text-healthcare-text-muted hover:text-healthcare-text"
               }`}
             >
               {tab.label}
+              {activeTab === tab.id && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue" />
+              )}
             </button>
           ))}
         </div>

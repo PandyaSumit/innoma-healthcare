@@ -204,12 +204,6 @@ const Dashboard = () => {
               </div>
             ))}
           </div>
-          <Link
-            to="/appointments"
-            className="mt-5 block text-sm font-medium text-brand-blue no-underline hover:underline"
-          >
-            View full journey
-          </Link>
         </div>
 
         {/* Free Assessment */}
