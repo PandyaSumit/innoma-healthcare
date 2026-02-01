@@ -1,5 +1,5 @@
-import React from 'react';
-import type { Therapist } from '../../types';
+import React from "react";
+import type { Therapist } from "../../types";
 
 interface TherapistCardProps {
   therapist: Therapist;
@@ -33,10 +33,12 @@ const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
             <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
               <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
             </svg>
-            <span className="text-sm font-bold text-brand-blue-900/60">{therapist.rating}</span>
+            <span className="text-sm font-bold text-brand-blue-900/60">
+              {therapist.rating}
+            </span>
           </div>
         </div>
-        
+
         <p className="text-sm font-medium text-gray-500 leading-relaxed line-clamp-2">
           {therapist.specialization}
         </p>
@@ -46,4 +48,3 @@ const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
 };
 
 export default TherapistCard;
-

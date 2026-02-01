@@ -52,13 +52,13 @@ const TherapistsCarousel: React.FC = () => {
           </div>
 
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight mb-5">
-            Personalized care from <br />
-            <span className="text-brand-orange">trusted specialists.</span>
+            Expertise Grounded in <br />
+            <span className="text-brand-orange">Understanding</span>
           </h2>
 
           <p className="text-base sm:text-lg md:text-xl text-brand-blue-900/70 leading-relaxed">
-            A collective of trauma experts, therapists, and frontline
-            professionals dedicated to compassionate care.
+            We are a team of trauma survivors, trauma experts, and frontline
+            heroes!
           </p>
         </div>
 

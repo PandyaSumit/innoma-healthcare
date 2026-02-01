@@ -86,22 +86,20 @@ const ApproachSection: React.FC = () => {
     <section id="approach" className="bg-white py-12 sm:py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         {/* Header */}
-        <div className="lg:text-center text-left max-w-3xl mx-auto mb-12 sm:mb-16 lg:mb-20">
-          <div className="flex items-center lg:justify-center gap-2 mb-3">
-            <span className="w-6 h-[2px] bg-brand-orange rounded-full" />
-            <span className="text-[11px] tracking-widest font-semibold uppercase text-brand-blue-900/60">
+        <div className="mb-12 sm:mb-16 max-w-3xl">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-8 h-1 bg-brand-orange rounded-full" />
+            <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">
               Our Approach
             </span>
           </div>
-
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight text-brand-blue">
-            Comprehensive Trauma-Informed{" "}
-            <span className="text-brand-orange">Clinical Excellence</span>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight mb-5">
+            Comprehensive{" "}
+            <span className="text-brand-orange">Trauma-Informed Care</span>
           </h2>
-
-          <p className="mt-4 sm:mt-5 text-sm sm:text-base lg:text-lg text-slate-600 leading-relaxed">
-            Evidence-based care combined with compassion to support healing,
-            emotional safety, and long-term wellbeing.
+          <p className="text-base sm:text-lg md:text-xl text-brand-blue-900/70 leading-relaxed">
+            We combine evidence-based therapy with compassionate care to help
+            you navigate your journey towards healing and self discovery
           </p>
         </div>
 

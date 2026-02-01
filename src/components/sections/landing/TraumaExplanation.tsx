@@ -8,16 +8,16 @@ const TraumaExplanation: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-12">
         {/* ================= HEADER ================= */}
-        <div className="mb-14 sm:mb-16 md:mb-20 text-left lg:text-center">
-          <div className="flex items-center lg:justify-center gap-2 mb-4">
+        <div className="mb-12 sm:mb-16 max-w-3xl">
+          <div className="flex items-center gap-2 mb-4">
             <span className="w-8 h-1 bg-brand-orange rounded-full" />
             <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">
               OUR MISSION
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight max-w-3xl lg:mx-auto">
-            Understanding Trauma and our
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight max-w-3xl">
+            Resolving Trauma through our
             <span className="text-brand-orange"> Holistic Approach</span>
           </h2>
         </div>
@@ -205,27 +205,28 @@ const TraumaExplanation: React.FC = () => {
 
         {/* ================= SUPPORT TEXT ================= */}
         <div className="max-w-4xl mx-auto space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-slate-600 text-base sm:text-lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-slate-600 text-base sm:text-lg items-center">
             <p className="border-l-4 border-brand-orange pl-6 leading-relaxed">
-              Trauma is the response of the brain to overwhelming experiences
-              that exceed the nervous system’s capacity.
+              Trauma is the response of the brain to a specific event that
+              overwhelms the central nervous system.
             </p>
 
             <p className="border-l-4 border-brand-blue pl-6 leading-relaxed">
-              Mental disorders often function as protective coping mechanisms
-              that keep traumatic experiences dissociated.
+              We understand mental disorders as a coping mechanism used to keep
+              the trauma dissociated and keep us protected from trauma. These
+              coping mechanisms later become disorders and dysfunctionalities.
             </p>
           </div>
 
           <div className="bg-brand-blue rounded-3xl p-8 sm:p-10 md:p-12 text-white shadow-2xl relative overflow-hidden">
             <p className="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed">
-              Our therapy follows a{" "}
+              Our therapy is based on{" "}
               <span className="text-brand-orange font-bold underline underline-offset-8">
                 holistic approach
               </span>{" "}
-              — addressing symptoms while gently guiding individuals toward
-              understanding and processing the root trauma for long-term
-              healing.
+              of identifying and soothing symptoms while exploring underlying
+              trauma to provide effective, long-lasting mental healthcare
+              solutions.
             </p>
           </div>
         </div>

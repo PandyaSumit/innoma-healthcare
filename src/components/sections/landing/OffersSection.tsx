@@ -1,13 +1,11 @@
 import React from "react";
-import type { Symptom } from "../../../types";
 
-const SymptomsGrid: React.FC = () => {
-  const symptoms: Symptom[] = [
+const OffersSection: React.FC = () => {
+  const offers = [
     {
-      id: "1",
-      name: "Online Therapy",
+      title: "Mental illness",
       description:
-        "Confidential and secure trauma-oriented therapy designed for you, wherever you are emotionally and geographically.",
+        "Your diagnosis does not define you. Identify the root of your issues and move on to a healthier and happier life.",
       icon: (
         <svg
           className="w-6 h-6"
@@ -17,7 +15,12 @@ const SymptomsGrid: React.FC = () => {
           strokeWidth="2"
         >
           <path
-            d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+            d="M12 21a9 9 0 100-18 9 9 0 000 18z"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M9 10a3 3 0 106 0"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -25,10 +28,9 @@ const SymptomsGrid: React.FC = () => {
       ),
     },
     {
-      id: "2",
-      name: "Diagnosis",
+      title: "Trauma Care",
       description:
-        "Accurate evaluations based on your symptoms through a trauma-informed lens.",
+        "Let us unpack the baggage you’ve been carrying alone for so long. We help you make sense of your experience and rebuild safety.",
       icon: (
         <svg
           className="w-6 h-6"
@@ -38,7 +40,7 @@ const SymptomsGrid: React.FC = () => {
           strokeWidth="2"
         >
           <path
-            d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"
+            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -46,10 +48,9 @@ const SymptomsGrid: React.FC = () => {
       ),
     },
     {
-      id: "3",
-      name: "Medication",
+      title: "Burnout Recovery",
       description:
-        "Personalised medication to help you stay functional in your daily life and support long-term mental well-being.",
+        "Burnout isn’t a sign of weakness; it’s a sign that you’ve been strong for too long. You don’t need to hold your breath.",
       icon: (
         <svg
           className="w-6 h-6"
@@ -59,7 +60,7 @@ const SymptomsGrid: React.FC = () => {
           strokeWidth="2"
         >
           <path
-            d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+            d="M13 10V3L4 14h7v7l9-11h-7z"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -67,10 +68,9 @@ const SymptomsGrid: React.FC = () => {
       ),
     },
     {
-      id: "4",
-      name: "Psychiatric Review",
+      title: "Root Cause Care",
       description:
-        "Regular psychiatric evaluations to review progress and refine treatment plans.",
+        "We enhance mental well-being by simultaneously working on symptoms and root trauma for lasting change.",
       icon: (
         <svg
           className="w-6 h-6"
@@ -80,70 +80,57 @@ const SymptomsGrid: React.FC = () => {
           strokeWidth="2"
         >
           <path
-            d="M12 19l7-7 3 3-7 7-3-3z"
+            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <path
-            d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path d="M2 2l5 5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ),
     },
   ];
 
   return (
-    <section id="specializations" className="py-14 sm:py-20 md:py-24 bg-white">
+    <section id="what-we-offer" className="py-14 sm:py-20 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-12">
         {/* ================= HEADER ================= */}
-        <div className="mb-12 sm:mb-16 max-w-3xl">
+        <div className="mb-12 sm:mb-16">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-8 h-1 bg-brand-orange rounded-full" />
             <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">
-              OUR EXPERTISE
+              What we offer
             </span>
           </div>
 
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight mb-4">
-            End-to-End Care for <br />
-            <span className="text-brand-orange">Your Mental Health</span>
+            Specialised care for <br className="hidden sm:block" />
+            <span className="text-brand-orange">your unique journey</span>
           </h2>
         </div>
 
         {/* ================= GRID ================= */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          {symptoms.map((symptom) => (
+          {offers.map((offer, index) => (
             <div
-              key={symptom.id}
+              key={index}
               className="group p-8 rounded-2xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all duration-200 flex flex-col items-start"
             >
-              <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center mb-6 text-brand-blue-900 group-hover:bg-brand-blue-50 transition-colors duration-200">
-                {symptom.icon}
+              <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center mb-6 text-brand-blue group-hover:bg-brand-blue-50 transition-colors duration-200">
+                {offer.icon}
               </div>
 
               <h3 className="text-lg font-bold mb-3 text-brand-blue tracking-tight">
-                {symptom.name}
+                {offer.title}
               </h3>
 
-              <p className="text-gray-500 leading-relaxed text-sm">
-                {symptom.description}
+              <p className="text-brand-blue-900/60 leading-relaxed text-sm">
+                {offer.description}
               </p>
             </div>
           ))}
         </div>
-
-        {/* ================= CTA ================= */}
-        {/* <div className="mt-12 sm:mt-16 flex justify-center">
-          <button className="px-8 sm:px-10 py-3.5 sm:py-4 rounded-lg bg-brand-blue text-white font-semibold text-sm sm:text-base hover:bg-brand-blue/90 shadow-lg shadow-brand-blue/10 transition-all">
-            View All Specialized Care
-          </button>
-        </div> */}
       </div>
     </section>
   );
 };
 
-export default SymptomsGrid;
+export default OffersSection;
