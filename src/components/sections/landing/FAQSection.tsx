@@ -32,7 +32,7 @@ const FAQSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-14 sm:py-20 md:py-24 bg-white">
+    <section id="faq" className="py-14 sm:py-20 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-12">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           {/* ================= LEFT ================= */}
@@ -44,7 +44,7 @@ const FAQSection: React.FC = () => {
               </span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight text-brand-blue-900 leading-tight max-w-md">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight text-brand-blue leading-tight max-w-md">
               Common <span className="text-brand-orange">questions.</span>
             </h2>
           </div>

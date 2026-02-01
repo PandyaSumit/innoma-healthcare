@@ -107,7 +107,7 @@ const SymptomsGrid: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue-900 tracking-tight leading-tight mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight mb-4">
             Specialized care for <br />
             <span className="text-brand-orange">your unique journey.</span>
           </h2>
@@ -124,7 +124,7 @@ const SymptomsGrid: React.FC = () => {
                 {symptom.icon}
               </div>
 
-              <h3 className="text-lg sm:text-xl font-bold mb-3 text-brand-blue-900">
+              <h3 className="text-lg sm:text-xl font-bold mb-3 text-brand-blue">
                 {symptom.name}
               </h3>
 

@@ -51,7 +51,7 @@ const TherapistsCarousel: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue-900 tracking-tight leading-tight mb-5">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight mb-5">
             Personalized care from <br />
             <span className="text-brand-orange">trusted specialists.</span>
           </h2>

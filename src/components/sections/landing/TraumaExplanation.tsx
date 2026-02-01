@@ -16,7 +16,7 @@ const TraumaExplanation: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue-900 tracking-tight leading-tight max-w-3xl lg:mx-auto">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-brand-blue tracking-tight leading-tight max-w-3xl lg:mx-auto">
             Understanding Trauma and our
             <span className="text-brand-orange"> Holistic Approach</span>
           </h2>
@@ -26,7 +26,7 @@ const TraumaExplanation: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 mb-16">
           {/* ================= TRAUMA FLOW ================= */}
           <div className="bg-slate-50/80 backdrop-blur rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-6 md:p-10 border border-white shadow-card flex flex-col items-center">
-            <h3 className="text-xl sm:text-2xl font-bold text-brand-blue-900 mb-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-brand-blue mb-8">
               How Trauma Works
             </h3>
 
@@ -36,7 +36,7 @@ const TraumaExplanation: React.FC = () => {
                 <p className="text-[10px] font-black uppercase tracking-widest text-red-400 mb-1">
                   Source
                 </p>
-                <p className="font-bold text-brand-blue-900 text-lg sm:text-xl">
+                <p className="font-bold text-brand-blue text-lg sm:text-xl">
                   Trauma
                 </p>
               </div>
@@ -48,10 +48,10 @@ const TraumaExplanation: React.FC = () => {
 
               {/* Coping */}
               <div className="bg-white border border-slate-200 rounded-2xl px-6 py-4 shadow-flow w-full max-w-[300px] text-center">
-                <p className="text-[10px] font-black uppercase tracking-widest text-brand-blue-900/40 mb-1">
+                <p className="text-[10px] font-black uppercase tracking-widest text-brand-blue/40 mb-1">
                   Response
                 </p>
-                <p className="font-bold text-brand-blue-900 text-base sm:text-lg">
+                <p className="font-bold text-brand-blue text-base sm:text-lg">
                   Coping Mechanisms
                 </p>
               </div>
@@ -96,7 +96,7 @@ const TraumaExplanation: React.FC = () => {
                 <p className="text-[10px] font-black uppercase tracking-widest text-red-500 mb-1">
                   Outcome
                 </p>
-                <p className="font-bold text-brand-blue-900 text-base sm:text-lg md:text-xl italic font-serif">
+                <p className="font-bold text-brand-blue text-base sm:text-lg md:text-xl font-serif">
                   Symptoms / Dysfunctionalities
                 </p>
               </div>
@@ -105,7 +105,7 @@ const TraumaExplanation: React.FC = () => {
 
           {/* ================= TOT FLOW ================= */}
           <div className="bg-slate-50/80 backdrop-blur rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-6 md:p-10 border border-white shadow-card flex flex-col items-center">
-            <h3 className="text-xl sm:text-2xl font-bold text-brand-blue-900 mb-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-brand-blue mb-8">
               How TOT Works
             </h3>
 
@@ -115,7 +115,7 @@ const TraumaExplanation: React.FC = () => {
                 <p className="text-[10px] font-black uppercase tracking-widest text-brand-blue-900/30 mb-1">
                   Step 01
                 </p>
-                <p className="font-bold text-brand-blue-900 text-sm sm:text-base">
+                <p className="font-bold text-brand-blue text-sm sm:text-base">
                   Identification of Symptoms
                 </p>
               </div>
@@ -165,7 +165,7 @@ const TraumaExplanation: React.FC = () => {
                 <p className="text-[10px] font-black uppercase tracking-widest text-brand-blue-900/30 mb-1">
                   Step 02
                 </p>
-                <p className="font-bold text-brand-blue-900 text-xs sm:text-sm italic">
+                <p className="font-bold text-brand-blue text-xs sm:text-sm">
                   Symptom Management Through Therapy / Medication
                 </p>
               </div>
@@ -180,7 +180,7 @@ const TraumaExplanation: React.FC = () => {
                 <p className="text-[10px] font-black uppercase tracking-widest text-green-500 mb-1">
                   Step 03
                 </p>
-                <p className="font-bold text-brand-blue-900 text-xs sm:text-sm italic">
+                <p className="font-bold text-brand-blue text-xs sm:text-sm">
                   Exploration of Coping Mechanisms & Patterns
                 </p>
               </div>

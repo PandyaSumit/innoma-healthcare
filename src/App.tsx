@@ -22,6 +22,7 @@ import BookAppointment from "./pages/BookAppointment";
 import Checkout from "./pages/Checkout";
 import Confirmation from "./pages/Confirmation";
 import VideoConsultation from "./pages/VideoConsultation";
+import ScrollToHash from "./components/layout/ScrollToHash";
 
 // Coming Soon Component
 const ComingSoon = ({ title }: { title: string }) => (
@@ -85,6 +86,7 @@ function AppRoutes() {
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden flex flex-col">
+      <ScrollToHash />
       <Routes>
         {/* Public Routes with Header/Footer */}
         <Route

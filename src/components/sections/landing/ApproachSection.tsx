@@ -5,7 +5,7 @@ const ApproachSection: React.FC = () => {
     {
       title: "Deep-Seated Trauma",
       description:
-        "Advanced clinical processing of deep-rooted trauma underlying persistent emotional and psychological challenges.",
+        "Advanced clinical processing of deep-seated trauma, underlying complex mental health challenges and persistent issues.",
       image:
         "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&auto=format&fit=crop&q=80",
       icon: (
@@ -26,18 +26,18 @@ const ApproachSection: React.FC = () => {
       accent: "bg-brand-blue",
     },
     {
-      title: "Restore & Thrive",
+      title: "Restore Safety and Comfort",
       description:
-        "Trauma-oriented therapy grounded in science to restore safety, resilience, and long-term emotional stability.",
+        "Scientifically-backed Trauma-Oriented Therapy to restore safety, resilience, and sustainable well-being.",
       image:
         "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&auto=format&fit=crop&q=80",
       featured: true,
       accent: "bg-brand-blue",
     },
     {
-      title: "Childhood Healing",
+      title: "Healing Root Causes",
       description:
-        "Specialized interventions focused on resolving developmental trauma and its long-lasting effects.",
+        "Specialized therapeutic interventions to address and heal the long-term after-effects of childhood developmental trauma.",
       image:
         "https://images.unsplash.com/photo-1484665754804-74b091211472?w=800&auto=format&fit=crop&q=80",
       icon: (
@@ -60,7 +60,7 @@ const ApproachSection: React.FC = () => {
     {
       title: "Authentic Self",
       description:
-        "Reconnect with your authentic self by healing the inner child through structured therapeutic exploration.",
+        "Discover and reconnect with your authentic self by nurturing and healing your inner child through guided exploration.",
       image:
         "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=800&auto=format&fit=crop&q=80",
       icon: (
@@ -94,7 +94,7 @@ const ApproachSection: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight text-brand-blue-900">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight text-brand-blue">
             Comprehensive Trauma-Informed{" "}
             <span className="text-brand-orange">Clinical Excellence</span>
           </h2>

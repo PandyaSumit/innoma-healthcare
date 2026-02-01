@@ -1,0 +1,31 @@
+<svg viewBox="0 0 360 140" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background (transparent for logo use) -->
+  <rect width="360" height="140" fill="transparent"/>
+
+  <!-- LEFT: Three Waves -->
+  <path d="M30 45 C45 30, 65 60, 80 45"
+        stroke="#22C1C3" stroke-width="8"
+        fill="none" stroke-linecap="round"/>
+  <path d="M30 70 C45 55, 65 85, 80 70"
+        stroke="#22C1C3" stroke-width="8"
+        fill="none" stroke-linecap="round"/>
+  <path d="M30 95 C45 80, 65 110, 80 95"
+        stroke="#22C1C3" stroke-width="8"
+        fill="none" stroke-linecap="round"/>
+
+  <!-- H -->
+  <path d="M140 25 L140 115"
+        stroke="#3A6F8F" stroke-width="12"
+        stroke-linecap="round"/>
+  <path d="M140 70 L190 70"
+        stroke="#3A6F8F" stroke-width="12"
+        stroke-linecap="round"/>
+  <path d="M190 25 L190 115"
+        stroke="#3A6F8F" stroke-width="12"
+        stroke-linecap="round"/>
+
+  <!-- C -->
+  <path d="M260 40 Q220 70 260 100"
+        stroke="#F26A7A" stroke-width="12"
+        fill="none" stroke-linecap="round"/>
+</svg>
