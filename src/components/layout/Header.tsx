@@ -45,7 +45,7 @@ const Header: React.FC = () => {
             {/* Logo */}
             <Link
               to="/"
-              className="text-xl sm:text-2xl font-bold tracking-tight text-brand-blue-900 no-underline"
+              className="text-xl sm:text-2xl font-bold tracking-tight text-brand-blue no-underline"
             >
               Innoma <span className="text-brand-orange">Healthcare</span>
             </Link>
