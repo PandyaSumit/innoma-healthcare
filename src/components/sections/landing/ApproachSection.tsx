@@ -89,7 +89,7 @@ const ApproachSection: React.FC = () => {
         <div className="mb-12 sm:mb-16 max-w-3xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-8 h-1 bg-brand-orange rounded-full" />
-            <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">
+            <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue/60">
               Our Approach
             </span>
           </div>
@@ -97,7 +97,7 @@ const ApproachSection: React.FC = () => {
             Comprehensive{" "}
             <span className="text-brand-orange">Trauma-Informed Care</span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-brand-blue-900/70 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-brand-blue/70 leading-relaxed">
             We combine evidence-based therapy with compassionate care to help
             you navigate your journey towards healing and self discovery
           </p>

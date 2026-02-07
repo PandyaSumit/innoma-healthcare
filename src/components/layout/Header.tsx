@@ -58,8 +58,8 @@ const Header: React.FC = () => {
                   to={link.href}
                   className={`text-sm font-semibold transition-colors no-underline ${
                     isScrolled
-                      ? "text-brand-blue-900 hover:text-brand-orange"
-                      : "text-slate-700 hover:text-brand-blue-900"
+                      ? "text-brand-blue hover:text-brand-orange"
+                      : "text-slate-700 hover:text-brand-blue"
                   }`}
                 >
                   {link.name}
@@ -73,8 +73,8 @@ const Header: React.FC = () => {
                 onClick={() => navigate("/login")}
                 className={`text-sm font-semibold transition-colors bg-transparent border-none cursor-pointer ${
                   isScrolled
-                    ? "text-brand-blue-900 hover:text-brand-orange"
-                    : "text-slate-700 hover:text-brand-blue-900"
+                    ? "text-brand-blue hover:text-brand-orange"
+                    : "text-slate-700 hover:text-brand-blue"
                 }`}
               >
                 Sign In

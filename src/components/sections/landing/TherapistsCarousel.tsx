@@ -6,19 +6,17 @@ const TherapistsCarousel: React.FC = () => {
   const therapists: Therapist[] = [
     {
       id: "1",
-      name: "Dr. Sidharth Chattopadhyaya",
-      photo:
-        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600&h=800",
-      specialization: "Anxiety & Depression Specialist",
-      rating: 4.9,
-      reviewCount: 127,
-      experience: "12 years",
+      name: "Dr. Hitakanshi",
+      photo: "/dr-hitakanshi.jpeg",
+      specialization: "Trauma & PTSD Expert",
+      rating: 5.0,
+      reviewCount: 156,
+      experience: "15 years",
     },
     {
       id: "2",
       name: "Dr. Eepsita",
-      photo:
-        "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600&h=800",
+      photo: "/dr-epista.jpeg",
       specialization: "Relationship & Family Therapist",
       rating: 4.8,
       reviewCount: 98,
@@ -26,13 +24,12 @@ const TherapistsCarousel: React.FC = () => {
     },
     {
       id: "3",
-      name: "Dr. Hitakanshi",
-      photo:
-        "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=600&h=800",
-      specialization: "Trauma & PTSD Expert",
-      rating: 5.0,
-      reviewCount: 156,
-      experience: "15 years",
+      name: "Dr. Sidharth Chattopadhyaya",
+      photo: "/dr-Siddharth .jpeg",
+      specialization: "Anxiety & Depression Specialist",
+      rating: 4.9,
+      reviewCount: 127,
+      experience: "12 years",
     },
   ];
 
@@ -46,7 +43,7 @@ const TherapistsCarousel: React.FC = () => {
         <div className="mb-12 sm:mb-16 max-w-3xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-8 h-1 bg-brand-orange rounded-full" />
-            <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">
+            <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue/60">
               OUR CORE TEAM
             </span>
           </div>
@@ -56,7 +53,7 @@ const TherapistsCarousel: React.FC = () => {
             <span className="text-brand-orange">Understanding</span>
           </h2>
 
-          <p className="text-base sm:text-lg md:text-xl text-brand-blue-900/70 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-brand-blue/70 leading-relaxed">
             We are a team of trauma survivors, trauma experts, and frontline
             heroes!
           </p>

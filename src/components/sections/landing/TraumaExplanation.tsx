@@ -11,7 +11,7 @@ const TraumaExplanation: React.FC = () => {
         <div className="mb-12 sm:mb-16 max-w-3xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-8 h-1 bg-brand-orange rounded-full" />
-            <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">
+            <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue/60">
               OUR MISSION
             </span>
           </div>

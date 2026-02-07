@@ -39,7 +39,7 @@ const FAQSection: React.FC = () => {
           <div>
             <div className="flex items-center gap-3 mb-5">
               <span className="w-8 h-[2px] bg-brand-orange rounded-full" />
-              <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue-900/60">
+              <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-blue/60">
                 FAQ
               </span>
             </div>
@@ -60,7 +60,7 @@ const FAQSection: React.FC = () => {
                   onClick={() =>
                     setOpenIndex(openIndex === index ? null : index)
                   }
-                  className="w-full py-4 sm:py-6 flex items-center justify-between text-left group"
+                  className="w-full py-4 sm:py-6 flex items-center justify-between text-left group cursor-pointer"
                 >
                   <span
                     className={`text-base sm:text-lg md:text-xl font-medium transition-colors ${
@@ -100,7 +100,7 @@ const FAQSection: React.FC = () => {
                     openIndex === index ? "max-h-96 pb-6 sm:pb-8" : "max-h-0"
                   }`}
                 >
-                  <p className="text-sm sm:text-base md:text-lg text-brand-blue-900/70 leading-relaxed max-w-xl">
+                  <p className="text-sm sm:text-base md:text-lg text-brand-blue/70 leading-relaxed max-w-xl">
                     {faq.answer}
                   </p>
                 </div>

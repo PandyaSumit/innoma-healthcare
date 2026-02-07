@@ -14,7 +14,9 @@ const TherapistProfile = () => {
 
   if (!therapist) {
     return (
-      <div className={`flex items-center justify-center ${isInApp ? "min-h-[400px]" : "min-h-screen bg-healthcare-surface"}`}>
+      <div
+        className={`flex items-center justify-center ${isInApp ? "min-h-[400px]" : "min-h-screen bg-healthcare-surface"}`}
+      >
         <div className="text-center">
           <h2 className="text-xl font-semibold mb-4">Therapist not found</h2>
           <Link
@@ -30,7 +32,11 @@ const TherapistProfile = () => {
 
   return (
     <div className={isInApp ? "" : "bg-healthcare-surface min-h-screen"}>
-      <div className={isInApp ? "space-y-8" : "mx-auto px-5 sm:px-8 py-8 space-y-8"}>
+      <div
+        className={
+          isInApp ? "space-y-8" : "mx-auto px-5 sm:px-8 py-8 space-y-8"
+        }
+      >
         {/* ================= HEADER ================= */}
         <section className="bg-white border border-healthcare-border rounded-xl p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row gap-6">
