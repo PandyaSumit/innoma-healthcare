@@ -23,6 +23,7 @@ import Checkout from "./pages/Checkout";
 import Confirmation from "./pages/Confirmation";
 import VideoConsultation from "./pages/VideoConsultation";
 import ScrollToHash from "./components/layout/ScrollToHash";
+import LeaderProfile from "./pages/LeaderProfile";
 
 // Coming Soon Component
 const ComingSoon = ({ title }: { title: string }) => (
@@ -166,6 +167,20 @@ function AppRoutes() {
               <Header />
               <main className="flex-grow pt-24">
                 <TherapistProfile />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Leader Profile Routes - Public */}
+        <Route
+          path="/leaders/:id"
+          element={
+            <>
+              <Header />
+              <main>
+                <LeaderProfile />
               </main>
               <Footer />
             </>

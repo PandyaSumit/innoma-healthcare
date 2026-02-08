@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import type { Therapist } from "../../types";
 
 interface TherapistCardProps {
@@ -7,7 +8,10 @@ interface TherapistCardProps {
 
 const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
   return (
-    <div className="group bg-white rounded-xl border border-gray-100 overflow-hidden hover:border-brand-blue/20 transition-all duration-300">
+    <Link
+      to={`/leaders/${therapist.id}`}
+      className="group bg-white rounded-xl border border-gray-100 overflow-hidden hover:border-brand-blue/20 transition-all duration-300 block no-underline hover:shadow-xl"
+    >
       {/* Image Container */}
       <div className="relative aspect-[4/5] overflow-hidden rounded-t-xl bg-gray-100">
         <img
@@ -43,7 +47,7 @@ const TherapistCard: React.FC<TherapistCardProps> = ({ therapist }) => {
           {therapist.specialization}
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 
