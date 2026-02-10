@@ -5,9 +5,6 @@ export interface Therapist {
     name: string;
     photo: string;
     specialization: string;
-    rating: number;
-    reviewCount: number;
-    experience: string;
 }
 
 export interface Symptom {

@@ -6,30 +6,21 @@ const TherapistsCarousel: React.FC = () => {
   const therapists: Therapist[] = [
     {
       id: "1",
-      name: "Dr. Hitakanshi",
+      name: "Hitakanshi Ghoshal",
       photo: "/dr-hitakanshi.jpeg",
       specialization: "Trauma & PTSD Expert",
-      rating: 5.0,
-      reviewCount: 156,
-      experience: "15 years",
     },
     {
       id: "2",
-      name: "Dr. Eepsita",
+      name: "Eepsita Mishra",
       photo: "/dr-epista.jpeg",
       specialization: "Relationship & Family Therapist",
-      rating: 4.8,
-      reviewCount: 98,
-      experience: "10 years",
     },
     {
       id: "3",
-      name: "Dr. Sidharth Chattopadhyaya",
+      name: "Siddharth Chattopadhyaya",
       photo: "/dr-Siddharth .jpeg",
       specialization: "Anxiety & Depression Specialist",
-      rating: 4.9,
-      reviewCount: 127,
-      experience: "12 years",
     },
   ];
 

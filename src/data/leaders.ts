@@ -34,7 +34,7 @@ export const leaders: Leader[] = [
     },
     {
         id: "2",
-        name: "Dr. Eepsita Mishra",
+        name: "Eepsita Mishra",
         photo: "/dr-epista.jpeg",
         title: "Psychiatrist",
         role: "MBBS, MD, DNB, Assoc. MNAMS",
@@ -75,7 +75,7 @@ export const leaders: Leader[] = [
     },
     {
         id: "3",
-        name: "Dr. Sidharth Chattopadhyaya",
+        name: "Siddharth Chattopadhyaya",
         photo: "/dr-Siddharth .jpeg",
         title: "Clinical Psychologist",
         role: "Clinical Psychologist & Researcher",
