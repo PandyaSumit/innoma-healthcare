@@ -16,6 +16,7 @@ const Header: React.FC = () => {
       href: isHomePage ? "#specializations" : "/#specializations",
     },
     { name: "Find Therapist", href: "/therapists" },
+    { name: "How It Works", href: "/how-it-works" },
     { name: "FAQ", href: isHomePage ? "#faq" : "/#faq" },
   ];
 

@@ -24,6 +24,7 @@ import Confirmation from "./pages/Confirmation";
 import VideoConsultation from "./pages/VideoConsultation";
 import ScrollToHash from "./components/layout/ScrollToHash";
 import LeaderProfile from "./pages/LeaderProfile";
+import HowItWorks from "./pages/HowItWorks";
 
 // Coming Soon Component
 const ComingSoon = ({ title }: { title: string }) => (
@@ -110,6 +111,19 @@ function AppRoutes() {
               <Header />
               <main className="flex-grow pt-24">
                 <About />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/how-it-works"
+          element={
+            <>
+              <Header />
+              <main className="flex-grow pt-24">
+                <HowItWorks />
               </main>
               <Footer />
             </>

@@ -286,3 +286,54 @@ section {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Custom Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-1 {
+  transition-delay: 100ms;
+}
+.stagger-2 {
+  transition-delay: 200ms;
+}
+.stagger-3 {
+  transition-delay: 300ms;
+}
+.stagger-4 {
+  transition-delay: 400ms;
+}
+.stagger-5 {
+  transition-delay: 500ms;
+}
