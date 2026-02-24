@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const isHomePage = location.pathname === "/";
 
   const navLinks = [
-    {
-      name: "Expertise",
-      href: isHomePage ? "#specializations" : "/#specializations",
-    },
     { name: "Find Therapist", href: "/therapists" },
     { name: "How It Works", href: "/how-it-works" },
-    { name: "FAQ", href: isHomePage ? "#faq" : "/#faq" },
+    { name: "About", href: "/about" },
   ];
 
   useEffect(() => {
