@@ -25,6 +25,7 @@ import VideoConsultation from "./pages/VideoConsultation";
 import ScrollToHash from "./components/layout/ScrollToHash";
 import LeaderProfile from "./pages/LeaderProfile";
 import HowItWorks from "./pages/HowItWorks";
+import BlogDetail from "./pages/BlogDetail";
 
 // Coming Soon Component
 const ComingSoon = ({ title }: { title: string }) => (
@@ -150,6 +151,19 @@ function AppRoutes() {
               <Header />
               <main className="flex-grow pt-24">
                 <TermsOfService />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/blog/:id"
+          element={
+            <>
+              <Header />
+              <main className="flex-grow pt-18">
+                <BlogDetail />
               </main>
               <Footer />
             </>
