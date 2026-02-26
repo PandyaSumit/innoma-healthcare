@@ -25,6 +25,7 @@ import VideoConsultation from "./pages/VideoConsultation";
 import ScrollToHash from "./components/layout/ScrollToHash";
 import LeaderProfile from "./pages/LeaderProfile";
 import HowItWorks from "./pages/HowItWorks";
+import Assessment from "./pages/Assessment";
 
 // Coming Soon Component
 const ComingSoon = ({ title }: { title: string }) => (
@@ -159,6 +160,7 @@ function AppRoutes() {
         {/* Auth Routes - No Header/Footer */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/assessment" element={<Assessment />} />
 
         {/* Therapist Directory - Public (for non-logged-in users) */}
         <Route

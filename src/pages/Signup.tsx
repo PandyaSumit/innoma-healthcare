@@ -44,7 +44,7 @@ const Signup = () => {
     },
     validationSchema: currentSchema,
     onSubmit: () => {
-      navigate('/dashboard');
+      navigate('/assessment');
     },
   });
 
@@ -114,8 +114,8 @@ const Signup = () => {
       </div>
 
       {/* Form Right Section - Clinical Intake Surface */}
-      <div className="w-full lg:w-1/2 flex flex-col bg-white overflow-y-auto">
-        <div className="flex-grow flex items-center justify-center p-8 md:p-12 lg:p-16">
+      <div className="w-full lg:w-1/2 flex flex-col bg-white overflow-y-auto max-h-screen">
+        <div className="flex-grow flex items-center justify-center p-8 md:p-12 lg:p-16 ">
           <div className="w-full max-w-[440px] animate-fade-in">
             {/* Mobile Logo Visibility */}
             <div className="lg:hidden text-center mb-10">
