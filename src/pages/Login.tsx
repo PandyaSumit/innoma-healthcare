@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { authService } from "../services/authService";
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -12,12 +13,25 @@ const loginSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 
+const forgotSchema = yup.object().shape({
+  fpEmail: yup
+    .string()
+    .required("Email address is required")
+    .email("Please enter a valid email"),
+});
+
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
   const [loginError, setLoginError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // Forgot-password state
+  const [showForgot, setShowForgot] = useState(false);
+  const [fpSent, setFpSent] = useState(false);
+  const [fpLoading, setFpLoading] = useState(false);
+  const [fpError, setFpError] = useState("");
 
   const from = location.state?.from?.pathname || "/dashboard";
 
@@ -32,7 +46,7 @@ const Login = () => {
       setIsLoading(true);
       setLoginError("");
 
-      const result = await login(values.email, values.password);
+      const result = await login(values.email, values.password, values.remember);
 
       setIsLoading(false);
 
@@ -40,6 +54,23 @@ const Login = () => {
         navigate(from, { replace: true });
       } else {
         setLoginError(result.error || "Login failed. Please try again.");
+      }
+    },
+  });
+
+  const fpFormik = useFormik({
+    initialValues: { fpEmail: "" },
+    validationSchema: forgotSchema,
+    onSubmit: async (values) => {
+      setFpLoading(true);
+      setFpError("");
+      try {
+        await authService.forgotPassword(values.fpEmail);
+        setFpSent(true);
+      } catch (err: any) {
+        setFpError(err.message ?? "Something went wrong. Please try again.");
+      } finally {
+        setFpLoading(false);
       }
     },
   });
@@ -106,6 +137,95 @@ const Login = () => {
               </Link>
             </div>
 
+            {/* ── Forgot-password view ── */}
+            {showForgot ? (
+              <div className="animate-fade-in">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowForgot(false);
+                    setFpSent(false);
+                    setFpError("");
+                    fpFormik.resetForm();
+                  }}
+                  className="flex items-center gap-1.5 text-sm text-healthcare-text-muted hover:text-healthcare-text transition-colors mb-8 bg-transparent border-none cursor-pointer p-0"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Back to Login
+                </button>
+
+                <div className="mb-8">
+                  <h1 className="text-3xl font-bold text-healthcare-text tracking-tight mb-2">
+                    Reset Password
+                  </h1>
+                  <p className="text-base text-healthcare-text-muted font-medium">
+                    Enter your email and we'll send you a reset link.
+                  </p>
+                </div>
+
+                {fpSent ? (
+                  <div className="p-5 bg-emerald-50 border border-emerald-200 rounded-xl text-center space-y-2">
+                    <svg className="w-8 h-8 text-emerald-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p className="text-sm font-bold text-emerald-700">Reset link sent!</p>
+                    <p className="text-xs text-emerald-600">
+                      If that email is registered, you'll receive a link within a few minutes.
+                      Check your spam folder if you don't see it.
+                    </p>
+                  </div>
+                ) : (
+                  <form onSubmit={fpFormik.handleSubmit} className="space-y-6">
+                    {fpError && (
+                      <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-sm text-red-600 font-medium">{fpError}</p>
+                      </div>
+                    )}
+                    <div className="space-y-2">
+                      <label className="block text-sm font-semibold text-healthcare-text tracking-tight ml-1">
+                        Email Address
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-healthcare-text-muted/60">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          </svg>
+                        </span>
+                        <input
+                          type="email"
+                          name="fpEmail"
+                          value={fpFormik.values.fpEmail}
+                          onChange={fpFormik.handleChange}
+                          onBlur={fpFormik.handleBlur}
+                          placeholder="name@example.com"
+                          className={`w-full pl-12 pr-4 py-3 rounded-lg border ${
+                            fpFormik.touched.fpEmail && fpFormik.errors.fpEmail
+                              ? "border-red-500"
+                              : "border-healthcare-neutral/20"
+                          } focus:border-brand-blue outline-none text-healthcare-text bg-healthcare-surface/20 font-medium placeholder:text-healthcare-text-muted/40`}
+                        />
+                      </div>
+                      {fpFormik.touched.fpEmail && fpFormik.errors.fpEmail && (
+                        <p className="text-red-500 text-xs mt-1 font-bold ml-1">
+                          {fpFormik.errors.fpEmail}
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={fpLoading}
+                      className="w-full bg-brand-blue text-white py-3.5 rounded-lg font-bold text-base hover:bg-healthcare-text active:scale-[0.99] transition-all cursor-pointer border-none disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {fpLoading ? "Sending..." : "Send Reset Link"}
+                    </button>
+                  </form>
+                )}
+              </div>
+            ) : (
+            /* ── Login view ── */
+            <>
             <div className="mb-10 text-center lg:text-left">
               <h1 className="text-3xl font-bold text-healthcare-text tracking-tight mb-2">
                 Login
@@ -113,22 +233,6 @@ const Login = () => {
               <p className="text-base text-healthcare-text-muted font-medium">
                 Access your professional clinical dashboard
               </p>
-            </div>
-
-            {/* Login Credentials Info Box */}
-            <div className="mb-6 p-4 bg-healthcare-lavender/20 border border-healthcare-lavender/30 rounded-lg">
-              <p className="text-xs font-semibold text-healthcare-text mb-2">
-                Demo Credentials:
-              </p>
-              <div className="space-y-1 text-xs text-healthcare-text-muted">
-                <p>
-                  <strong>Patient:</strong> patient@innoma.com / Patient@123
-                </p>
-                <p>
-                  <strong>Therapist:</strong> therapist@innoma.com /
-                  Therapist@123
-                </p>
-              </div>
             </div>
 
             <form onSubmit={formik.handleSubmit} className="space-y-6">
@@ -184,6 +288,7 @@ const Login = () => {
                   </label>
                   <button
                     type="button"
+                    onClick={() => setShowForgot(true)}
                     className="text-xs font-bold text-brand-blue hover:text-healthcare-text transition-colors bg-transparent border-none cursor-pointer p-0"
                   >
                     Forgot Password?
@@ -261,6 +366,8 @@ const Login = () => {
                 </Link>
               </p>
             </div>
+            </>
+            )}
           </div>
         </div>
 

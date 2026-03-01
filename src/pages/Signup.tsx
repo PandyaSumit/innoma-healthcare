@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useAuth } from '../context/AuthContext';
 
 const step1Schema = yup.object().shape({
   fullName: yup.string().required('Required'),
@@ -27,7 +28,9 @@ const step3Schema = yup.object().shape({
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [step, setStep] = useState(1);
+  const [apiError, setApiError] = useState('');
 
   const schemas = [step1Schema, step2Schema, step3Schema];
   const currentSchema = schemas[step - 1];
@@ -43,8 +46,21 @@ const Signup = () => {
       confirmPassword: ''
     },
     validationSchema: currentSchema,
-    onSubmit: () => {
-      navigate('/dashboard');
+    onSubmit: async (values) => {
+      setApiError('');
+      const result = await register({
+        fullName: values.fullName,
+        email: values.email,
+        password: values.password,
+        dob: values.dob,
+        gender: values.gender,
+        occupation: values.occupation,
+      });
+      if (result.success) {
+        navigate('/dashboard');
+      } else {
+        setApiError(result.error || 'Registration failed. Please try again.');
+      }
     },
   });
 
@@ -137,6 +153,12 @@ const Signup = () => {
             </div>
 
             <form onSubmit={handleSubmit}>
+              {apiError && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-600 font-medium">{apiError}</p>
+                </div>
+              )}
+
               {step === 1 && (
                 <div className="space-y-6 animate-slide-up">
                   <div className="space-y-2">
