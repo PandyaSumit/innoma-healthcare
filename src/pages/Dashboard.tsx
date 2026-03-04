@@ -1,6 +1,9 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useBooking } from "../context/BookingContext";
+import { patientService } from "../services/patientService";
+import type { DashboardData } from "../services/patientService";
 import { UPCOMING_APPOINTMENTS } from "../data/appointments";
 
 const Dashboard = () => {
@@ -8,13 +11,56 @@ const Dashboard = () => {
   const { getUserAppointments } = useBooking();
   const { upcoming: bookedUpcoming } = getUserAppointments();
 
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
+    null,
+  );
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const data = await patientService.getDashboard();
+        setDashboardData(data);
+      } catch (err) {
+        console.error("Failed to fetch dashboard data:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchDashboard();
+  }, []);
+
   // Combine static appointments with dynamically booked ones
   const allUpcoming = [
-    ...UPCOMING_APPOINTMENTS.filter((apt) => apt.patientId === "patient-001"),
-    ...bookedUpcoming,
+    ...(dashboardData?.nextSession
+      ? [
+          {
+            id: dashboardData.nextSession.appointmentId,
+            therapistName: dashboardData.nextSession.therapistName,
+            therapistPhoto:
+              dashboardData.nextSession.therapistPhoto ||
+              "https://images.unsplash.com/photo-1559839734-2b71f1536783?auto=format&fit=crop&q=80&w=200",
+            date: dashboardData.nextSession.date,
+            time: dashboardData.nextSession.time,
+            meetingLink: dashboardData.nextSession.meetingLink,
+            specialization: "Therapist", // Placeholder as API doesn't return it
+            type: "Consultation",
+          },
+        ]
+      : []),
+    ...UPCOMING_APPOINTMENTS.filter(
+      (apt) =>
+        apt.patientId === "patient-001" &&
+        apt.id !== dashboardData?.nextSession?.appointmentId,
+    ),
+    ...bookedUpcoming.filter(
+      (apt) => apt.id !== dashboardData?.nextSession?.appointmentId,
+    ),
   ];
 
-  const nextSession = allUpcoming.length > 0 ? allUpcoming[0] : null;
+  const nextSession =
+    dashboardData?.nextSession ||
+    (allUpcoming.length > 0 ? allUpcoming[0] : null);
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -32,6 +78,14 @@ const Dashboard = () => {
     }
     return time;
   };
+
+  if (isLoading) {
+    return (
+      <div className="h-full flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -62,12 +116,16 @@ const Dashboard = () => {
             Upcoming sessions
           </p>
           <p className="text-lg font-semibold text-healthcare-text">
-            {allUpcoming.length}
+            {dashboardData?.upcomingCount ?? allUpcoming.length}
           </p>
         </div>
         <div className="bg-white rounded-xl border border-healthcare-border p-5">
-          <p className="text-sm text-healthcare-text-muted mb-1">Assessment</p>
-          <p className="text-lg font-semibold text-green-600">1 pending</p>
+          <p className="text-sm text-healthcare-text-muted mb-1">
+            Total Sessions
+          </p>
+          <p className="text-lg font-semibold text-brand-blue">
+            {dashboardData?.totalSessions ?? 0}
+          </p>
         </div>
       </section>
 
@@ -162,9 +220,20 @@ const Dashboard = () => {
           </h2>
           <div className="space-y-5">
             {[
-              { label: "Initial assessment", done: true },
-              { label: "Therapist matching", done: allUpcoming.length > 0 },
-              { label: "First session", done: false },
+              {
+                label: "Initial assessment",
+                done: dashboardData?.assessmentCompleted ?? true,
+              },
+              {
+                label: "Therapist matching",
+                done:
+                  (dashboardData?.upcomingCount ?? 0) > 0 ||
+                  allUpcoming.length > 0,
+              },
+              {
+                label: "First session",
+                done: (dashboardData?.totalSessions ?? 0) > 0,
+              },
             ].map((step, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../context/AuthContext";
+import { patientService } from "../services/patientService";
 import { SPECIALIZATIONS, LANGUAGES } from "../data/therapists";
 
 const profileSchema = yup.object().shape({
@@ -28,13 +29,15 @@ const profileSchema = yup.object().shape({
 });
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const isTherapist = user?.role === "therapist";
   const isPatient = user?.role === "patient";
 
-  // Set default tab based on user role
   const [activeTab, setActiveTab] = useState<
     | "details"
     | "security"
@@ -44,7 +47,6 @@ const Profile = () => {
     | "reviews"
   >(isTherapist ? "professional" : "details");
 
-  // Initialize form values based on user role
   const getInitialValues = () => {
     if (isTherapist) {
       return {
@@ -85,27 +87,91 @@ const Profile = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (isPatient) {
+        try {
+          const profileData = await patientService.getProfile();
+          formik.setValues({
+            ...formik.values,
+            fullName: profileData.name || "",
+            email: profileData.email || "",
+            phone: profileData.phone || "",
+            dob: profileData.dob || "",
+            gender: profileData.gender || "",
+            occupation: profileData.occupation || "",
+            bloodGroup: profileData.bloodGroup || "",
+            bio: profileData.bio || "",
+            healthInterests: profileData.healthInterests || [],
+            notificationEmail: profileData.notificationEmail ?? true,
+            notificationSms: profileData.notificationSms ?? false,
+            allergies: profileData.allergies || "",
+            medications: profileData.medications || "",
+            emergencyContact: profileData.emergencyContact || "",
+          });
+        } catch (err) {
+          console.error("Failed to fetch profile:", err);
+        } finally {
+          setIsPageLoading(false);
+        }
+      } else {
+        // For therapists, we'll keep the current behavior (mock or future implementation)
+        setIsPageLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [isPatient]);
+
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: profileSchema,
-    onSubmit: (values) => {
-      console.log("Profile updated:", values);
-      // Update localStorage with new values
-      if (user) {
-        const updatedUser = {
-          ...user,
-          profile: {
-            ...user.profile,
-            ...values,
-          },
-        };
-        localStorage.setItem("innoma_user", JSON.stringify(updatedUser));
+    onSubmit: async (values) => {
+      setSubmitError(null);
+      console.log("Profile updating:", values);
+
+      try {
+        if (isPatient) {
+          await patientService.updateProfile({
+            fullName: values.fullName,
+            email: values.email,
+            phone: values.phone,
+            dob: values.dob,
+            gender: values.gender as any,
+            occupation: values.occupation,
+            bloodGroup: values.bloodGroup as any,
+            bio: values.bio,
+            healthInterests: values.healthInterests,
+            notificationEmail: values.notificationEmail,
+            notificationSms: values.notificationSms,
+            allergies: values.allergies,
+            medications: values.medications,
+            emergencyContact: values.emergencyContact,
+            ...(values.newPassword ? { newPassword: values.newPassword } : {}),
+          });
+        }
+        // Update global auth context and localStorage
+        if (user) {
+          const updatedUser = {
+            ...user,
+            profile: {
+              ...user.profile,
+              ...values,
+              name: values.fullName, // Sync fullName to name
+            },
+          };
+          updateUser(updatedUser as any);
+        }
+
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 3000);
+      } catch (err: any) {
+        setSubmitError(err.message || "Failed to update profile");
       }
-      alert("Profile updated successfully!");
     },
   });
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
@@ -116,16 +182,50 @@ const Profile = () => {
         alert("Only JPG and PNG are allowed");
         return;
       }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+
+      try {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setAvatarPreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+
+        if (isPatient) {
+          const { avatarUrl } = await patientService.uploadAvatar(file);
+          if (user) {
+            const updatedUser = {
+              ...user,
+              profile: { ...user.profile, avatar: avatarUrl },
+            };
+            localStorage.setItem("innoma_user", JSON.stringify(updatedUser));
+          }
+        }
+      } catch (err: any) {
+        alert(err.message || "Failed to upload avatar");
+      }
     }
   };
 
+  if (isPageLoading) {
+    return (
+      <div className="h-full flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="animate-fade-in h-full flex flex-col pb-16 space-y-6 sm:space-y-8">
+      {submitError && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 font-medium text-sm">
+          {submitError}
+        </div>
+      )}
+      {showSuccess && (
+        <div className="p-4 bg-green-50 border border-green-200 rounded-xl text-green-600 font-medium text-sm animate-fade-in">
+          Profile updated successfully!
+        </div>
+      )}
       <div className="flex flex-col gap-5">
         {/* Top row */}
         <div className="flex items-center justify-between">

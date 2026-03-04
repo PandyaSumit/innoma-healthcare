@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService } from '../services/authService';
-import { clearTokens } from '../services/api';
-import type { RegisterPayload } from '../services/authService';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { authService } from "../services/authService";
+import { clearTokens } from "../services/api";
+import type { RegisterPayload } from "../services/authService";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
-export type UserRole = 'patient' | 'therapist';
+export type UserRole = "patient" | "therapist";
 
 export interface User {
   email: string;
@@ -32,6 +32,7 @@ interface AuthContextType {
     payload: RegisterPayload,
   ) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
+  updateUser: (userData: User) => void;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -54,7 +55,7 @@ function userFromLoginData(data: any): User {
 function userFromRegisterData(data: any, fullName: string): User {
   return {
     email: data.email,
-    role: (data.role ?? 'patient') as UserRole,
+    role: (data.role ?? "patient") as UserRole,
     profile: {
       id: data.userId,
       name: fullName,
@@ -64,7 +65,7 @@ function userFromRegisterData(data: any, fullName: string): User {
 }
 
 function persistUser(user: User) {
-  localStorage.setItem('innoma_user', JSON.stringify(user));
+  localStorage.setItem("innoma_user", JSON.stringify(user));
 }
 
 // ── Context ──────────────────────────────────────────────────────────────────
@@ -79,12 +80,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Restore session from localStorage on first mount
   useEffect(() => {
-    const stored = localStorage.getItem('innoma_user');
+    const stored = localStorage.getItem("innoma_user");
     if (stored) {
       try {
         setUser(JSON.parse(stored));
       } catch {
-        localStorage.removeItem('innoma_user');
+        localStorage.removeItem("innoma_user");
       }
     }
     setIsLoading(false);
@@ -104,7 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     } catch (err: any) {
       return {
         success: false,
-        error: err.message ?? 'Login failed. Please try again.',
+        error: err.message ?? "Login failed. Please try again.",
       };
     }
   };
@@ -122,12 +123,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (err.status === 409) {
         return {
           success: false,
-          error: 'An account with this email already exists.',
+          error: "An account with this email already exists.",
         };
       }
       return {
         success: false,
-        error: err.message ?? 'Registration failed. Please try again.',
+        error: err.message ?? "Registration failed. Please try again.",
       };
     }
   };
@@ -137,11 +138,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     authService.logout().catch(() => {});
     setUser(null);
     clearTokens();
+    localStorage.removeItem("innoma_user");
+  };
+
+  const updateUser = (userData: User) => {
+    setUser(userData);
+    persistUser(userData);
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated: !!user, isLoading, login, register, logout }}
+      value={{
+        user,
+        isAuthenticated: !!user,
+        isLoading,
+        login,
+        register,
+        logout,
+        updateUser,
+      }}
     >
       {children}
     </AuthContext.Provider>
@@ -150,6 +165,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within an AuthProvider');
+  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
   return ctx;
 };

@@ -1,4 +1,5 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 interface MobileHeaderProps {
   onMenuClick: () => void;
@@ -7,6 +8,16 @@ interface MobileHeaderProps {
 const MobileHeader = ({ onMenuClick }: MobileHeaderProps) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   return (
     <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-6 z-30">
@@ -17,8 +28,18 @@ const MobileHeader = ({ onMenuClick }: MobileHeaderProps) => {
           className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors lg:hidden"
           aria-label="Open menu"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
         </button>
 
@@ -35,25 +56,51 @@ const MobileHeader = ({ onMenuClick }: MobileHeaderProps) => {
           className="hidden lg:block p-2 text-gray-600 hover:text-gray-900 hover:bg-blue-50 rounded-lg transition-colors"
           aria-label="Toggle sidebar"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
         </button>
       </div>
 
       {/* Right: Profile Button */}
       <button
-        onClick={() => navigate('/profile')}
+        onClick={() => navigate("/profile")}
         className={`flex items-center gap-3 hover:bg-gray-50 px-3 py-2 rounded-lg transition-all border-none bg-transparent cursor-pointer ${
-          location.pathname === '/profile' ? 'bg-blue-50 ring-2 ring-blue-100' : ''
+          location.pathname === "/profile"
+            ? "bg-blue-50 ring-2 ring-blue-100"
+            : ""
         }`}
       >
         <div className="text-right hidden sm:block">
-          <p className="text-sm font-bold text-gray-900 m-0">User Name</p>
-          <p className="text-xs text-gray-500 m-0">Patient Account</p>
+          <p className="text-sm font-bold text-gray-900 m-0">
+            {user?.profile?.name || "User Name"}
+          </p>
+          <p className="text-xs text-gray-500 m-0 capitalize">
+            {user?.role || "Patient"} Account
+          </p>
         </div>
-        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200">
-          <span className="text-blue-600 font-bold text-sm">SP</span>
+        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200 overflow-hidden">
+          {user?.profile?.avatar || user?.profile?.avatarUrl ? (
+            <img
+              src={user?.profile?.avatar || user?.profile?.avatarUrl}
+              alt={user?.profile?.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="text-blue-600 font-bold text-sm">
+              {user?.profile?.name ? getInitials(user.profile.name) : "UN"}
+            </span>
+          )}
         </div>
       </button>
     </header>
