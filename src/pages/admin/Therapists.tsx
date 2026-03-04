@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { fetchAdminTherapists, updateTherapist } from '../../api/admin.api';
-import Spinner from '../../components/ui/Spinner';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { fetchAdminTherapists, updateTherapist } from "../../api/admin.api";
+import type { AdminTherapist } from "../../types/admin";
+import Spinner from "../../components/ui/Spinner";
 
 export default function AdminTherapists() {
   const qc = useQueryClient();
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const { data, isLoading, error } = useQuery({
-    queryKey: ['admin', 'therapists'],
+    queryKey: ["admin", "therapists"],
     queryFn: fetchAdminTherapists,
   });
 
@@ -17,14 +18,18 @@ export default function AdminTherapists() {
     mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
       updateTherapist(id, { isActive } as any),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['admin', 'therapists'] });
-      toast.success('Therapist status updated.');
+      qc.invalidateQueries({ queryKey: ["admin", "therapists"] });
+      toast.success("Therapist status updated.");
     },
-    onError: (err: any) => toast.error(err.message ?? 'Failed to update.'),
+    onError: (err: any) => toast.error(err.message ?? "Failed to update."),
   });
 
-  const filtered = (data ?? []).filter(
-    (t) =>
+  const therapists: AdminTherapist[] = Array.isArray(data)
+    ? data
+    : (data as any)?.items || [];
+
+  const filtered = therapists.filter(
+    (t: AdminTherapist) =>
       t.name.toLowerCase().includes(search.toLowerCase()) ||
       t.email.toLowerCase().includes(search.toLowerCase()) ||
       t.specialization.toLowerCase().includes(search.toLowerCase()),
@@ -34,7 +39,9 @@ export default function AdminTherapists() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-healthcare-text">Therapists</h1>
+          <h1 className="text-2xl font-bold text-healthcare-text">
+            Therapists
+          </h1>
           <p className="text-sm text-healthcare-text-muted mt-1">
             Manage your therapist roster.
           </p>
@@ -43,8 +50,18 @@ export default function AdminTherapists() {
           to="/admin/therapists/new"
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-blue text-white rounded-xl font-bold text-sm hover:opacity-90 transition-all no-underline shadow-sm"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
           </svg>
           Add Therapist
         </Link>
@@ -53,8 +70,18 @@ export default function AdminTherapists() {
       {/* Search */}
       <div className="relative max-w-sm">
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-healthcare-text-muted/50">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
         </span>
         <input
@@ -100,21 +127,31 @@ export default function AdminTherapists() {
               <tbody className="divide-y divide-healthcare-border">
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="text-center py-10 text-sm text-healthcare-text-muted">
+                    <td
+                      colSpan={5}
+                      className="text-center py-10 text-sm text-healthcare-text-muted"
+                    >
                       No therapists found.
                     </td>
                   </tr>
                 )}
                 {filtered.map((t) => (
-                  <tr key={t.id} className="hover:bg-healthcare-surface/20 transition-colors">
+                  <tr
+                    key={t.id}
+                    className="hover:bg-healthcare-surface/20 transition-colors"
+                  >
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-full bg-healthcare-lavender/20 flex items-center justify-center flex-shrink-0 text-sm font-bold text-purple-600">
                           {t.name[0]?.toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-bold text-healthcare-text">{t.name}</p>
-                          <p className="text-xs text-healthcare-text-muted">{t.email}</p>
+                          <p className="font-bold text-healthcare-text">
+                            {t.name}
+                          </p>
+                          <p className="text-xs text-healthcare-text-muted">
+                            {t.email}
+                          </p>
                         </div>
                       </div>
                     </td>
@@ -126,15 +163,22 @@ export default function AdminTherapists() {
                     </td>
                     <td className="px-5 py-4">
                       <button
-                        onClick={() => toggleActive.mutate({ id: t.id, isActive: !t.isActive })}
+                        onClick={() =>
+                          toggleActive.mutate({
+                            id: t.id,
+                            isActive: !t.isActive,
+                          })
+                        }
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border-none cursor-pointer transition-colors ${
                           t.isActive
-                            ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
-                            : 'bg-red-50 text-red-600 hover:bg-red-100'
+                            ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                            : "bg-red-50 text-red-600 hover:bg-red-100"
                         }`}
                       >
-                        <span className={`w-1.5 h-1.5 rounded-full ${t.isActive ? 'bg-emerald-500' : 'bg-red-400'}`} />
-                        {t.isActive ? 'Active' : 'Inactive'}
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${t.isActive ? "bg-emerald-500" : "bg-red-400"}`}
+                        />
+                        {t.isActive ? "Active" : "Inactive"}
                       </button>
                     </td>
                     <td className="px-5 py-4">

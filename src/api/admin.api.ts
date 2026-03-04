@@ -73,16 +73,31 @@ export async function fetchFinanceSummary(): Promise<FinanceSummary> {
   return data.data;
 }
 
-export async function fetchDailyRevenue(params: {
-  from: string;
-  to: string;
-}): Promise<DailyRevenue[]> {
-  const { data } = await api.get(`/admin/finance/daily?from=${params.from}&to=${params.to}`);
+export async function fetchFinancePayments(params?: {
+  fromDate?: string;
+  toDate?: string;
+  therapistId?: string;
+  page?: number;
+  limit?: number;
+}): Promise<PaginatedResponse<any>> {
+  const q = new URLSearchParams();
+  if (params?.fromDate) q.set('fromDate', params.fromDate);
+  if (params?.toDate) q.set('toDate', params.toDate);
+  if (params?.therapistId) q.set('therapistId', params.therapistId);
+  if (params?.page) q.set('page', String(params.page));
+  if (params?.limit) q.set('limit', String(params.limit));
+  const { data } = await api.get(`/admin/finance/payments?${q}`);
   return data.data;
 }
 
-export async function fetchTherapistRevenue(): Promise<TherapistRevenue[]> {
-  const { data } = await api.get('/admin/finance/therapists');
+export async function fetchDailyRevenueChart(days: number = 30): Promise<DailyRevenue[]> {
+  const { data } = await api.get(`/admin/finance/chart/daily?days=${days}`);
+  return data.data;
+}
+
+export async function fetchTherapistRevenue(therapistId?: string): Promise<TherapistRevenue[]> {
+  const url = therapistId ? `/admin/finance/therapists/${therapistId}/revenue` : '/admin/finance/therapists';
+  const { data } = await api.get(url);
   return data.data;
 }
 

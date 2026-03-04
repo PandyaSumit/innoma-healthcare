@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, Link, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import Header from "./components/layout/Header";
@@ -93,7 +93,13 @@ const ComingSoon = ({ title }: { title: string }) => (
 
 // ── Route Guards ──────────────────────────────────────────────────────────────
 
-const ProtectedRoute = ({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) => {
+const ProtectedRoute = ({
+  children,
+  adminOnly = false,
+}: {
+  children: React.ReactNode;
+  adminOnly?: boolean;
+}) => {
   const { isAuthenticated, isLoading, user } = useAuth();
   const location = useLocation();
 
@@ -136,7 +142,9 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main><LandingPage /></main>
+              <main>
+                <LandingPage />
+              </main>
               <Footer />
             </>
           }
@@ -146,7 +154,9 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main className="flex-grow pt-24"><About /></main>
+              <main className="flex-grow pt-24">
+                <About />
+              </main>
               <Footer />
             </>
           }
@@ -156,7 +166,9 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main className="flex-grow pt-24"><HowItWorks /></main>
+              <main className="flex-grow pt-24">
+                <HowItWorks />
+              </main>
               <Footer />
             </>
           }
@@ -166,7 +178,9 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main className="flex-grow pt-24"><PrivacyPolicy /></main>
+              <main className="flex-grow pt-24">
+                <PrivacyPolicy />
+              </main>
               <Footer />
             </>
           }
@@ -176,7 +190,9 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main className="flex-grow pt-24"><TermsOfService /></main>
+              <main className="flex-grow pt-24">
+                <TermsOfService />
+              </main>
               <Footer />
             </>
           }
@@ -186,7 +202,9 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main className="flex-grow pt-24"><TherapistDirectory /></main>
+              <main className="flex-grow pt-24">
+                <TherapistDirectory />
+              </main>
               <Footer />
             </>
           }
@@ -196,7 +214,9 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main className="flex-grow pt-24"><TherapistProfile /></main>
+              <main className="flex-grow pt-24">
+                <TherapistProfile />
+              </main>
               <Footer />
             </>
           }
@@ -206,15 +226,31 @@ function AppRoutes() {
           element={
             <>
               <Header />
-              <main><LeaderProfile /></main>
+              <main>
+                <LeaderProfile />
+              </main>
               <Footer />
             </>
           }
         />
 
         {/* Auth Routes */}
-        <Route path="/login" element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
-        <Route path="/signup" element={<PublicOnlyRoute><Signup /></PublicOnlyRoute>} />
+        <Route
+          path="/login"
+          element={
+            <PublicOnlyRoute>
+              <Login />
+            </PublicOnlyRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PublicOnlyRoute>
+              <Signup />
+            </PublicOnlyRoute>
+          }
+        />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
@@ -232,7 +268,10 @@ function AppRoutes() {
           <Route path="therapists" element={<AdminTherapists />} />
           <Route path="therapists/new" element={<TherapistForm />} />
           <Route path="therapists/:id/edit" element={<TherapistForm />} />
-          <Route path="therapists/:id/bookings" element={<TherapistBookings />} />
+          <Route
+            path="therapists/:id/bookings"
+            element={<TherapistBookings />}
+          />
           <Route path="finance" element={<Finance />} />
           <Route path="articles" element={<Articles />} />
           <Route path="articles/new" element={<ArticleForm />} />
@@ -247,7 +286,9 @@ function AppRoutes() {
           path="/find-therapist"
           element={
             <ProtectedRoute>
-              <AppLayout><TherapistDirectory /></AppLayout>
+              <AppLayout>
+                <TherapistDirectory />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -255,7 +296,9 @@ function AppRoutes() {
           path="/find-therapist/:id"
           element={
             <ProtectedRoute>
-              <AppLayout><TherapistProfile /></AppLayout>
+              <AppLayout>
+                <TherapistProfile />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -263,7 +306,9 @@ function AppRoutes() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <AppLayout>{isTherapist ? <TherapistDashboard /> : <Dashboard />}</AppLayout>
+              <AppLayout>
+                {isTherapist ? <TherapistDashboard /> : <Dashboard />}
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -281,7 +326,9 @@ function AppRoutes() {
           path="/appointments"
           element={
             <ProtectedRoute>
-              <AppLayout><Appointments /></AppLayout>
+              <AppLayout>
+                <Appointments />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -289,7 +336,9 @@ function AppRoutes() {
           path="/settings"
           element={
             <ProtectedRoute>
-              <AppLayout><Settings /></AppLayout>
+              <AppLayout>
+                <Settings />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -297,7 +346,9 @@ function AppRoutes() {
           path="/support"
           element={
             <ProtectedRoute>
-              <AppLayout><Support /></AppLayout>
+              <AppLayout>
+                <Support />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -305,7 +356,9 @@ function AppRoutes() {
           path="/book/:therapistId"
           element={
             <ProtectedRoute>
-              <AppLayout><BookAppointment /></AppLayout>
+              <AppLayout>
+                <BookAppointment />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -313,7 +366,9 @@ function AppRoutes() {
           path="/checkout"
           element={
             <ProtectedRoute>
-              <AppLayout><Checkout /></AppLayout>
+              <AppLayout>
+                <Checkout />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -321,7 +376,9 @@ function AppRoutes() {
           path="/confirmation"
           element={
             <ProtectedRoute>
-              <AppLayout><Confirmation /></AppLayout>
+              <AppLayout>
+                <Confirmation />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -339,7 +396,9 @@ function AppRoutes() {
           path="/assessments"
           element={
             <ProtectedRoute>
-              <AppLayout><ComingSoon title="Assessments Portal" /></AppLayout>
+              <AppLayout>
+                <ComingSoon title="Assessments Portal" />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -347,7 +406,9 @@ function AppRoutes() {
           path="/sessions"
           element={
             <ProtectedRoute>
-              <AppLayout><ComingSoon title="Your Sessions" /></AppLayout>
+              <AppLayout>
+                <ComingSoon title="Your Sessions" />
+              </AppLayout>
             </ProtectedRoute>
           }
         />

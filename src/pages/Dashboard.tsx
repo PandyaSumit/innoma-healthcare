@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthContext";
 import { useBooking } from "../context/BookingContext";
 import { patientService } from "../services/patientService";
 import type { DashboardData } from "../services/patientService";
-import { UPCOMING_APPOINTMENTS } from "../data/appointments";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -30,7 +29,7 @@ const Dashboard = () => {
     fetchDashboard();
   }, []);
 
-  // Combine static appointments with dynamically booked ones
+  // Combine dynamically booked ones with the next session from dashboard
   const allUpcoming = [
     ...(dashboardData?.nextSession
       ? [
@@ -43,16 +42,11 @@ const Dashboard = () => {
             date: dashboardData.nextSession.date,
             time: dashboardData.nextSession.time,
             meetingLink: dashboardData.nextSession.meetingLink,
-            specialization: "Therapist", // Placeholder as API doesn't return it
+            specialization: "Therapist",
             type: "Consultation",
           },
         ]
       : []),
-    ...UPCOMING_APPOINTMENTS.filter(
-      (apt) =>
-        apt.patientId === "patient-001" &&
-        apt.id !== dashboardData?.nextSession?.appointmentId,
-    ),
     ...bookedUpcoming.filter(
       (apt) => apt.id !== dashboardData?.nextSession?.appointmentId,
     ),
@@ -92,7 +86,7 @@ const Dashboard = () => {
       {/* Welcome */}
       <section>
         <h1 className="text-2xl sm:text-3xl font-semibold text-healthcare-text tracking-tight">
-          Welcome back, {user?.profile?.name?.split(" ")[0] || "there"}
+          Welcome back, {user?.name?.split(" ")[0] || "there"}
         </h1>
         <p className="text-sm text-healthcare-text-muted mt-1">
           Your mental wellness journey continues. Here's what's happening.

@@ -83,22 +83,22 @@ const MobileHeader = ({ onMenuClick }: MobileHeaderProps) => {
       >
         <div className="text-right hidden sm:block">
           <p className="text-sm font-bold text-gray-900 m-0">
-            {user?.profile?.name || "User Name"}
+            {user?.name || "User Name"}
           </p>
           <p className="text-xs text-gray-500 m-0 capitalize">
             {user?.role || "Patient"} Account
           </p>
         </div>
         <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200 overflow-hidden">
-          {user?.profile?.avatar || user?.profile?.avatarUrl ? (
+          {user?.avatar ? (
             <img
-              src={user?.profile?.avatar || user?.profile?.avatarUrl}
-              alt={user?.profile?.name}
+              src={user?.avatar}
+              alt={user?.name}
               className="w-full h-full object-cover"
             />
           ) : (
             <span className="text-blue-600 font-bold text-sm">
-              {user?.profile?.name ? getInitials(user.profile.name) : "UN"}
+              {user?.name ? getInitials(user.name) : "UN"}
             </span>
           )}
         </div>

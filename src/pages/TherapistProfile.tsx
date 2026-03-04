@@ -1,27 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
-import { THERAPISTS } from "../data/therapists";
+import { fetchTherapistById } from "../api/therapist.api";
+import type { Therapist } from "../data/therapists";
 
 const TherapistProfile = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
+  const [therapist, setTherapist] = useState<Therapist | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
 
   const isInApp = location.pathname.startsWith("/find-therapist");
   const backPath = isInApp ? "/find-therapist" : "/therapists";
 
-  const therapist = THERAPISTS.find((t) => t.id === id);
+  useEffect(() => {
+    const loadTherapist = async () => {
+      if (!id) return;
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await fetchTherapistById(id);
+        setTherapist(data);
+      } catch (err) {
+        console.error("Failed to fetch therapist:", err);
+        setError("Therapist not found");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  if (!therapist) {
+    loadTherapist();
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <div
+        className={`flex items-center justify-center ${isInApp ? "min-h-[400px]" : "min-h-screen bg-healthcare-surface"}`}
+      >
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div>
+      </div>
+    );
+  }
+
+  if (error || !therapist) {
     return (
       <div
         className={`flex items-center justify-center ${isInApp ? "min-h-[400px]" : "min-h-screen bg-healthcare-surface"}`}
       >
         <div className="text-center">
-          <h2 className="text-xl font-semibold mb-4">Therapist not found</h2>
+          <h2 className="text-xl font-semibold mb-4 text-healthcare-text">
+            {error || "Therapist not found"}
+          </h2>
           <Link
             to={backPath}
-            className="px-5 py-2.5 rounded-lg bg-brand-blue text-white"
+            className="px-5 py-2.5 rounded-lg bg-brand-blue text-white no-underline inline-block"
           >
             Back to directory
           </Link>
@@ -140,14 +173,14 @@ const TherapistProfile = () => {
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Link
                   to={`/book/${therapist.id}`}
-                  className="px-6 py-3 rounded-lg bg-brand-blue text-white text-sm font-semibold text-center"
+                  className="px-6 py-3 rounded-lg bg-brand-blue text-white text-sm font-semibold text-center no-underline"
                 >
                   Book appointment
                 </Link>
 
                 <Link
                   to="/assessment"
-                  className="px-6 py-3 rounded-lg border border-brand-blue text-brand-blue text-sm font-semibold text-center hover:bg-brand-blue hover:text-white transition"
+                  className="px-6 py-3 rounded-lg border border-brand-blue text-brand-blue text-sm font-semibold text-center hover:bg-brand-blue hover:text-white transition no-underline"
                 >
                   Free assessment
                 </Link>
@@ -228,7 +261,7 @@ const TherapistProfile = () => {
               </p>
               <Link
                 to="/support"
-                className="block text-center px-4 py-2 rounded-lg border border-brand-blue text-brand-blue text-sm font-semibold hover:bg-brand-blue hover:text-white transition"
+                className="block text-center px-4 py-2 rounded-lg border border-brand-blue text-brand-blue text-sm font-semibold hover:bg-brand-blue hover:text-white transition no-underline"
               >
                 Contact support
               </Link>

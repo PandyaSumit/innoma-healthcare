@@ -50,39 +50,39 @@ const Profile = () => {
   const getInitialValues = () => {
     if (isTherapist) {
       return {
-        fullName: user?.profile?.name || "",
-        email: user?.profile?.email || "",
-        phone: user?.profile?.phone || "",
-        qualifications: user?.profile?.qualifications || "",
-        licenseNumber: user?.profile?.licenseNumber || "",
-        experience: user?.profile?.experience || 0,
-        consultationFee: user?.profile?.consultationFee || 0,
-        specializations: user?.profile?.specialization || [],
-        languages: user?.profile?.languages || [],
+        fullName: user?.name || "",
+        email: user?.email || "",
+        phone: (user as any)?.phone || "",
+        qualifications: (user as any)?.qualifications || "",
+        licenseNumber: (user as any)?.licenseNumber || "",
+        experience: (user as any)?.experience || 0,
+        consultationFee: (user as any)?.consultationFee || 0,
+        specializations: (user as any)?.specialization || [],
+        languages: (user as any)?.languages || [],
         newPassword: "",
         confirmPassword: "",
-        bio: user?.profile?.bio || "",
-        notificationEmail: user?.profile?.notificationEmail ?? true,
-        notificationSms: user?.profile?.notificationSms ?? false,
+        bio: (user as any)?.bio || "",
+        notificationEmail: (user as any)?.notificationEmail ?? true,
+        notificationSms: (user as any)?.notificationSms ?? false,
       };
     } else {
       return {
-        fullName: user?.profile?.name || "",
-        email: user?.profile?.email || "",
-        phone: user?.profile?.phone || "",
-        dob: user?.profile?.dob || "",
-        gender: user?.profile?.gender || "",
-        occupation: user?.profile?.occupation || "",
-        bloodGroup: user?.profile?.bloodGroup || "",
+        fullName: user?.name || "",
+        email: user?.email || "",
+        phone: (user as any)?.phone || "",
+        dob: (user as any)?.dob || "",
+        gender: (user as any)?.gender || "",
+        occupation: (user as any)?.occupation || "",
+        bloodGroup: (user as any)?.bloodGroup || "",
         newPassword: "",
         confirmPassword: "",
-        bio: user?.profile?.bio || "",
-        healthInterests: user?.profile?.healthInterests || [],
-        notificationEmail: user?.profile?.notificationEmail ?? true,
-        notificationSms: user?.profile?.notificationSms ?? false,
-        allergies: user?.profile?.allergies || "",
-        medications: user?.profile?.medications || "",
-        emergencyContact: user?.profile?.emergencyContact || "",
+        bio: (user as any)?.bio || "",
+        healthInterests: (user as any)?.healthInterests || [],
+        notificationEmail: (user as any)?.notificationEmail ?? true,
+        notificationSms: (user as any)?.notificationSms ?? false,
+        allergies: (user as any)?.allergies || "",
+        medications: (user as any)?.medications || "",
+        emergencyContact: (user as any)?.emergencyContact || "",
       };
     }
   };
@@ -154,11 +154,8 @@ const Profile = () => {
         if (user) {
           const updatedUser = {
             ...user,
-            profile: {
-              ...user.profile,
-              ...values,
-              name: values.fullName, // Sync fullName to name
-            },
+            ...values,
+            name: values.fullName, // Sync fullName to name
           };
           updateUser(updatedUser as any);
         }
@@ -195,9 +192,10 @@ const Profile = () => {
           if (user) {
             const updatedUser = {
               ...user,
-              profile: { ...user.profile, avatar: avatarUrl },
+              avatar: avatarUrl,
             };
             localStorage.setItem("innoma_user", JSON.stringify(updatedUser));
+            updateUser(updatedUser as any);
           }
         }
       } catch (err: any) {
@@ -246,15 +244,15 @@ const Profile = () => {
           {/* Avatar */}
           <div className="relative shrink-0">
             <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-healthcare-border bg-healthcare-surface">
-              {avatarPreview || user?.profile?.avatar ? (
+              {avatarPreview || user?.avatar ? (
                 <img
-                  src={avatarPreview || user?.profile?.avatar}
+                  src={(avatarPreview || user?.avatar) as string}
                   alt="Avatar"
                   className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-lg font-semibold text-brand-blue/40">
-                  {user?.profile?.name?.charAt(0)?.toUpperCase() || "U"}
+                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
                 </div>
               )}
             </div>
@@ -284,7 +282,7 @@ const Profile = () => {
             </div>
 
             <div className="flex flex-wrap items-center gap-x-3 text-xs sm:text-sm text-healthcare-text-muted">
-              <span>ID: {user?.profile?.id || "N/A"}</span>
+              <span>ID: {user?.id || "N/A"}</span>
               <span className="hidden sm:inline">•</span>
               <span>{formik.values.phone}</span>
             </div>

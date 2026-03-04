@@ -1,13 +1,31 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { THERAPISTS } from "../data/therapists";
+import { fetchTherapists } from "../api/therapist.api";
+import type { Therapist } from "../data/therapists";
 import TherapistCard from "../components/therapists/TherapistCard";
 import FilterBar from "../components/therapists/FilterBar";
 
 const TherapistDirectory = () => {
   const location = useLocation();
   const isInApp = location.pathname.startsWith("/find-therapist");
+  const [dbTherapists, setDbTherapists] = useState<Therapist[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetchTherapists();
+        setDbTherapists(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    load();
+  }, []);
+
   const [selectedSpecialization, setSelectedSpecialization] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [feeRange, setFeeRange] = useState<[number, number]>([0, 10000]);
@@ -20,13 +38,13 @@ const TherapistDirectory = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   const filteredTherapists = useMemo(() => {
-    let filtered = THERAPISTS.filter((t) => {
+    let filtered = dbTherapists.filter((t: Therapist) => {
       const q = searchQuery.toLowerCase();
 
       if (
         q &&
         !t.name.toLowerCase().includes(q) &&
-        !t.specializations.some((s) => s.toLowerCase().includes(q)) &&
+        !t.specializations.some((s: string) => s.toLowerCase().includes(q)) &&
         !t.bio.toLowerCase().includes(q)
       )
         return false;
@@ -48,11 +66,18 @@ const TherapistDirectory = () => {
       return true;
     });
 
-    if (sortBy === "rating") filtered.sort((a, b) => b.rating - a.rating);
+    if (sortBy === "rating")
+      filtered.sort(
+        (a: Therapist, b: Therapist) => (b.rating || 0) - (a.rating || 0),
+      );
     if (sortBy === "fee-low")
-      filtered.sort((a, b) => a.consultationFee - b.consultationFee);
+      filtered.sort(
+        (a: Therapist, b: Therapist) => a.consultationFee - b.consultationFee,
+      );
     if (sortBy === "fee-high")
-      filtered.sort((a, b) => b.consultationFee - a.consultationFee);
+      filtered.sort(
+        (a: Therapist, b: Therapist) => b.consultationFee - a.consultationFee,
+      );
 
     return filtered;
   }, [
@@ -76,7 +101,11 @@ const TherapistDirectory = () => {
   return (
     <div className={isInApp ? "" : "min-h-screen bg-healthcare-surface"}>
       {/* ================= HEADER ================= */}
-      <div className={isInApp ? "mb-6" : "bg-white border-b border-healthcare-border"}>
+      <div
+        className={
+          isInApp ? "mb-6" : "bg-white border-b border-healthcare-border"
+        }
+      >
         <div className={isInApp ? "" : "px-5 sm:px-8 lg:px-12 py-6 sm:py-8"}>
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-healthcare-text mb-1">
             Find a therapist
@@ -140,10 +169,13 @@ const TherapistDirectory = () => {
 
       {/* ================= FILTER BAR ================= */}
       {showFilters && (
-        <div className={isInApp
-          ? "py-4 mb-4 border-b border-healthcare-border"
-          : "px-5 sm:px-8 lg:px-12 py-4 border-b border-healthcare-border bg-white"
-        }>
+        <div
+          className={
+            isInApp
+              ? "py-4 mb-4 border-b border-healthcare-border"
+              : "px-5 sm:px-8 lg:px-12 py-4 border-b border-healthcare-border bg-white"
+          }
+        >
           <FilterBar
             selectedSpecialization={selectedSpecialization}
             setSelectedSpecialization={setSelectedSpecialization}
@@ -163,7 +195,9 @@ const TherapistDirectory = () => {
         {/* Results header */}
         <div className="flex items-center justify-between mb-4">
           <p className="text-sm text-healthcare-text">
-            {filteredTherapists.length} therapists found
+            {isLoading
+              ? "Finding therapists..."
+              : `${filteredTherapists.length} therapists found`}
           </p>
 
           <select
@@ -179,9 +213,13 @@ const TherapistDirectory = () => {
         </div>
 
         {/* Cards */}
-        {filteredTherapists.length ? (
+        {isLoading ? (
+          <div className="flex justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div>
+          </div>
+        ) : filteredTherapists.length ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredTherapists.map((therapist) => (
+            {filteredTherapists.map((therapist: Therapist) => (
               <TherapistCard key={therapist.id} therapist={therapist} />
             ))}
           </div>

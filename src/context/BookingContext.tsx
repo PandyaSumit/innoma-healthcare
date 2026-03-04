@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { Appointment } from '../data/appointments';
-import { useAuth } from './AuthContext';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import type { Appointment } from "../data/appointments";
+import { useAuth } from "./AuthContext";
 
 interface BookingDetails {
   therapist: {
@@ -43,12 +43,18 @@ interface BookingContextType {
 
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'innoma_booked_appointments';
+const STORAGE_KEY = "innoma_booked_appointments";
 
-export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { user } = useAuth();
-  const [currentBooking, setCurrentBooking] = useState<BookingDetails | null>(null);
-  const [bookedAppointments, setBookedAppointments] = useState<Appointment[]>([]);
+  const [currentBooking, setCurrentBooking] = useState<BookingDetails | null>(
+    null,
+  );
+  const [bookedAppointments, setBookedAppointments] = useState<Appointment[]>(
+    [],
+  );
 
   // Load booked appointments from localStorage on mount
   useEffect(() => {
@@ -58,7 +64,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const parsed = JSON.parse(stored);
         setBookedAppointments(parsed);
       } catch (error) {
-        console.error('Failed to parse stored appointments:', error);
+        console.error("Failed to parse stored appointments:", error);
         localStorage.removeItem(STORAGE_KEY);
       }
     }
@@ -83,7 +89,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const addBookedAppointment = (appointment: Appointment) => {
-    setBookedAppointments(prev => {
+    setBookedAppointments((prev) => {
       const updated = [...prev, appointment];
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       return updated;
@@ -95,20 +101,23 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const upcoming: Appointment[] = [];
     const past: Appointment[] = [];
 
-    bookedAppointments.forEach(apt => {
+    bookedAppointments.forEach((apt) => {
       const aptDate = new Date(`${apt.date}T${apt.time}`);
 
       // Filter based on user role
-      if (user?.role === 'patient') {
-        if (apt.patientId === user.profile?.id || apt.patientId === 'patient-001') {
+      if (user?.role === "patient") {
+        if (apt.patientId === user.id || apt.patientId === "patient-001") {
           if (aptDate >= now) {
             upcoming.push(apt);
           } else {
             past.push(apt);
           }
         }
-      } else if (user?.role === 'therapist') {
-        if (apt.therapistId === user.profile?.id || apt.therapistId === 'therapist-001') {
+      } else if (user?.role === "therapist") {
+        if (
+          apt.therapistId === user.id ||
+          apt.therapistId === "therapist-001"
+        ) {
           if (aptDate >= now) {
             upcoming.push(apt);
           } else {
@@ -119,8 +128,16 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     });
 
     // Sort by date
-    upcoming.sort((a, b) => new Date(`${a.date}T${a.time}`).getTime() - new Date(`${b.date}T${b.time}`).getTime());
-    past.sort((a, b) => new Date(`${b.date}T${b.time}`).getTime() - new Date(`${a.date}T${a.time}`).getTime());
+    upcoming.sort(
+      (a, b) =>
+        new Date(`${a.date}T${a.time}`).getTime() -
+        new Date(`${b.date}T${b.time}`).getTime(),
+    );
+    past.sort(
+      (a, b) =>
+        new Date(`${b.date}T${b.time}`).getTime() -
+        new Date(`${a.date}T${a.time}`).getTime(),
+    );
 
     return { upcoming, past };
   };
@@ -145,7 +162,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 export const useBooking = () => {
   const context = useContext(BookingContext);
   if (context === undefined) {
-    throw new Error('useBooking must be used within a BookingProvider');
+    throw new Error("useBooking must be used within a BookingProvider");
   }
   return context;
 };

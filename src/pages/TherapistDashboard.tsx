@@ -48,7 +48,7 @@ const TherapistDashboard = () => {
         {/* ================= HEADER ================= */}
         <div>
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-healthcare-text">
-            Welcome back, {user?.profile?.name}
+            Welcome back, {user?.name}
           </h1>
           <p className="text-sm text-healthcare-text-muted mt-1">
             Overview of your practice today

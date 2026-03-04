@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { api, setLoggingOut } from '../api/axios';
-import type { AuthUser, RegisterPayload } from '../types/auth';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { api, setLoggingOut } from "../api/axios";
+import type { AuthUser, RegisterPayload } from "../types/auth";
 
 // ── Context type ─────────────────────────────────────────────────────────────
 
@@ -18,58 +18,86 @@ interface AuthContextType {
   ): Promise<{ success: boolean; error?: string }>;
   logout(): Promise<void>;
   refreshAccessToken(): Promise<string>;
+  updateUser(updatedUser: AuthUser): void;
 }
 
 function clearAuthStorage() {
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken');
-  localStorage.removeItem('authUser');
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("authUser");
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem('authUser');
+    const stored = localStorage.getItem("authUser");
     if (stored) {
-      try { setUser(JSON.parse(stored)); } catch { clearAuthStorage(); }
+      try {
+        setUser(JSON.parse(stored));
+      } catch {
+        clearAuthStorage();
+      }
     }
     setIsLoading(false);
   }, []);
 
   const login = async (email: string, password: string, rememberMe = false) => {
     try {
-      const { data } = await api.post('/auth/login', { email, password, rememberMe });
+      const { data } = await api.post("/auth/login", {
+        email,
+        password,
+        rememberMe,
+      });
       const { accessToken, refreshToken, user: u } = data.data;
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      const authUser: AuthUser = { id: u.id, email: u.email, role: u.role, name: u.name, avatar: u.avatar ?? null };
-      localStorage.setItem('authUser', JSON.stringify(authUser));
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      const authUser: AuthUser = {
+        id: u.id,
+        email: u.email,
+        role: u.role,
+        name: u.name,
+        avatar: u.avatar ?? null,
+      };
+      localStorage.setItem("authUser", JSON.stringify(authUser));
       setUser(authUser);
       return { success: true, role: u.role as string };
     } catch (err: any) {
-      return { success: false, error: err.message ?? 'Login failed. Please try again.' };
+      return {
+        success: false,
+        error: err.message ?? "Login failed. Please try again.",
+      };
     }
   };
 
   const register = async (payload: RegisterPayload) => {
     try {
-      await api.post('/auth/register', payload);
+      await api.post("/auth/register", payload);
       return { success: true };
     } catch (err: any) {
-      if (err.status === 409) return { success: false, error: 'An account with this email already exists.' };
-      return { success: false, error: err.message ?? 'Registration failed. Please try again.' };
+      if (err.status === 409)
+        return {
+          success: false,
+          error: "An account with this email already exists.",
+        };
+      return {
+        success: false,
+        error: err.message ?? "Registration failed. Please try again.",
+      };
     }
   };
 
   const logout = async (): Promise<void> => {
     setLoggingOut(true);
     try {
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (refreshToken) await api.post('/auth/logout', { refreshToken }).catch(() => {});
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (refreshToken)
+        await api.post("/auth/logout", { refreshToken }).catch(() => {});
     } finally {
       setUser(null);
       clearAuthStorage();
@@ -78,17 +106,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const refreshAccessToken = async (): Promise<string> => {
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (!refreshToken) throw new Error('No refresh token');
-    const { data } = await api.post('/auth/refresh', { refreshToken });
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) throw new Error("No refresh token");
+    const { data } = await api.post("/auth/refresh", { refreshToken });
     const { accessToken, refreshToken: newRefresh } = data.data;
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', newRefresh);
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", newRefresh);
     return accessToken;
   };
 
+  const updateUser = (updatedUser: AuthUser) => {
+    setUser(updatedUser);
+    localStorage.setItem("authUser", JSON.stringify(updatedUser));
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoading, login, register, logout, refreshAccessToken }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: !!user,
+        isLoading,
+        login,
+        register,
+        logout,
+        refreshAccessToken,
+        updateUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -96,6 +140,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within an AuthProvider');
+  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
   return ctx;
 };
