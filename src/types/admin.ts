@@ -114,6 +114,18 @@ export type FaqFormPayload = {
 };
 
 export type UserStage = 'registered' | 'free_assessment' | 'paid_session';
+export type TicketStatus = 'new' | 'open' | 'resolved' | 'closed';
+
+export interface AdminStats {
+  totalUsers: number;
+  totalTherapists: number;
+  totalSessions: number;
+  totalRevenue: number;
+  newUsersThisMonth: number;
+  sessionsThisMonth: number;
+  openTickets: number;
+  pendingArticles: number;
+}
 
 export interface AdminUser {
   id: string;

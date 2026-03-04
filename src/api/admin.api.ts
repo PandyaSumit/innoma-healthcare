@@ -12,6 +12,7 @@ import type {
   AdminFaq,
   FaqFormPayload,
   AdminUser,
+  AdminStats,
   PaginatedResponse,
   UserStage,
 } from '../types/admin';
@@ -234,18 +235,7 @@ export async function sendEmailToUser(
 
 // ── Dashboard Stats ───────────────────────────────────────────────────────────
 
-export interface AdminDashboardStats {
-  totalUsers: number;
-  totalTherapists: number;
-  totalSessions: number;
-  totalRevenue: number;
-  newUsersThisMonth: number;
-  sessionsThisMonth: number;
-  openTickets: number;
-  pendingArticles: number;
-}
-
-export async function fetchAdminDashboardStats(): Promise<AdminDashboardStats> {
+export async function fetchAdminDashboardStats(): Promise<AdminStats> {
   const { data } = await api.get('/admin/dashboard/stats');
   return data.data;
 }
