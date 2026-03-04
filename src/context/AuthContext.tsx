@@ -1,163 +1,94 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { authService } from "../services/authService";
-import { clearTokens } from "../services/api";
-import type { RegisterPayload } from "../services/authService";
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { api, setLoggingOut } from '../api/axios';
+import type { AuthUser, RegisterPayload } from '../types/auth';
 
-// ── Types ────────────────────────────────────────────────────────────────────
-
-export type UserRole = "patient" | "therapist";
-
-export interface User {
-  email: string;
-  role: UserRole;
-  profile: {
-    id: string;
-    name: string;
-    email: string;
-    avatar?: string;
-    [key: string]: any;
-  };
-}
+// ── Context type ─────────────────────────────────────────────────────────────
 
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (
+  login(
     email: string,
     password: string,
     rememberMe?: boolean,
-  ) => Promise<{ success: boolean; error?: string }>;
-  register: (
+  ): Promise<{ success: boolean; error?: string; role?: string }>;
+  register(
     payload: RegisterPayload,
-  ) => Promise<{ success: boolean; error?: string }>;
-  logout: () => void;
-  updateUser: (userData: User) => void;
+  ): Promise<{ success: boolean; error?: string }>;
+  logout(): Promise<void>;
+  refreshAccessToken(): Promise<string>;
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
-/** Build a User object from a login response */
-function userFromLoginData(data: any): User {
-  return {
-    email: data.user.email,
-    role: data.user.role as UserRole,
-    profile: {
-      id: data.user.id,
-      name: data.user.name,
-      email: data.user.email,
-      avatar: data.user.avatar ?? undefined,
-    },
-  };
+function clearAuthStorage() {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('authUser');
 }
-
-/** Build a User object from a register response (name comes from the form) */
-function userFromRegisterData(data: any, fullName: string): User {
-  return {
-    email: data.email,
-    role: (data.role ?? "patient") as UserRole,
-    profile: {
-      id: data.userId,
-      name: fullName,
-      email: data.email,
-    },
-  };
-}
-
-function persistUser(user: User) {
-  localStorage.setItem("innoma_user", JSON.stringify(user));
-}
-
-// ── Context ──────────────────────────────────────────────────────────────────
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [user, setUser] = useState<User | null>(null);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Restore session from localStorage on first mount
   useEffect(() => {
-    const stored = localStorage.getItem("innoma_user");
+    const stored = localStorage.getItem('authUser');
     if (stored) {
-      try {
-        setUser(JSON.parse(stored));
-      } catch {
-        localStorage.removeItem("innoma_user");
-      }
+      try { setUser(JSON.parse(stored)); } catch { clearAuthStorage(); }
     }
     setIsLoading(false);
   }, []);
 
-  const login = async (
-    email: string,
-    password: string,
-    rememberMe = false,
-  ): Promise<{ success: boolean; error?: string }> => {
+  const login = async (email: string, password: string, rememberMe = false) => {
     try {
-      const data = await authService.login({ email, password, rememberMe });
-      const userData = userFromLoginData(data);
-      setUser(userData);
-      persistUser(userData);
-      return { success: true };
+      const { data } = await api.post('/auth/login', { email, password, rememberMe });
+      const { accessToken, refreshToken, user: u } = data.data;
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      const authUser: AuthUser = { id: u.id, email: u.email, role: u.role, name: u.name, avatar: u.avatar ?? null };
+      localStorage.setItem('authUser', JSON.stringify(authUser));
+      setUser(authUser);
+      return { success: true, role: u.role as string };
     } catch (err: any) {
-      return {
-        success: false,
-        error: err.message ?? "Login failed. Please try again.",
-      };
+      return { success: false, error: err.message ?? 'Login failed. Please try again.' };
     }
   };
 
-  const register = async (
-    payload: RegisterPayload,
-  ): Promise<{ success: boolean; error?: string }> => {
+  const register = async (payload: RegisterPayload) => {
     try {
-      const data = await authService.register(payload);
-      const userData = userFromRegisterData(data, payload.fullName);
-      setUser(userData);
-      persistUser(userData);
+      await api.post('/auth/register', payload);
       return { success: true };
     } catch (err: any) {
-      if (err.status === 409) {
-        return {
-          success: false,
-          error: "An account with this email already exists.",
-        };
-      }
-      return {
-        success: false,
-        error: err.message ?? "Registration failed. Please try again.",
-      };
+      if (err.status === 409) return { success: false, error: 'An account with this email already exists.' };
+      return { success: false, error: err.message ?? 'Registration failed. Please try again.' };
     }
   };
 
-  const logout = () => {
-    // Fire-and-forget — invalidates the token on the server
-    authService.logout().catch(() => {});
-    setUser(null);
-    clearTokens();
-    localStorage.removeItem("innoma_user");
+  const logout = async (): Promise<void> => {
+    setLoggingOut(true);
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (refreshToken) await api.post('/auth/logout', { refreshToken }).catch(() => {});
+    } finally {
+      setUser(null);
+      clearAuthStorage();
+      setLoggingOut(false);
+    }
   };
 
-  const updateUser = (userData: User) => {
-    setUser(userData);
-    persistUser(userData);
+  const refreshAccessToken = async (): Promise<string> => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (!refreshToken) throw new Error('No refresh token');
+    const { data } = await api.post('/auth/refresh', { refreshToken });
+    const { accessToken, refreshToken: newRefresh } = data.data;
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', newRefresh);
+    return accessToken;
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated: !!user,
-        isLoading,
-        login,
-        register,
-        logout,
-        updateUser,
-      }}
-    >
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoading, login, register, logout, refreshAccessToken }}>
       {children}
     </AuthContext.Provider>
   );
@@ -165,6 +96,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
+  if (!ctx) throw new Error('useAuth must be used within an AuthProvider');
   return ctx;
 };

@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.21",
     "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.13.6",
     "formik": "^2.4.9",
     "lottie-react": "^2.4.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.12.0",
+    "sonner": "^2.0.7",
     "yup": "^1.7.1"
   },
   "devDependencies": {
