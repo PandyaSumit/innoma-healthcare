@@ -23,35 +23,72 @@ const AdminStatCard: React.FC<AdminStatCardProps> = ({
   trend,
 }) => {
   const CardContent = (
-    <div className="bg-white rounded-2xl border border-healthcare-border p-6 shadow-clinical hover:shadow-clinical-lg transition-all duration-300">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-white rounded-2xl border border-healthcare-border p-7 shadow-clinical hover:shadow-clinical-lg transition-all duration-500 group relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-brand-blue/10 transition-colors duration-500" />
+
+      <div className="flex items-center justify-between mb-5 relative z-10">
         <div
-          className={`w-12 h-12 rounded-2xl flex items-center justify-center ${color} shadow-sm`}
+          className={`w-14 h-14 rounded-2xl flex items-center justify-center ${color} shadow-clinical group-hover:scale-110 transition-transform duration-500`}
         >
-          {icon}
+          {React.isValidElement(icon)
+            ? React.cloneElement(
+                icon as React.ReactElement<{ className?: string }>,
+                {
+                  className: "w-6 h-6",
+                },
+              )
+            : icon}
         </div>
         {trend && (
           <div
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${
               trend.isPositive
-                ? "bg-emerald-50 text-emerald-600"
-                : "bg-red-50 text-red-600"
+                ? "bg-emerald-50 text-emerald-600 border border-emerald-100/50"
+                : "bg-red-50 text-red-600 border border-red-100/50"
             }`}
           >
-            {trend.isPositive ? "+" : "-"}
+            {trend.isPositive ? (
+              <svg
+                className="w-3 h-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={3}
+                  d="M5 10l7-7m0 0l7 7m-7-7v18"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="w-3 h-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={3}
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                />
+              </svg>
+            )}
             {trend.value}%
           </div>
         )}
       </div>
-      <div>
-        <p className="text-sm font-semibold text-healthcare-text-muted mb-1">
+      <div className="relative z-10">
+        <p className="text-sm font-semibold text-healthcare-text-muted mb-1 tracking-wide">
           {label}
         </p>
-        <h3 className="text-2xl sm:text-3xl font-bold text-healthcare-text tracking-tight">
+        <h3 className="text-3xl sm:text-4xl font-bold text-healthcare-text tracking-tight group-hover:text-brand-blue transition-colors duration-300">
           {value}
         </h3>
         {trend?.label && (
-          <p className="text-xs text-healthcare-text-muted mt-2">
+          <p className="text-xs text-healthcare-text-muted mt-3 font-medium opacity-80">
             {trend.label}
           </p>
         )}

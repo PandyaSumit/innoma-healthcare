@@ -177,8 +177,8 @@ export default function Users() {
       />
 
       {/* Filters & Search */}
-      <section className="bg-white p-6 rounded-2xl border border-healthcare-border shadow-clinical flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 lg:pb-0">
+      <section className="bg-white p-2 rounded-2xl border border-healthcare-border shadow-clinical flex flex-col lg:flex-row lg:items-center gap-2">
+        <div className="flex-1 flex items-center gap-2 overflow-x-auto no-scrollbar p-1">
           {(
             ["all", "registered", "free_assessment", "paid_session"] as const
           ).map((s) => (
@@ -188,21 +188,21 @@ export default function Users() {
                 setStageFilter(s);
                 setPage(1);
               }}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap cursor-pointer ${
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap cursor-pointer ${
                 stageFilter === s
-                  ? "bg-brand-blue text-white border-brand-blue shadow-md shadow-blue-100"
-                  : "bg-white text-healthcare-text-muted border-healthcare-border hover:bg-healthcare-surface hover:text-healthcare-text"
+                  ? "bg-brand-blue text-white border-brand-blue shadow-clinical"
+                  : "bg-transparent text-healthcare-text-muted border-transparent hover:bg-healthcare-surface hover:text-healthcare-text"
               }`}
             >
-              {s === "all" ? "All Users" : STAGE_LABEL[s]}
+              {s === "all" ? "All Users" : STAGE_LABEL[s].toUpperCase()}
             </button>
           ))}
         </div>
 
-        <div className="relative w-full lg:w-80">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-healthcare-text-muted/60">
+        <div className="relative lg:w-96 p-1">
+          <span className="absolute left-5 top-1/2 -translate-y-1/2 text-healthcare-text-muted/50">
             <svg
-              className="w-5 h-5"
+              className="w-4 h-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -210,7 +210,7 @@ export default function Users() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
+                strokeWidth={2.5}
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
@@ -222,7 +222,7 @@ export default function Users() {
               setPage(1);
             }}
             placeholder="Search by name or email..."
-            className="w-full pl-12 pr-4 py-3 text-sm border border-healthcare-border rounded-2xl focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 outline-none bg-healthcare-surface/30 text-healthcare-text placeholder:text-healthcare-text-muted/50 font-medium transition-all"
+            className="w-full pl-12 pr-6 py-3 text-sm border border-healthcare-border/60 rounded-xl focus:border-brand-blue/50 focus:ring-4 focus:ring-brand-blue/5 outline-none bg-healthcare-surface/20 text-healthcare-text placeholder:text-healthcare-text-muted/40 font-medium transition-all"
           />
         </div>
       </section>
@@ -326,8 +326,8 @@ export default function Users() {
           />
 
           {data.totalPages > 1 && (
-            <div className="flex items-center justify-between p-6 bg-white rounded-2xl border border-healthcare-border shadow-clinical">
-              <p className="text-sm font-medium text-healthcare-text-muted">
+            <div className="flex flex-col sm:flex-row items-center justify-between p-6 gap-6">
+              <p className="text-sm font-medium text-healthcare-text-muted order-2 sm:order-1">
                 Showing{" "}
                 <span className="text-healthcare-text font-bold">
                   {(page - 1) * 20 + 1}-{Math.min(page * 20, data.total)}
@@ -338,29 +338,57 @@ export default function Users() {
                 </span>{" "}
                 patients
               </p>
-              <div className="flex gap-3">
+              <div className="flex items-center gap-2 order-1 sm:order-2">
                 <button
                   disabled={page <= 1}
                   onClick={() => setPage(page - 1)}
-                  className="px-5 py-2 rounded-xl border border-healthcare-border text-healthcare-text font-bold text-sm disabled:opacity-30 hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
+                  className="p-2.5 rounded-xl border border-healthcare-border text-healthcare-text disabled:opacity-30 hover:bg-healthcare-surface transition-all cursor-pointer bg-white group"
                 >
-                  Previous
+                  <svg
+                    className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
                 </button>
-                <div className="flex items-center gap-2 px-2">
+
+                <div className="bg-healthcare-surface/50 border border-healthcare-border rounded-xl px-4 py-2 flex items-center gap-2">
                   <span className="text-sm font-bold text-brand-blue">
                     {page}
                   </span>
-                  <span className="text-sm text-healthcare-text-muted">/</span>
-                  <span className="text-sm font-medium text-healthcare-text-muted">
+                  <span className="text-sm text-healthcare-text-muted/40 font-bold">
+                    /
+                  </span>
+                  <span className="text-sm font-bold text-healthcare-text-muted">
                     {data.totalPages}
                   </span>
                 </div>
+
                 <button
                   disabled={page >= data.totalPages}
                   onClick={() => setPage(page + 1)}
-                  className="px-5 py-2 rounded-xl border border-healthcare-border text-healthcare-text font-bold text-sm disabled:opacity-30 hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
+                  className="p-2.5 rounded-xl border border-healthcare-border text-healthcare-text disabled:opacity-30 hover:bg-healthcare-surface transition-all cursor-pointer bg-white group"
                 >
-                  Next
+                  <svg
+                    className="w-5 h-5 group-hover:translate-x-0.5 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
                 </button>
               </div>
             </div>

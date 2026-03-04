@@ -1,46 +1,80 @@
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { toast } from "sonner";
 import {
   fetchAdminArticle,
   createArticle,
   updateArticle,
-} from '../../api/admin.api';
-import Spinner from '../../components/ui/Spinner';
+} from "../../api/admin.api";
+import Spinner from "../../components/ui/Spinner";
+import AdminPageHeader from "../../components/admin/AdminPageHeader";
 
 const schema = yup.object({
-  title: yup.string().required('Title is required'),
-  content: yup.string().required('Content is required').min(50, 'Content must be at least 50 characters'),
+  title: yup.string().required("Title is required"),
+  content: yup
+    .string()
+    .required("Content is required")
+    .min(50, "Content must be at least 50 characters"),
   excerpt: yup.string(),
-  coverImageUrl: yup.string().url('Must be a valid URL'),
+  coverImageUrl: yup.string().url("Must be a valid URL"),
 });
 
 const inputCls = (err?: boolean) =>
-  `w-full px-4 py-2.5 rounded-xl border ${err ? 'border-red-400' : 'border-healthcare-neutral/20'} focus:border-brand-blue outline-none text-healthcare-text bg-white font-medium text-sm placeholder:text-healthcare-text-muted/40`;
+  `w-full px-5 py-3.5 rounded-2xl border ${err ? "border-red-400 bg-red-50/10" : "border-healthcare-border bg-healthcare-surface/20"} focus:border-brand-blue/50 focus:ring-4 focus:ring-brand-blue/5 outline-none text-healthcare-text font-medium text-sm transition-all placeholder:text-healthcare-text-muted/40`;
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({
+  label,
+  error,
+  children,
+  required,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+  required?: boolean;
+}) {
   return (
-    <div className="space-y-1.5">
-      <label className="block text-sm font-semibold text-healthcare-text">{label}</label>
+    <div className="space-y-2">
+      <label className="text-sm font-bold text-healthcare-text px-1 flex items-center gap-1">
+        {label}
+        {required && <span className="text-red-500">*</span>}
+      </label>
       {children}
-      {error && <p className="text-red-500 text-xs font-bold">{error}</p>}
+      {error && (
+        <div className="flex items-center gap-1.5 px-1 animate-fade-in">
+          <svg
+            className="w-3.5 h-3.5 text-red-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <p className="text-red-500 text-[11px] font-bold uppercase tracking-wider">
+            {error}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
 
 export default function ArticleForm() {
   const { id } = useParams<{ id?: string }>();
-  const isEdit = !!id && id !== 'new';
+  const isEdit = !!id && id !== "new";
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [tags, setTags] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState('');
+  const [newTag, setNewTag] = useState("");
 
   const { data: existing, isLoading } = useQuery({
-    queryKey: ['admin', 'article', id],
+    queryKey: ["admin", "article", id],
     queryFn: () => fetchAdminArticle(id!),
     enabled: isEdit,
   });
@@ -48,31 +82,33 @@ export default function ArticleForm() {
   const create = useMutation({
     mutationFn: createArticle,
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['admin', 'articles'] });
-      toast.success('Article created.');
-      navigate('/admin/articles');
+      qc.invalidateQueries({ queryKey: ["admin", "articles"] });
+      toast.success("Article created.");
+      navigate("/admin/articles");
     },
-    onError: (err: any) => toast.error(err.message ?? 'Failed to create article.'),
+    onError: (err: any) =>
+      toast.error(err.message ?? "Failed to create article."),
   });
 
   const edit = useMutation({
     mutationFn: (payload: any) => updateArticle(id!, payload),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['admin', 'articles'] });
-      qc.invalidateQueries({ queryKey: ['admin', 'article', id] });
-      toast.success('Article updated.');
-      navigate('/admin/articles');
+      qc.invalidateQueries({ queryKey: ["admin", "articles"] });
+      qc.invalidateQueries({ queryKey: ["admin", "article", id] });
+      toast.success("Article updated.");
+      navigate("/admin/articles");
     },
-    onError: (err: any) => toast.error(err.message ?? 'Failed to update article.'),
+    onError: (err: any) =>
+      toast.error(err.message ?? "Failed to update article."),
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      title: existing?.title ?? '',
-      content: existing?.content ?? '',
-      excerpt: existing?.excerpt ?? '',
-      coverImageUrl: existing?.coverImageUrl ?? '',
+      title: existing?.title ?? "",
+      content: existing?.content ?? "",
+      excerpt: existing?.excerpt ?? "",
+      coverImageUrl: existing?.coverImageUrl ?? "",
       isPublished: existing?.isPublished ?? false,
     },
     validationSchema: schema,
@@ -92,7 +128,13 @@ export default function ArticleForm() {
   });
 
   // Sync tags from existing on load
-  if (isEdit && existing && tags.length === 0 && existing.tags.length > 0 && !formik.dirty) {
+  if (
+    isEdit &&
+    existing &&
+    tags.length === 0 &&
+    (existing.tags?.length ?? 0) > 0 &&
+    !formik.dirty
+  ) {
     setTags(existing.tags);
   }
 
@@ -100,112 +142,275 @@ export default function ArticleForm() {
     const val = newTag.trim();
     if (val && !tags.includes(val)) {
       setTags([...tags, val]);
-      setNewTag('');
+      setNewTag("");
     }
   };
 
   if (isEdit && isLoading) {
-    return <div className="flex justify-center py-10"><Spinner size="lg" /></div>;
+    return (
+      <div className="flex justify-center py-20">
+        <Spinner size="lg" />
+      </div>
+    );
   }
 
   const isPending = create.isPending || edit.isPending;
 
   return (
-    <div className="max-w-3xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-healthcare-text">
-          {isEdit ? 'Edit Article' : 'New Article'}
-        </h1>
-        <p className="text-sm text-healthcare-text-muted mt-1">
-          {isEdit ? 'Update article content.' : 'Create a new blog post.'}
-        </p>
+    <div className="max-w-4xl space-y-8 animate-fade-in">
+      <div className="flex items-start gap-4">
+        <Link
+          to="/admin/articles"
+          className="mt-1 w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-healthcare-border text-healthcare-text hover:bg-brand-blue hover:text-white hover:border-brand-blue transition-all no-underline shadow-sm group"
+        >
+          <svg
+            className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2.5}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </Link>
+        <div className="flex-1">
+          <AdminPageHeader
+            title={isEdit ? "Edit Article" : "New Article"}
+            description={
+              isEdit
+                ? `Editing: "${existing?.title}"`
+                : "Create and publish a new blog post for the platform users."
+            }
+          />
+        </div>
       </div>
 
-      <form onSubmit={formik.handleSubmit} className="bg-white rounded-2xl border border-healthcare-border shadow-clinical p-6 space-y-5">
-        <Field label="Title" error={formik.touched.title ? formik.errors.title : undefined}>
-          <input name="title" value={formik.values.title} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Article title…" className={inputCls(!!formik.touched.title && !!formik.errors.title)} />
-        </Field>
+      <form
+        onSubmit={formik.handleSubmit}
+        className="bg-white rounded-3xl border border-healthcare-border shadow-clinical p-8 space-y-8"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="md:col-span-2">
+            <Field
+              label="Article Title"
+              required
+              error={formik.touched.title ? formik.errors.title : undefined}
+            >
+              <input
+                name="title"
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Enter a compelling title…"
+                className={
+                  inputCls(!!formik.touched.title && !!formik.errors.title) +
+                  " text-lg font-bold"
+                }
+              />
+            </Field>
+          </div>
 
-        <Field label="Excerpt (optional)">
-          <textarea name="excerpt" value={formik.values.excerpt} onChange={formik.handleChange} rows={2} placeholder="Short summary shown in listings…" className={inputCls() + ' resize-none'} />
-        </Field>
+          <div className="md:col-span-2">
+            <Field label="Short Excerpt (optional)">
+              <textarea
+                name="excerpt"
+                value={formik.values.excerpt}
+                onChange={formik.handleChange}
+                rows={2}
+                placeholder="A brief summary that appears in listings…"
+                className={inputCls() + " resize-none"}
+              />
+            </Field>
+          </div>
 
-        <Field label="Cover Image URL (optional)" error={formik.touched.coverImageUrl ? formik.errors.coverImageUrl : undefined}>
-          <input name="coverImageUrl" value={formik.values.coverImageUrl} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="https://example.com/image.jpg" className={inputCls(!!formik.touched.coverImageUrl && !!formik.errors.coverImageUrl)} />
-        </Field>
+          <div className="md:col-span-2">
+            <Field
+              label="Cover Image URL (optional)"
+              error={
+                formik.touched.coverImageUrl
+                  ? formik.errors.coverImageUrl
+                  : undefined
+              }
+            >
+              <div className="relative">
+                <input
+                  name="coverImageUrl"
+                  value={formik.values.coverImageUrl}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  placeholder="https://images.unsplash.com/…"
+                  className={
+                    inputCls(
+                      !!formik.touched.coverImageUrl &&
+                        !!formik.errors.coverImageUrl,
+                    ) + " pr-12"
+                  }
+                />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-healthcare-text-muted/40">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </Field>
+          </div>
 
-        <Field label="Content" error={formik.touched.content ? formik.errors.content : undefined}>
-          <textarea
-            name="content"
-            value={formik.values.content}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            rows={12}
-            placeholder="Write your article content here… (Markdown supported)"
-            className={inputCls(!!formik.touched.content && !!formik.errors.content) + ' resize-none font-mono text-xs'}
-          />
-        </Field>
+          <div className="md:col-span-2">
+            <Field
+              label="Content"
+              required
+              error={formik.touched.content ? formik.errors.content : undefined}
+            >
+              <textarea
+                name="content"
+                value={formik.values.content}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                rows={15}
+                placeholder="Start writing your article content here… Markdown formatting is supported."
+                className={
+                  inputCls(
+                    !!formik.touched.content && !!formik.errors.content,
+                  ) + " resize-none font-medium leading-relaxed"
+                }
+              />
+              <div className="flex items-center gap-2 mt-2 px-1">
+                <div className="w-2 h-2 rounded-full bg-brand-blue/40 animate-pulse" />
+                <p className="text-[10px] font-bold text-healthcare-text-muted uppercase tracking-widest">
+                  Supports Markdown Rendering
+                </p>
+              </div>
+            </Field>
+          </div>
 
-        {/* Tags */}
-        <div className="space-y-2">
-          <label className="block text-sm font-semibold text-healthcare-text">Tags</label>
-          <div className="flex flex-wrap gap-2 mb-2">
-            {tags.map((t) => (
-              <span key={t} className="flex items-center gap-1.5 px-3 py-1 bg-brand-blue/8 text-brand-blue text-xs font-bold rounded-full border border-brand-blue/20">
-                {t}
+          <div>
+            <div className="space-y-4">
+              <label className="text-sm font-bold text-healthcare-text px-1">
+                Tags & Categories
+              </label>
+              <div className="flex flex-wrap gap-2 min-h-[40px] p-4 bg-healthcare-surface/20 border border-healthcare-border border-dashed rounded-2xl">
+                {tags.length === 0 && (
+                  <span className="text-xs text-healthcare-text-muted font-medium italic opacity-60">
+                    No tags added yet
+                  </span>
+                )}
+                {tags.map((t) => (
+                  <span
+                    key={t}
+                    className="flex items-center gap-2 px-4 py-1.5 bg-brand-blue text-white text-xs font-bold rounded-xl shadow-clinical-sm animate-scale-in"
+                  >
+                    {t}
+                    <button
+                      type="button"
+                      onClick={() => setTags(tags.filter((x) => x !== t))}
+                      className="hover:scale-110 transition-transform bg-transparent border-none cursor-pointer p-0 text-white"
+                    >
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={3}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <input
+                  value={newTag}
+                  onChange={(e) => setNewTag(e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" && (e.preventDefault(), addTag())
+                  }
+                  placeholder="Type a tag…"
+                  className={inputCls() + " flex-1 px-4 py-2.5 rounded-xl"}
+                />
                 <button
                   type="button"
-                  onClick={() => setTags(tags.filter((x) => x !== t))}
-                  className="text-brand-blue/60 hover:text-brand-blue transition-colors bg-transparent border-none cursor-pointer p-0"
+                  onClick={addTag}
+                  className="px-6 py-2.5 bg-healthcare-text text-white rounded-xl text-xs font-bold hover:shadow-lg transition-all cursor-pointer border-none"
                 >
-                  ×
+                  Add
                 </button>
-              </span>
-            ))}
+              </div>
+            </div>
           </div>
-          <div className="flex gap-2">
-            <input
-              value={newTag}
-              onChange={(e) => setNewTag(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-              placeholder="Add tag…"
-              className={inputCls() + ' flex-1'}
-            />
-            <button type="button" onClick={addTag} className="px-4 py-2.5 bg-healthcare-surface border border-healthcare-neutral/20 rounded-xl text-sm font-bold text-healthcare-text hover:bg-white transition-all cursor-pointer">
-              Add
+
+          <div className="flex flex-col justify-end pb-1">
+            <div className="flex items-center justify-between p-6 bg-healthcare-surface/20 border border-healthcare-border rounded-2xl transition-all hover:bg-healthcare-surface/30">
+              <div className="space-y-1">
+                <p className="text-sm font-bold text-healthcare-text leading-none">
+                  Publish Status
+                </p>
+                <p className="text-xs text-healthcare-text-muted font-medium opacity-80">
+                  {formik.values.isPublished
+                    ? "Visible to all users"
+                    : "Saved as a draft"}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  formik.setFieldValue(
+                    "isPublished",
+                    !formik.values.isPublished,
+                  )
+                }
+                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all border-none cursor-pointer focus:ring-4 focus:ring-brand-blue/10 ${formik.values.isPublished ? "bg-brand-blue shadow-clinical-blue" : "bg-healthcare-neutral/30"}`}
+              >
+                <span
+                  className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-xl transition-all ${formik.values.isPublished ? "translate-x-6" : "translate-x-1"}`}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between gap-4 pt-6 mt-4 border-t border-healthcare-border">
+          <p className="text-xs text-healthcare-text-muted font-bold uppercase tracking-widest hidden sm:block">
+            {isEdit ? "Unsaved Changes" : "Draft Article"}
+          </p>
+          <div className="flex gap-4 w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={() => navigate("/admin/articles")}
+              className="flex-1 sm:flex-none px-8 py-3.5 border border-healthcare-border rounded-2xl text-sm font-bold text-healthcare-text hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isPending}
+              className="flex-1 sm:flex-none px-12 py-3.5 bg-healthcare-text text-white rounded-2xl text-sm font-bold hover:opacity-90 hover:shadow-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer"
+            >
+              {isPending
+                ? "Processing…"
+                : isEdit
+                  ? "Save Changes"
+                  : "Create Article"}
             </button>
           </div>
-        </div>
-
-        {/* Publish toggle */}
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => formik.setFieldValue('isPublished', !formik.values.isPublished)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors border-none cursor-pointer ${formik.values.isPublished ? 'bg-brand-blue' : 'bg-healthcare-neutral/20'}`}
-          >
-            <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${formik.values.isPublished ? 'translate-x-6' : 'translate-x-1'}`} />
-          </button>
-          <span className="text-sm font-semibold text-healthcare-text">
-            {formik.values.isPublished ? 'Published' : 'Draft'}
-          </span>
-        </div>
-
-        <div className="flex gap-3 pt-2">
-          <button
-            type="button"
-            onClick={() => navigate('/admin/articles')}
-            className="px-5 py-2.5 border border-healthcare-neutral/20 rounded-xl text-sm font-bold text-healthcare-text hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={isPending}
-            className="px-5 py-2.5 bg-brand-blue text-white rounded-xl text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer"
-          >
-            {isPending ? 'Saving…' : isEdit ? 'Save Changes' : 'Create Article'}
-          </button>
         </div>
       </form>
     </div>

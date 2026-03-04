@@ -66,11 +66,11 @@ export default function AdminTherapists() {
       />
 
       {/* Search & Stats Bar */}
-      <section className="bg-white p-6 rounded-2xl border border-healthcare-border shadow-clinical flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="relative w-full md:w-96">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-healthcare-text-muted/60">
+      <section className="bg-white p-2 rounded-2xl border border-healthcare-border shadow-clinical flex flex-col md:flex-row md:items-center gap-2">
+        <div className="relative flex-1 p-1">
+          <span className="absolute left-5 top-1/2 -translate-y-1/2 text-healthcare-text-muted/50">
             <svg
-              className="w-5 h-5"
+              className="w-4 h-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -78,7 +78,7 @@ export default function AdminTherapists() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
+                strokeWidth={2.5}
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
@@ -87,27 +87,29 @@ export default function AdminTherapists() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, email or specialty..."
-            className="w-full pl-12 pr-4 py-3 text-sm border border-healthcare-border rounded-2xl focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 outline-none bg-healthcare-surface/30 text-healthcare-text placeholder:text-healthcare-text-muted/50 font-medium transition-all"
+            className="w-full pl-12 pr-6 py-3 text-sm border border-healthcare-border/60 rounded-xl focus:border-brand-blue/50 focus:ring-4 focus:ring-brand-blue/5 outline-none bg-healthcare-surface/20 text-healthcare-text placeholder:text-healthcare-text-muted/40 font-medium transition-all"
           />
         </div>
 
-        <div className="flex items-center gap-6 px-2">
-          <div className="text-center">
-            <p className="text-[10px] font-bold text-healthcare-text-muted uppercase tracking-widest mb-1">
-              Total
-            </p>
-            <p className="text-lg font-bold text-healthcare-text">
-              {therapists.length}
-            </p>
-          </div>
-          <div className="w-px h-8 bg-healthcare-border"></div>
-          <div className="text-center">
-            <p className="text-[10px] font-bold text-healthcare-text-muted uppercase tracking-widest mb-1">
-              Active
-            </p>
-            <p className="text-lg font-bold text-emerald-600">
-              {therapists.filter((t) => t.isActive).length}
-            </p>
+        <div className="flex items-center gap-1 p-1">
+          <div className="px-6 py-2 border border-transparent rounded-xl flex items-center gap-4">
+            <div className="text-right">
+              <p className="text-[10px] font-bold text-healthcare-text-muted uppercase tracking-widest leading-none mb-1">
+                Total
+              </p>
+              <p className="text-xl font-bold text-healthcare-text leading-none">
+                {therapists.length}
+              </p>
+            </div>
+            <div className="w-px h-8 bg-healthcare-border/60"></div>
+            <div className="text-right">
+              <p className="text-[10px] font-bold text-healthcare-text-muted uppercase tracking-widest leading-none mb-1">
+                Active
+              </p>
+              <p className="text-xl font-bold text-emerald-600 leading-none">
+                {therapists.filter((t) => t.isActive).length}
+              </p>
+            </div>
           </div>
         </div>
       </section>

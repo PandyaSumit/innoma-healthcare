@@ -140,62 +140,124 @@ export default function AdminDashboard() {
           </div>
 
           {/* Quick Actions */}
-          <section className="bg-white rounded-2xl border border-healthcare-border p-8 shadow-clinical-lg">
-            <h2 className="text-xl font-bold text-healthcare-text mb-6 flex items-center gap-2">
-              <svg
-                className="w-5 h-5 text-brand-blue"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
+          <section className="bg-white rounded-2xl border border-healthcare-border p-8 shadow-clinical hover:shadow-clinical-lg transition-all duration-500 overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
+
+            <h2 className="text-xl font-bold text-healthcare-text mb-8 flex items-center gap-3 relative z-10">
+              <div className="w-10 h-10 bg-brand-blue/10 rounded-xl flex items-center justify-center">
+                <svg
+                  className="w-5 h-5 text-brand-blue"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+              </div>
               Quick Actions
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 relative z-10">
               {[
                 {
                   to: "/admin/therapists/new",
                   label: "Add Therapist",
-                  color: "bg-blue-50 text-brand-blue border-blue-100",
+                  icon: (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  ),
+                  color: "bg-blue-50 text-brand-blue border-blue-100/50",
                 },
                 {
                   to: "/admin/articles/new",
                   label: "New Article",
-                  color: "bg-purple-50 text-purple-600 border-purple-100",
+                  icon: (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  ),
+                  color: "bg-purple-50 text-purple-600 border-purple-100/50",
                 },
                 {
                   to: "/admin/support",
                   label: "View Tickets",
-                  color: "bg-amber-50 text-amber-600 border-amber-100",
+                  icon: (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                    />
+                  ),
+                  color: "bg-amber-50 text-amber-600 border-amber-100/50",
                 },
                 {
                   to: "/admin/faqs",
                   label: "Manage FAQs",
-                  color: "bg-emerald-50 text-emerald-600 border-emerald-100",
+                  icon: (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  ),
+                  color: "bg-emerald-50 text-emerald-600 border-emerald-100/50",
                 },
                 {
                   to: "/admin/users",
                   label: "View Users",
-                  color: "bg-sky-50 text-sky-600 border-sky-100",
+                  icon: (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                    />
+                  ),
+                  color: "bg-sky-50 text-sky-600 border-sky-100/50",
                 },
                 {
                   to: "/admin/finance",
-                  label: "Finance Report",
-                  color: "bg-orange-50 text-brand-orange border-orange-100",
+                  label: "Finance",
+                  icon: (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  ),
+                  color: "bg-orange-50 text-brand-orange border-orange-100/50",
                 },
-              ].map(({ to, label, color }) => (
+              ].map(({ to, label, color, icon }) => (
                 <Link
                   key={to}
                   to={to}
-                  className={`flex items-center justify-center p-4 text-xs font-bold border rounded-2xl hover:scale-[1.02] transition-all no-underline text-center shadow-sm ${color}`}
+                  className={`group/btn flex flex-col items-center justify-center p-5 gap-3 border rounded-2xl hover:bg-white hover:shadow-clinical transition-all duration-300 no-underline text-center ${color}`}
                 >
-                  {label}
+                  <svg
+                    className="w-6 h-6 group-hover/btn:scale-110 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    {icon}
+                  </svg>
+                  <span className="text-xs font-bold uppercase tracking-wider">
+                    {label}
+                  </span>
                 </Link>
               ))}
             </div>

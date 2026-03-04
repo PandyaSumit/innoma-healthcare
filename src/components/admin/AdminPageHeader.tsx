@@ -12,18 +12,22 @@ const AdminPageHeader: React.FC<AdminPageHeaderProps> = ({
   actions,
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-healthcare-text tracking-tight">
+    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10 pb-2">
+      <div className="space-y-1">
+        <h1 className="text-3xl sm:text-4xl font-bold text-healthcare-text tracking-tight animate-slide-up">
           {title}
         </h1>
         {description && (
-          <p className="text-sm text-healthcare-text-muted mt-1 max-w-2xl">
+          <p className="text-base text-healthcare-text-muted max-w-3xl animate-fade-in">
             {description}
           </p>
         )}
       </div>
-      {actions && <div className="flex items-center gap-3">{actions}</div>}
+      {actions && (
+        <div className="flex items-center gap-3 animate-fade-in stagger-1">
+          {actions}
+        </div>
+      )}
     </div>
   );
 };

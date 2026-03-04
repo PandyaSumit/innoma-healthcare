@@ -218,33 +218,40 @@ export default function Finance() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Daily Revenue Chart */}
-        <div className="bg-white rounded-3xl border border-healthcare-border shadow-clinical-lg p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-            <h2 className="text-xl font-bold text-healthcare-text flex items-center gap-2">
-              <svg
-                className="w-5 h-5 text-brand-blue"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
-                />
-              </svg>
-              Daily Revenue
-            </h2>
-            <div className="flex items-center gap-2 bg-healthcare-surface p-1.5 rounded-2xl border border-healthcare-border">
+        <div className="bg-white rounded-3xl border border-healthcare-border shadow-clinical p-8 overflow-hidden relative group">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-50 group-hover:bg-brand-blue/10 transition-colors duration-500" />
+
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10 relative z-10">
+            <div>
+              <h2 className="text-xl font-bold text-healthcare-text flex items-center gap-3">
+                <div className="w-10 h-10 bg-brand-blue/10 rounded-xl flex items-center justify-center">
+                  <svg
+                    className="w-5 h-5 text-brand-blue"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
+                    />
+                  </svg>
+                </div>
+                Daily Revenue
+              </h2>
+            </div>
+
+            <div className="flex items-center gap-1 bg-healthcare-surface/50 p-1 rounded-xl border border-healthcare-border relative z-10">
               <input
                 type="date"
                 value={from}
                 max={to}
                 onChange={(e) => setFrom(e.target.value)}
-                className="px-3 py-1.5 bg-white border border-healthcare-border rounded-xl text-healthcare-text text-xs outline-none focus:border-brand-blue transition-all"
+                className="px-3 py-2 bg-white border border-healthcare-border/60 rounded-lg text-healthcare-text text-[10px] font-bold uppercase outline-none focus:border-brand-blue/50 transition-all cursor-pointer"
               />
-              <span className="text-healthcare-text-muted text-[10px] font-bold uppercase tracking-wider">
+              <span className="px-2 text-healthcare-text-muted text-[10px] font-bold uppercase tracking-tight opacity-40">
                 to
               </span>
               <input
@@ -253,21 +260,24 @@ export default function Finance() {
                 min={from}
                 max={today()}
                 onChange={(e) => setTo(e.target.value)}
-                className="px-3 py-1.5 bg-white border border-healthcare-border rounded-xl text-healthcare-text text-xs outline-none focus:border-brand-blue transition-all"
+                className="px-3 py-2 bg-white border border-healthcare-border/60 rounded-lg text-healthcare-text text-[10px] font-bold uppercase outline-none focus:border-brand-blue/50 transition-all cursor-pointer"
               />
             </div>
           </div>
-          {daily.isLoading ? (
-            <div className="flex justify-center py-20">
-              <Spinner />
-            </div>
-          ) : daily.data ? (
-            <SimpleBarChart data={daily.data} />
-          ) : (
-            <div className="h-64 flex items-center justify-center text-healthcare-text-muted italic">
-              No daily revenue data for this range.
-            </div>
-          )}
+
+          <div className="relative z-10">
+            {daily.isLoading ? (
+              <div className="flex justify-center py-20">
+                <Spinner />
+              </div>
+            ) : daily.data ? (
+              <SimpleBarChart data={daily.data} />
+            ) : (
+              <div className="h-64 flex items-center justify-center text-healthcare-text-muted italic bg-healthcare-surface/30 rounded-2xl border border-dashed border-healthcare-border">
+                No revenue data found for this period.
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Per-Therapist Revenue */}
