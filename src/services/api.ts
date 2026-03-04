@@ -4,20 +4,20 @@ const BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhos
 
 export function getTokens() {
   return {
-    accessToken: localStorage.getItem('innoma_access_token'),
-    refreshToken: localStorage.getItem('innoma_refresh_token'),
+    accessToken: localStorage.getItem('accessToken'),
+    refreshToken: localStorage.getItem('refreshToken'),
   };
 }
 
 export function setTokens(accessToken: string, refreshToken: string) {
-  localStorage.setItem('innoma_access_token', accessToken);
-  localStorage.setItem('innoma_refresh_token', refreshToken);
+  localStorage.setItem('accessToken', accessToken);
+  localStorage.setItem('refreshToken', refreshToken);
 }
 
 export function clearTokens() {
-  localStorage.removeItem('innoma_access_token');
-  localStorage.removeItem('innoma_refresh_token');
-  localStorage.removeItem('innoma_user');
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('authUser');
 }
 
 // ── Token refresh (shared promise prevents duplicate refresh calls) ──────────

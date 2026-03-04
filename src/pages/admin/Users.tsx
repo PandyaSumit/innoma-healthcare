@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { fetchAdminUsers, sendEmailToUser } from "../../api/admin.api";
 import type { AdminUser, UserStage } from "../../types/admin";
 import Spinner from "../../components/ui/Spinner";
+import AdminPageHeader from "../../components/admin/AdminPageHeader";
+import AdminTable from "../../components/admin/AdminTable";
 
 const STAGE_BADGE: Record<UserStage, string> = {
   registered: "bg-gray-100 text-gray-600",
@@ -48,23 +50,27 @@ function EmailModal({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
-      <div className="bg-white rounded-2xl shadow-2xl border border-healthcare-border w-full max-w-lg">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-healthcare-border">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
+      <div className="bg-white rounded-3xl shadow-2xl border border-healthcare-border w-full max-w-lg overflow-hidden animate-slide-up">
+        <div className="flex items-center justify-between px-8 py-6 border-b border-healthcare-border bg-healthcare-surface/30">
           <div>
-            <h2 className="text-base font-bold text-healthcare-text">
+            <h2 className="text-xl font-bold text-healthcare-text">
               Send Email
             </h2>
-            <p className="text-xs text-healthcare-text-muted mt-0.5">
-              To: {user.name} ({user.email})
+            <p className="text-sm text-healthcare-text-muted mt-1">
+              To:{" "}
+              <span className="text-healthcare-text font-semibold">
+                {user.name}
+              </span>{" "}
+              ({user.email})
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-healthcare-text-muted hover:text-healthcare-text bg-transparent border-none cursor-pointer p-1"
+            className="text-healthcare-text-muted hover:text-healthcare-text hover:bg-healthcare-surface p-2 rounded-xl transition-all border-none cursor-pointer"
           >
             <svg
-              className="w-5 h-5"
+              className="w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -79,9 +85,9 @@ function EmailModal({
           </button>
         </div>
 
-        <form onSubmit={formik.handleSubmit} className="p-6 space-y-4">
-          <div className="space-y-1.5">
-            <label className="block text-sm font-semibold text-healthcare-text">
+        <form onSubmit={formik.handleSubmit} className="p-8 space-y-6">
+          <div className="space-y-2">
+            <label className="block text-sm font-bold text-healthcare-text">
               Subject
             </label>
             <input
@@ -89,18 +95,18 @@ function EmailModal({
               value={formik.values.subject}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              placeholder="Email subject…"
-              className={`w-full px-4 py-2.5 rounded-xl border ${formik.touched.subject && formik.errors.subject ? "border-red-400" : "border-healthcare-neutral/20"} focus:border-brand-blue outline-none text-healthcare-text bg-white font-medium text-sm`}
+              placeholder="What is this regarding?"
+              className={`w-full px-5 py-3 rounded-2xl border ${formik.touched.subject && formik.errors.subject ? "border-red-400" : "border-healthcare-border"} focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 outline-none text-healthcare-text bg-white font-medium transition-all`}
             />
             {formik.touched.subject && formik.errors.subject && (
-              <p className="text-red-500 text-xs font-bold">
+              <p className="text-red-500 text-xs font-bold pl-1">
                 {formik.errors.subject}
               </p>
             )}
           </div>
 
-          <div className="space-y-1.5">
-            <label className="block text-sm font-semibold text-healthcare-text">
+          <div className="space-y-2">
+            <label className="block text-sm font-bold text-healthcare-text">
               Message
             </label>
             <textarea
@@ -108,31 +114,31 @@ function EmailModal({
               value={formik.values.message}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              rows={5}
-              placeholder="Write your message…"
-              className={`w-full px-4 py-3 rounded-xl border ${formik.touched.message && formik.errors.message ? "border-red-400" : "border-healthcare-neutral/20"} focus:border-brand-blue outline-none text-healthcare-text bg-white text-sm resize-none font-medium`}
+              rows={6}
+              placeholder="Type your message here..."
+              className={`w-full px-5 py-4 rounded-2xl border ${formik.touched.message && formik.errors.message ? "border-red-400" : "border-healthcare-border"} focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 outline-none text-healthcare-text bg-white text-sm resize-none font-medium transition-all`}
             />
             {formik.touched.message && formik.errors.message && (
-              <p className="text-red-500 text-xs font-bold">
+              <p className="text-red-500 text-xs font-bold pl-1">
                 {formik.errors.message}
               </p>
             )}
           </div>
 
-          <div className="flex gap-3 pt-2">
+          <div className="flex gap-4 pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2.5 border border-healthcare-neutral/20 rounded-xl text-sm font-bold text-healthcare-text hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
+              className="flex-1 py-3.5 border border-healthcare-border rounded-2xl text-sm font-bold text-healthcare-text hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={send.isPending}
-              className="flex-1 py-2.5 bg-brand-blue text-white rounded-xl text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer"
+              className="flex-1 py-3.5 bg-brand-blue text-white rounded-2xl text-sm font-bold hover:opacity-90 shadow-lg shadow-blue-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer"
             >
-              {send.isPending ? "Sending…" : "Send Email"}
+              {send.isPending ? "Sending..." : "Send Email"}
             </button>
           </div>
         </form>
@@ -160,21 +166,19 @@ export default function Users() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-fade-in">
       {emailTarget && (
         <EmailModal user={emailTarget} onClose={() => setEmailTarget(null)} />
       )}
 
-      <div>
-        <h1 className="text-2xl font-bold text-healthcare-text">Users</h1>
-        <p className="text-sm text-healthcare-text-muted mt-1">
-          Browse and manage patient accounts.
-        </p>
-      </div>
+      <AdminPageHeader
+        title="Users"
+        description="Manage your patient accounts, track their progress, and communicate with them directly."
+      />
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="flex gap-2 flex-wrap">
+      {/* Filters & Search */}
+      <section className="bg-white p-6 rounded-2xl border border-healthcare-border shadow-clinical flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 lg:pb-0">
           {(
             ["all", "registered", "free_assessment", "paid_session"] as const
           ).map((s) => (
@@ -184,20 +188,21 @@ export default function Users() {
                 setStageFilter(s);
                 setPage(1);
               }}
-              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all border-none cursor-pointer ${
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap cursor-pointer ${
                 stageFilter === s
-                  ? "bg-brand-blue text-white"
-                  : "bg-white text-healthcare-text-muted border border-healthcare-neutral/20 hover:bg-healthcare-surface"
+                  ? "bg-brand-blue text-white border-brand-blue shadow-md shadow-blue-100"
+                  : "bg-white text-healthcare-text-muted border-healthcare-border hover:bg-healthcare-surface hover:text-healthcare-text"
               }`}
             >
-              {s === "all" ? "All" : STAGE_LABEL[s]}
+              {s === "all" ? "All Users" : STAGE_LABEL[s]}
             </button>
           ))}
         </div>
-        <div className="relative sm:ml-auto">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-healthcare-text-muted/50">
+
+        <div className="relative w-full lg:w-80">
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-healthcare-text-muted/60">
             <svg
-              className="w-4 h-4"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -216,124 +221,151 @@ export default function Users() {
               setSearch(e.target.value);
               setPage(1);
             }}
-            placeholder="Search name or email…"
-            className="pl-9 pr-4 py-2 text-sm border border-healthcare-neutral/20 rounded-xl focus:border-brand-blue outline-none bg-white text-healthcare-text placeholder:text-healthcare-text-muted/40 font-medium"
+            placeholder="Search by name or email..."
+            className="w-full pl-12 pr-4 py-3 text-sm border border-healthcare-border rounded-2xl focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 outline-none bg-healthcare-surface/30 text-healthcare-text placeholder:text-healthcare-text-muted/50 font-medium transition-all"
           />
         </div>
-      </div>
+      </section>
 
       {isLoading && (
-        <div className="flex justify-center py-10">
+        <div className="flex justify-center py-20">
           <Spinner size="lg" />
         </div>
       )}
 
       {data && (
-        <>
-          <div className="bg-white rounded-2xl border border-healthcare-border shadow-clinical overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-healthcare-border bg-healthcare-surface/40">
-                    <th className="text-left px-5 py-3.5 text-xs font-bold text-healthcare-text-muted uppercase tracking-wider">
-                      User
-                    </th>
-                    <th className="text-left px-5 py-3.5 text-xs font-bold text-healthcare-text-muted uppercase tracking-wider hidden md:table-cell">
-                      Joined
-                    </th>
-                    <th className="text-left px-5 py-3.5 text-xs font-bold text-healthcare-text-muted uppercase tracking-wider hidden sm:table-cell">
-                      Sessions
-                    </th>
-                    <th className="text-left px-5 py-3.5 text-xs font-bold text-healthcare-text-muted uppercase tracking-wider">
-                      Stage
-                    </th>
-                    <th className="px-5 py-3.5" />
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-healthcare-border">
-                  {(!data.items || data.items.length === 0) && (
-                    <tr>
-                      <td
-                        colSpan={5}
-                        className="text-center py-10 text-sm text-healthcare-text-muted"
-                      >
-                        No users found.
-                      </td>
-                    </tr>
-                  )}
-                  {(data.items || []).map((u) => (
-                    <tr
-                      key={u.id}
-                      className="hover:bg-healthcare-surface/20 transition-colors"
+        <div className="space-y-6">
+          <AdminTable<AdminUser>
+            data={data.items || []}
+            isLoading={isLoading}
+            emptyMessage="No patients matching your criteria were found."
+            columns={[
+              {
+                header: "User",
+                accessor: (u) => (
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center flex-shrink-0 text-sm font-bold text-brand-blue shadow-sm">
+                      {u.name[0]?.toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="font-bold text-healthcare-text text-sm">
+                        {u.name}
+                      </p>
+                      <p className="text-xs text-healthcare-text-muted mt-0.5">
+                        {u.email}
+                      </p>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                header: "Joined",
+                accessor: (u) => (
+                  <span className="text-healthcare-text font-medium">
+                    {new Date(u.createdAt).toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
+                ),
+                hiddenOnTablet: true,
+              },
+              {
+                header: "Sessions",
+                accessor: (u) => (
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-brand-blue"></span>
+                    <span className="font-bold text-healthcare-text">
+                      {u.totalSessions}
+                    </span>
+                  </div>
+                ),
+                hiddenOnMobile: true,
+              },
+              {
+                header: "Stage",
+                accessor: (u) => (
+                  <span
+                    className={`inline-flex items-center px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${STAGE_BADGE[u.stage]}`}
+                  >
+                    {STAGE_LABEL[u.stage]}
+                  </span>
+                ),
+              },
+              {
+                header: "",
+                accessor: (u) => (
+                  <div className="flex justify-end">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEmailTarget(u);
+                      }}
+                      className="px-4 py-2 text-xs font-bold text-white bg-brand-blue rounded-xl hover:bg-brand-blue/90 shadow-sm shadow-blue-100 transition-all border-none cursor-pointer flex items-center gap-2"
                     >
-                      <td className="px-5 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-brand-blue/10 flex items-center justify-center flex-shrink-0 text-xs font-bold text-brand-blue">
-                            {u.name[0]?.toUpperCase()}
-                          </div>
-                          <div>
-                            <p className="font-bold text-healthcare-text">
-                              {u.name}
-                            </p>
-                            <p className="text-xs text-healthcare-text-muted">
-                              {u.email}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-5 py-4 text-healthcare-text-muted hidden md:table-cell">
-                        {new Date(u.createdAt).toLocaleDateString()}
-                      </td>
-                      <td className="px-5 py-4 text-healthcare-text hidden sm:table-cell">
-                        {u.totalSessions}
-                      </td>
-                      <td className="px-5 py-4">
-                        <span
-                          className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${STAGE_BADGE[u.stage]}`}
-                        >
-                          {STAGE_LABEL[u.stage]}
-                        </span>
-                      </td>
-                      <td className="px-5 py-4">
-                        <button
-                          onClick={() => setEmailTarget(u)}
-                          className="px-3 py-1.5 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-lg hover:bg-brand-blue/10 transition-colors border-none cursor-pointer"
-                        >
-                          Email
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        />
+                      </svg>
+                      Email
+                    </button>
+                  </div>
+                ),
+              },
+            ]}
+          />
 
           {data.totalPages > 1 && (
-            <div className="flex items-center justify-between text-sm">
-              <p className="text-healthcare-text-muted">
-                {data.total.toLocaleString()} users · Page {data.page} of{" "}
-                {data.totalPages}
+            <div className="flex items-center justify-between p-6 bg-white rounded-2xl border border-healthcare-border shadow-clinical">
+              <p className="text-sm font-medium text-healthcare-text-muted">
+                Showing{" "}
+                <span className="text-healthcare-text font-bold">
+                  {(page - 1) * 20 + 1}-{Math.min(page * 20, data.total)}
+                </span>{" "}
+                of{" "}
+                <span className="text-healthcare-text font-bold">
+                  {data.total.toLocaleString()}
+                </span>{" "}
+                patients
               </p>
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <button
                   disabled={page <= 1}
                   onClick={() => setPage(page - 1)}
-                  className="px-3 py-1.5 rounded-lg border border-healthcare-neutral/20 text-healthcare-text font-bold disabled:opacity-40 hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
+                  className="px-5 py-2 rounded-xl border border-healthcare-border text-healthcare-text font-bold text-sm disabled:opacity-30 hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
                 >
-                  Prev
+                  Previous
                 </button>
+                <div className="flex items-center gap-2 px-2">
+                  <span className="text-sm font-bold text-brand-blue">
+                    {page}
+                  </span>
+                  <span className="text-sm text-healthcare-text-muted">/</span>
+                  <span className="text-sm font-medium text-healthcare-text-muted">
+                    {data.totalPages}
+                  </span>
+                </div>
                 <button
                   disabled={page >= data.totalPages}
                   onClick={() => setPage(page + 1)}
-                  className="px-3 py-1.5 rounded-lg border border-healthcare-neutral/20 text-healthcare-text font-bold disabled:opacity-40 hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
+                  className="px-5 py-2 rounded-xl border border-healthcare-border text-healthcare-text font-bold text-sm disabled:opacity-30 hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
                 >
                   Next
                 </button>
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );

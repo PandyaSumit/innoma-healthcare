@@ -3,16 +3,33 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../context/AuthContext";
 import { patientService } from "../services/patientService";
+import { therapistService } from "../services/therapistService";
 import { SPECIALIZATIONS, LANGUAGES } from "../data/therapists";
 
 const profileSchema = yup.object().shape({
   fullName: yup.string().required("Required"),
   email: yup.string().required("Required").email("Invalid email"),
   phone: yup.string().matches(/^[0-9+\s]{10,15}$/, "Invalid phone number"),
-  dob: yup.string().required("Required"),
-  gender: yup.string().required("Required"),
-  occupation: yup.string().required("Required"),
-  bloodGroup: yup.string().required("Required"),
+  dob: yup.string().when("$isPatient", {
+    is: true,
+    then: (schema) => schema.required("Required"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  gender: yup.string().when("$isPatient", {
+    is: true,
+    then: (schema) => schema.required("Required"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  occupation: yup.string().when("$isPatient", {
+    is: true,
+    then: (schema) => schema.required("Required"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  bloodGroup: yup.string().when("$isPatient", {
+    is: true,
+    then: (schema) => schema.required("Required"),
+    otherwise: (schema) => schema.nullable(),
+  }),
   qualifications: yup.string(),
   licenseNumber: yup.string(),
   experience: yup.number().min(0, "Must be 0 or greater"),
@@ -37,6 +54,7 @@ const Profile = () => {
 
   const isTherapist = user?.role === "therapist";
   const isPatient = user?.role === "patient";
+  const service = isTherapist ? therapistService : patientService;
 
   const [activeTab, setActiveTab] = useState<
     | "details"
@@ -47,115 +65,101 @@ const Profile = () => {
     | "reviews"
   >(isTherapist ? "professional" : "details");
 
-  const getInitialValues = () => {
+  const getInitialValues = (data: any = {}) => {
     if (isTherapist) {
       return {
-        fullName: user?.name || "",
-        email: user?.email || "",
-        phone: (user as any)?.phone || "",
-        qualifications: (user as any)?.qualifications || "",
-        licenseNumber: (user as any)?.licenseNumber || "",
-        experience: (user as any)?.experience || 0,
-        consultationFee: (user as any)?.consultationFee || 0,
-        specializations: (user as any)?.specialization || [],
-        languages: (user as any)?.languages || [],
+        fullName: data.name || user?.name || "",
+        email: data.email || user?.email || "",
+        phone: data.phone || (user as any)?.phone || "",
+        qualifications:
+          data.qualifications || (user as any)?.qualifications || "",
+        licenseNumber: data.licenseNumber || (user as any)?.licenseNumber || "",
+        experience: data.experience || (user as any)?.experience || 0,
+        consultationFee:
+          data.consultationFee || (user as any)?.consultationFee || 0,
+        specializations:
+          data.specialization || (user as any)?.specialization || [],
+        languages: data.languages || (user as any)?.languages || [],
         newPassword: "",
         confirmPassword: "",
-        bio: (user as any)?.bio || "",
-        notificationEmail: (user as any)?.notificationEmail ?? true,
-        notificationSms: (user as any)?.notificationSms ?? false,
+        bio: data.bio || (user as any)?.bio || "",
+        notificationEmail:
+          data.notificationEmail ?? (user as any)?.notificationEmail ?? true,
+        notificationSms:
+          data.notificationSms ?? (user as any)?.notificationSms ?? false,
       };
     } else {
       return {
-        fullName: user?.name || "",
-        email: user?.email || "",
-        phone: (user as any)?.phone || "",
-        dob: (user as any)?.dob || "",
-        gender: (user as any)?.gender || "",
-        occupation: (user as any)?.occupation || "",
-        bloodGroup: (user as any)?.bloodGroup || "",
+        fullName: data.name || user?.name || "",
+        email: data.email || user?.email || "",
+        phone: data.phone || (user as any)?.phone || "",
+        dob: data.dob || (user as any)?.dob || "",
+        gender: data.gender || (user as any)?.gender || "",
+        occupation: data.occupation || (user as any)?.occupation || "",
+        bloodGroup: data.bloodGroup || (user as any)?.bloodGroup || "",
         newPassword: "",
         confirmPassword: "",
-        bio: (user as any)?.bio || "",
-        healthInterests: (user as any)?.healthInterests || [],
-        notificationEmail: (user as any)?.notificationEmail ?? true,
-        notificationSms: (user as any)?.notificationSms ?? false,
-        allergies: (user as any)?.allergies || "",
-        medications: (user as any)?.medications || "",
-        emergencyContact: (user as any)?.emergencyContact || "",
+        bio: data.bio || (user as any)?.bio || "",
+        healthInterests:
+          data.healthInterests || (user as any)?.healthInterests || [],
+        notificationEmail:
+          data.notificationEmail ?? (user as any)?.notificationEmail ?? true,
+        notificationSms:
+          data.notificationSms ?? (user as any)?.notificationSms ?? false,
+        allergies: data.allergies || (user as any)?.allergies || "",
+        medications: data.medications || (user as any)?.medications || "",
+        emergencyContact:
+          data.emergencyContact || (user as any)?.emergencyContact || "",
       };
     }
   };
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (isPatient) {
-        try {
-          const profileData = await patientService.getProfile();
-          formik.setValues({
-            ...formik.values,
-            fullName: profileData.name || "",
-            email: profileData.email || "",
-            phone: profileData.phone || "",
-            dob: profileData.dob || "",
-            gender: profileData.gender || "",
-            occupation: profileData.occupation || "",
-            bloodGroup: profileData.bloodGroup || "",
-            bio: profileData.bio || "",
-            healthInterests: profileData.healthInterests || [],
-            notificationEmail: profileData.notificationEmail ?? true,
-            notificationSms: profileData.notificationSms ?? false,
-            allergies: profileData.allergies || "",
-            medications: profileData.medications || "",
-            emergencyContact: profileData.emergencyContact || "",
-          });
-        } catch (err) {
-          console.error("Failed to fetch profile:", err);
-        } finally {
-          setIsPageLoading(false);
-        }
-      } else {
-        // For therapists, we'll keep the current behavior (mock or future implementation)
-        setIsPageLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, [isPatient]);
 
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: profileSchema,
     onSubmit: async (values) => {
       setSubmitError(null);
-      console.log("Profile updating:", values);
-
       try {
+        const payload: any = {
+          fullName: values.fullName,
+          email: values.email,
+          phone: values.phone,
+          bio: values.bio,
+          notificationEmail: values.notificationEmail,
+          notificationSms: values.notificationSms,
+          ...(values.newPassword ? { newPassword: values.newPassword } : {}),
+        };
+
         if (isPatient) {
-          await patientService.updateProfile({
-            fullName: values.fullName,
-            email: values.email,
-            phone: values.phone,
+          Object.assign(payload, {
             dob: values.dob,
-            gender: values.gender as any,
+            gender: values.gender,
             occupation: values.occupation,
-            bloodGroup: values.bloodGroup as any,
-            bio: values.bio,
+            bloodGroup: values.bloodGroup,
             healthInterests: values.healthInterests,
-            notificationEmail: values.notificationEmail,
-            notificationSms: values.notificationSms,
             allergies: values.allergies,
             medications: values.medications,
             emergencyContact: values.emergencyContact,
-            ...(values.newPassword ? { newPassword: values.newPassword } : {}),
+          });
+        } else {
+          Object.assign(payload, {
+            qualifications: values.qualifications,
+            licenseNumber: values.licenseNumber,
+            experience: values.experience,
+            consultationFee: values.consultationFee,
+            specialization: values.specializations,
+            languages: values.languages,
           });
         }
-        // Update global auth context and localStorage
+
+        const profileData = await service.updateProfile(payload);
+
+        // Update global auth context
         if (user) {
           const updatedUser = {
             ...user,
-            ...values,
-            name: values.fullName, // Sync fullName to name
+            ...profileData,
+            name: profileData.name || values.fullName,
           };
           updateUser(updatedUser as any);
         }
@@ -167,6 +171,25 @@ const Profile = () => {
       }
     },
   });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profileData: any = await service.getProfile();
+        formik.setValues(getInitialValues(profileData));
+        const avatar = profileData.avatarUrl || profileData.photo;
+        if (avatar) {
+          setAvatarPreview(avatar);
+        }
+      } catch (err) {
+        console.error("Failed to fetch profile:", err);
+      } finally {
+        setIsPageLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [user?.role]);
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

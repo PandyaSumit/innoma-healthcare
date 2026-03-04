@@ -11,7 +11,7 @@ const TherapistDirectory = () => {
   const [dbTherapists, setDbTherapists] = useState<Therapist[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-
+  // console.log("Current dbTherapists:", dbTherapists);
   useEffect(() => {
     const load = async () => {
       try {
@@ -38,14 +38,14 @@ const TherapistDirectory = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   const filteredTherapists = useMemo(() => {
-    let filtered = dbTherapists.filter((t: Therapist) => {
+    let filtered = (dbTherapists || []).filter((t: Therapist) => {
       const q = searchQuery.toLowerCase();
 
       if (
         q &&
         !t.name.toLowerCase().includes(q) &&
         !t.specializations.some((s: string) => s.toLowerCase().includes(q)) &&
-        !t.bio.toLowerCase().includes(q)
+        !(t.bio?.toLowerCase().includes(q) ?? false)
       )
         return false;
 
@@ -87,6 +87,7 @@ const TherapistDirectory = () => {
     feeRange,
     minRating,
     sortBy,
+    dbTherapists,
   ]);
 
   const clearFilters = () => {

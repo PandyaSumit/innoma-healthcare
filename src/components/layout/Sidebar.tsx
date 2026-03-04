@@ -9,7 +9,7 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const isPatient = user?.role === "patient";
 
   const navItems = [
@@ -139,8 +139,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     },
   ];
 
-  const handleLogout = () => {
-    localStorage.removeItem("innoma_user");
+  const handleLogout = async () => {
+    await logout();
     navigate("/login");
     onClose();
   };
@@ -216,29 +216,33 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           {navItems.map((item) => {
             const isActive =
               item.path === "/find-therapist"
-                ? ["/find-therapist", "/therapists", "/book", "/checkout", "/confirmation"].some(
-                    (p) => location.pathname.startsWith(p)
-                  )
+                ? [
+                    "/find-therapist",
+                    "/therapists",
+                    "/book",
+                    "/checkout",
+                    "/confirmation",
+                  ].some((p) => location.pathname.startsWith(p))
                 : location.pathname === item.path;
             return (
-            <Link
-              key={item.name}
-              to={item.path}
-              onClick={handleNavClick}
-              title={!isOpen ? item.name : undefined}
-              className={`flex items-center px-3 py-3 rounded-lg no-underline ${
-                isActive
-                  ? "bg-blue-50 text-blue-600 font-semibold"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-              } ${!isOpen ? "lg:justify-center " : "gap-3"}`}
-            >
-              <span className="flex-shrink-0">{item.icon}</span>
-              <span
-                className={`text-sm whitespace-nowrap transition-all duration-300 ${!isOpen ? "lg:w-0 lg:opacity-0 lg:overflow-hidden" : ""}`}
+              <Link
+                key={item.name}
+                to={item.path}
+                onClick={handleNavClick}
+                title={!isOpen ? item.name : undefined}
+                className={`flex items-center px-3 py-3 rounded-lg no-underline ${
+                  isActive
+                    ? "bg-blue-50 text-blue-600 font-semibold"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                } ${!isOpen ? "lg:justify-center " : "gap-3"}`}
               >
-                {item.name}
-              </span>
-            </Link>
+                <span className="flex-shrink-0">{item.icon}</span>
+                <span
+                  className={`text-sm whitespace-nowrap transition-all duration-300 ${!isOpen ? "lg:w-0 lg:opacity-0 lg:overflow-hidden" : ""}`}
+                >
+                  {item.name}
+                </span>
+              </Link>
             );
           })}
         </nav>

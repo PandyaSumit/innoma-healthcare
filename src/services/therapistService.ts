@@ -1,7 +1,10 @@
 import {
     fetchTherapists,
     fetchTherapistById,
-    fetchTherapistDashboard
+    fetchTherapistDashboard,
+    fetchTherapistMe,
+    updateTherapistMe,
+    uploadTherapistAvatar
 } from '../api/therapist.api';
 
 export const therapistService = {
@@ -15,5 +18,17 @@ export const therapistService = {
 
     async getDashboard() {
         return fetchTherapistDashboard();
+    },
+
+    async getProfile() {
+        return fetchTherapistMe();
+    },
+
+    async updateProfile(payload: any) {
+        return updateTherapistMe(payload);
+    },
+
+    async uploadAvatar(file: File) {
+        return uploadTherapistAvatar(file);
     }
 };

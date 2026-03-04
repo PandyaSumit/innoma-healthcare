@@ -31,7 +31,6 @@ import HowItWorks from "./pages/HowItWorks";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Unauthorized from "./pages/Unauthorized";
-import PatientProfile from "./pages/patient/Profile";
 import { FullPageSpinner } from "./components/ui/Spinner";
 
 // Admin pages
@@ -317,7 +316,7 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <AppLayout>
-                {user?.role === "patient" ? <PatientProfile /> : <Profile />}
+                <Profile />
               </AppLayout>
             </ProtectedRoute>
           }

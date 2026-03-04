@@ -1,5 +1,6 @@
 import { api } from './axios';
-import type { Therapist } from '../data/therapists'; // Reusing the type for now, or we can define a more specific one if needed
+import { apiFetch } from '../services/api';
+import type { Therapist } from '../data/therapists';
 
 export interface TherapistFilters {
   q?: string;
@@ -30,7 +31,10 @@ export async function fetchTherapists(params: TherapistFilters = {}): Promise<Pa
     }
   });
   const { data } = await api.get(`/therapists?${q}`);
-  return data;
+  return {
+    data: data.data,
+    meta: data.meta,
+  };
 }
 
 export async function fetchTherapistById(id: string): Promise<Therapist> {
@@ -51,4 +55,19 @@ export async function updateTherapistMe(payload: Partial<Therapist>): Promise<Th
 export async function fetchTherapistDashboard(): Promise<any> {
   const { data } = await api.get('/therapists/me/dashboard');
   return data.data;
+}
+
+export async function uploadTherapistAvatar(file: File): Promise<{ avatarUrl: string }> {
+  const formData = new FormData();
+  formData.append('avatar', file);
+
+  const json = await apiFetch(
+    '/therapists/me/avatar',
+    {
+      method: 'POST',
+      body: formData,
+    },
+    true,
+  );
+  return json.data;
 }
