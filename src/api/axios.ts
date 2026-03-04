@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 
 const BASE_URL =
-  (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhost:5000/api';
+  (import.meta as any).env?.VITE_API_BASE_URL;
 
 // ── Axios instance ───────────────────────────────────────────────────────────
 
