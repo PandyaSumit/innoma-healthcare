@@ -1,28 +1,40 @@
-import React from 'react';
+export type { AuthUser, AuthContextType, LoginPayload, RegisterPayload } from './auth';
+export type {
+  PatientProfile,
+  PatientDashboard,
+  NextSession,
+  UpdatePatientPayload,
+} from './patient';
+export type { ApiResponse, PaginatedResponse, ApiError } from './common';
+export type {
+  AdminUser,
+  AdminTherapist,
+  AdminStats,
+  AdminSupportTicket,
+  AdminArticle,
+  AdminFAQ,
+  FinanceSummary,
+  UserStage,
+  TicketStatus,
+} from './admin';
 
-export interface Therapist {
-    id: string;
-    name: string;
-    photo: string;
-    specialization: string;
-}
-
+// Landing-page UI types (used by static data files)
 export interface Symptom {
-    id: string;
-    name: string;
-    description: string;
-    icon: React.ReactNode;
+  id: string;
+  name: string;
+  description: string;
+  icon: import('react').ReactNode;
 }
 
 export interface FAQ {
-    id: string;
-    question: string;
-    answer: string;
+  id: string;
+  question: string;
+  answer: string;
 }
 
 export interface Benefit {
-    id: string;
-    title: string;
-    description: string;
-    icon: string;
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
 }

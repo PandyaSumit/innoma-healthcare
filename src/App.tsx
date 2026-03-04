@@ -1,6 +1,7 @@
-import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, Link } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
+import { Outlet } from "react-router-dom";
 import Header from "./components/layout/Header";
 import LandingPage from "./pages/LandingPage";
 import Footer from "./components/layout/Footer";
@@ -32,6 +33,9 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Unauthorized from "./pages/Unauthorized";
 import { FullPageSpinner } from "./components/ui/Spinner";
+import PrivateRoute from "./components/guards/PrivateRoute";
+import PublicOnlyRoute from "./components/guards/PublicOnlyRoute";
+import RoleGuard from "./components/guards/RoleGuard";
 
 // Admin pages
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -90,52 +94,26 @@ const ComingSoon = ({ title }: { title: string }) => (
   </div>
 );
 
-// ── Route Guards ──────────────────────────────────────────────────────────────
+// ── App Layout wrapper that passes Outlet ─────────────────────────────────────
 
-const ProtectedRoute = ({
-  children,
-  adminOnly = false,
-}: {
-  children: React.ReactNode;
-  adminOnly?: boolean;
-}) => {
-  const { isAuthenticated, isLoading, user } = useAuth();
-  const location = useLocation();
-
-  if (isLoading) return <FullPageSpinner />;
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
-  }
-
-  if (adminOnly && user?.role !== "admin") {
-    return <Navigate to="/unauthorized" replace />;
-  }
-
-  return <>{children}</>;
-};
-
-const PublicOnlyRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading, user } = useAuth();
-  if (isLoading) return <FullPageSpinner />;
-  if (isAuthenticated) {
-    const home = user?.role === "admin" ? "/admin" : "/dashboard";
-    return <Navigate to={home} replace />;
-  }
-  return <>{children}</>;
-};
+const AppLayoutRoute = () => (
+  <AppLayout>
+    <Outlet />
+  </AppLayout>
+);
 
 // ── App Routes ────────────────────────────────────────────────────────────────
 
 function AppRoutes() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
+  if (isLoading) return <FullPageSpinner />;
   const isTherapist = user?.role === "therapist";
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden flex flex-col">
       <ScrollToHash />
       <Routes>
-        {/* Public Routes with Header/Footer */}
+        {/* ── Public Routes ─────────────────────────────────────────────── */}
         <Route
           path="/"
           element={
@@ -233,192 +211,65 @@ function AppRoutes() {
           }
         />
 
-        {/* Auth Routes */}
-        <Route
-          path="/login"
-          element={
-            <PublicOnlyRoute>
-              <Login />
-            </PublicOnlyRoute>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <PublicOnlyRoute>
-              <Signup />
-            </PublicOnlyRoute>
-          }
-        />
+        {/* ── Auth Routes (unauthenticated only) ────────────────────────── */}
+        <Route element={<PublicOnlyRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
+
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
-        {/* ── Admin Routes ─────────────────────────────────────────────────── */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute adminOnly>
-              <AdminLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<AdminDashboard />} />
-          <Route path="therapists" element={<AdminTherapists />} />
-          <Route path="therapists/new" element={<TherapistForm />} />
-          <Route path="therapists/:id/edit" element={<TherapistForm />} />
-          <Route
-            path="therapists/:id/bookings"
-            element={<TherapistBookings />}
-          />
-          <Route path="finance" element={<Finance />} />
-          <Route path="articles" element={<Articles />} />
-          <Route path="articles/new" element={<ArticleForm />} />
-          <Route path="articles/:id/edit" element={<ArticleForm />} />
-          <Route path="support" element={<AdminSupport />} />
-          <Route path="faqs" element={<Faqs />} />
-          <Route path="users" element={<Users />} />
+        {/* ── Admin Routes ──────────────────────────────────────────────── */}
+        <Route element={<PrivateRoute />}>
+          <Route element={<RoleGuard allowedRoles={["admin"]} />}>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="therapists" element={<AdminTherapists />} />
+              <Route path="therapists/new" element={<TherapistForm />} />
+              <Route path="therapists/:id/edit" element={<TherapistForm />} />
+              <Route path="therapists/:id/bookings" element={<TherapistBookings />} />
+              <Route path="finance" element={<Finance />} />
+              <Route path="articles" element={<Articles />} />
+              <Route path="articles/new" element={<ArticleForm />} />
+              <Route path="articles/:id/edit" element={<ArticleForm />} />
+              <Route path="support" element={<AdminSupport />} />
+              <Route path="faqs" element={<Faqs />} />
+              <Route path="users" element={<Users />} />
+            </Route>
+          </Route>
         </Route>
 
-        {/* ── Patient / Therapist Routes ─────────────────────────────────── */}
-        <Route
-          path="/find-therapist"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <TherapistDirectory />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/find-therapist/:id"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <TherapistProfile />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                {isTherapist ? <TherapistDashboard /> : <Dashboard />}
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Profile />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/appointments"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Appointments />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Settings />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/support"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Support />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/book/:therapistId"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <BookAppointment />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Checkout />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/confirmation"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Confirmation />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/join/:appointmentId"
-          element={
-            <ProtectedRoute>
+        {/* ── Patient / Therapist Routes ────────────────────────────────── */}
+        <Route element={<PrivateRoute />}>
+          <Route element={<AppLayoutRoute />}>
+            <Route path="/find-therapist" element={<TherapistDirectory />} />
+            <Route path="/find-therapist/:id" element={<TherapistProfile />} />
+            <Route
+              path="/dashboard"
+              element={isTherapist ? <TherapistDashboard /> : <Dashboard />}
+            />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/book/:therapistId" element={<BookAppointment />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/confirmation" element={<Confirmation />} />
+            <Route path="/assessments" element={<ComingSoon title="Assessments Portal" />} />
+            <Route path="/sessions" element={<ComingSoon title="Your Sessions" />} />
+          </Route>
+          <Route
+            path="/join/:appointmentId"
+            element={
               <div className="min-h-screen bg-healthcare-surface flex items-center justify-center p-8">
                 <VideoConsultation />
               </div>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/assessments"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <ComingSoon title="Assessments Portal" />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/sessions"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <ComingSoon title="Your Sessions" />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/assessment"
-          element={
-            <ProtectedRoute>
-              <Navigate to="/therapists" replace />
-            </ProtectedRoute>
-          }
-        />
+            }
+          />
+          <Route path="/assessment" element={<Navigate to="/therapists" replace />} />
+        </Route>
       </Routes>
     </div>
   );

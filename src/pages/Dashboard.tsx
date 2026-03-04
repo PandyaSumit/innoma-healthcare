@@ -1,35 +1,15 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useBooking } from "../context/BookingContext";
-import { patientService } from "../services/patientService";
-import type { DashboardData } from "../services/patientService";
+import { usePatientDashboard } from "../hooks/usePatient";
+import Spinner from "../components/ui/Spinner";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const { getUserAppointments } = useBooking();
   const { upcoming: bookedUpcoming } = getUserAppointments();
+  const { data: dashboardData, isLoading } = usePatientDashboard();
 
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
-    null,
-  );
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const data = await patientService.getDashboard();
-        setDashboardData(data);
-      } catch (err) {
-        console.error("Failed to fetch dashboard data:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchDashboard();
-  }, []);
-
-  // Combine dynamically booked ones with the next session from dashboard
   const allUpcoming = [
     ...(dashboardData?.nextSession
       ? [
@@ -76,14 +56,13 @@ const Dashboard = () => {
   if (isLoading) {
     return (
       <div className="h-full flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div>
+        <Spinner size="lg" />
       </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      {/* Welcome */}
       <section>
         <h1 className="text-2xl sm:text-3xl font-semibold text-healthcare-text tracking-tight">
           Welcome back, {user?.name?.split(" ")[0] || "there"}
@@ -93,12 +72,9 @@ const Dashboard = () => {
         </p>
       </section>
 
-      {/* Stats Row */}
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white rounded-xl border border-healthcare-border p-5">
-          <p className="text-sm text-healthcare-text-muted mb-1">
-            Next session
-          </p>
+          <p className="text-sm text-healthcare-text-muted mb-1">Next session</p>
           <p className="text-lg font-semibold text-healthcare-text">
             {nextSession
               ? `${formatDate(nextSession.date)}, ${formatTime(nextSession.time)}`
@@ -106,33 +82,23 @@ const Dashboard = () => {
           </p>
         </div>
         <div className="bg-white rounded-xl border border-healthcare-border p-5">
-          <p className="text-sm text-healthcare-text-muted mb-1">
-            Upcoming sessions
-          </p>
+          <p className="text-sm text-healthcare-text-muted mb-1">Upcoming sessions</p>
           <p className="text-lg font-semibold text-healthcare-text">
             {dashboardData?.upcomingCount ?? allUpcoming.length}
           </p>
         </div>
         <div className="bg-white rounded-xl border border-healthcare-border p-5">
-          <p className="text-sm text-healthcare-text-muted mb-1">
-            Total Sessions
-          </p>
+          <p className="text-sm text-healthcare-text-muted mb-1">Total Sessions</p>
           <p className="text-lg font-semibold text-brand-blue">
             {dashboardData?.totalSessions ?? 0}
           </p>
         </div>
       </section>
 
-      {/* Upcoming Sessions */}
       <section className="bg-white rounded-xl border border-healthcare-border p-6">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-lg font-semibold text-healthcare-text">
-            Upcoming Sessions
-          </h2>
-          <Link
-            to="/appointments"
-            className="text-sm font-medium text-brand-blue no-underline hover:underline"
-          >
+          <h2 className="text-lg font-semibold text-healthcare-text">Upcoming Sessions</h2>
+          <Link to="/appointments" className="text-sm font-medium text-brand-blue no-underline hover:underline">
             View all
           </Link>
         </div>
@@ -154,8 +120,7 @@ const Dashboard = () => {
                     {apt.therapistName}
                   </h3>
                   <p className="text-xs text-healthcare-text-muted">
-                    {apt.specialization} &middot; {formatDate(apt.date)}{" "}
-                    &middot; {formatTime(apt.time)}
+                    {apt.specialization} &middot; {formatDate(apt.date)} &middot; {formatTime(apt.time)}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -166,18 +131,8 @@ const Dashboard = () => {
                       rel="noopener noreferrer"
                       className="px-4 py-2 bg-brand-blue text-white text-xs font-semibold rounded-lg no-underline flex items-center gap-1.5 hover:opacity-90"
                     >
-                      <svg
-                        className="w-3.5 h-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                        />
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                       </svg>
                       Join Session
                     </a>
@@ -195,73 +150,33 @@ const Dashboard = () => {
             <p className="text-healthcare-text-muted mb-4">
               No upcoming sessions. Book your first session to get started.
             </p>
-            <Link
-              to="/find-therapist"
-              className="inline-block px-5 py-2.5 bg-brand-blue text-white rounded-lg text-sm font-semibold no-underline hover:opacity-90"
-            >
+            <Link to="/find-therapist" className="inline-block px-5 py-2.5 bg-brand-blue text-white rounded-lg text-sm font-semibold no-underline hover:opacity-90">
               Find a Therapist
             </Link>
           </div>
         )}
       </section>
 
-      {/* Care Journey + Assessment */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Care Journey */}
         <div className="bg-white rounded-xl border border-healthcare-border p-6">
-          <h2 className="text-lg font-semibold text-healthcare-text mb-5">
-            Your care journey
-          </h2>
+          <h2 className="text-lg font-semibold text-healthcare-text mb-5">Your care journey</h2>
           <div className="space-y-5">
             {[
-              {
-                label: "Initial assessment",
-                done: dashboardData?.assessmentCompleted ?? true,
-              },
-              {
-                label: "Therapist matching",
-                done:
-                  (dashboardData?.upcomingCount ?? 0) > 0 ||
-                  allUpcoming.length > 0,
-              },
-              {
-                label: "First session",
-                done: (dashboardData?.totalSessions ?? 0) > 0,
-              },
+              { label: "Initial assessment", done: dashboardData?.assessmentCompleted ?? true },
+              { label: "Therapist matching", done: (dashboardData?.upcomingCount ?? 0) > 0 || allUpcoming.length > 0 },
+              { label: "First session", done: (dashboardData?.totalSessions ?? 0) > 0 },
             ].map((step, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                    step.done
-                      ? "bg-green-100 text-green-600"
-                      : "bg-gray-100 text-gray-400"
-                  }`}
-                >
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step.done ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-400"}`}>
                   {step.done ? (
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M5 13l4 4L19 7"
-                      />
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   ) : (
                     i + 1
                   )}
                 </div>
-                <span
-                  className={`text-sm ${
-                    step.done
-                      ? "text-healthcare-text font-medium"
-                      : "text-healthcare-text-muted"
-                  }`}
-                >
+                <span className={`text-sm ${step.done ? "text-healthcare-text font-medium" : "text-healthcare-text-muted"}`}>
                   {step.label}
                 </span>
               </div>
@@ -269,41 +184,22 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Free Assessment */}
         <div className="bg-white rounded-xl border border-healthcare-border p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-              <svg
-                className="w-5 h-5 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
+              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-healthcare-text">
-                Free assessment
-              </h2>
-              <p className="text-xs text-healthcare-text-muted">
-                Eligible for new users
-              </p>
+              <h2 className="text-lg font-semibold text-healthcare-text">Free assessment</h2>
+              <p className="text-xs text-healthcare-text-muted">Eligible for new users</p>
             </div>
           </div>
           <p className="text-sm text-healthcare-text-muted mb-5">
-            Get a complimentary initial assessment to help us understand your
-            needs and match you with the right therapist.
+            Get a complimentary initial assessment to help us understand your needs and match you with the right therapist.
           </p>
-          <Link
-            to="/find-therapist"
-            className="block w-full text-center px-5 py-2.5 bg-brand-blue text-white rounded-lg text-sm font-semibold no-underline hover:opacity-90"
-          >
+          <Link to="/find-therapist" className="block w-full text-center px-5 py-2.5 bg-brand-blue text-white rounded-lg text-sm font-semibold no-underline hover:opacity-90">
             Claim assessment
           </Link>
         </div>

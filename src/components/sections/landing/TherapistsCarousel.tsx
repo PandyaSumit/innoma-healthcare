@@ -1,9 +1,15 @@
 import React from "react";
-import type { Therapist } from "../../../types";
-import TherapistCard from "../../ui/TherapistCard";
+import LeaderCard from "../../ui/LeaderCard";
+
+interface Leader {
+  id: string;
+  name: string;
+  photo: string;
+  specialization: string;
+}
 
 const TherapistsCarousel: React.FC = () => {
-  const therapists: Therapist[] = [
+  const therapists: Leader[] = [
     {
       id: "1",
       name: "Hitakanshi Ghoshal",
@@ -66,7 +72,7 @@ const TherapistsCarousel: React.FC = () => {
                   xl:w-[380px]
                 "
               >
-                <TherapistCard therapist={therapist} />
+                <LeaderCard therapist={therapist} />
               </div>
             ))}
           </div>

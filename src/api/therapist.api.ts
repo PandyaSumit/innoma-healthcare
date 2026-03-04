@@ -1,5 +1,4 @@
 import { api } from './axios';
-import { apiFetch } from '../services/api';
 import type { Therapist } from '../data/therapists';
 
 export interface TherapistFilters {
@@ -60,14 +59,8 @@ export async function fetchTherapistDashboard(): Promise<any> {
 export async function uploadTherapistAvatar(file: File): Promise<{ avatarUrl: string }> {
   const formData = new FormData();
   formData.append('avatar', file);
-
-  const json = await apiFetch(
-    '/therapists/me/avatar',
-    {
-      method: 'POST',
-      body: formData,
-    },
-    true,
-  );
-  return json.data;
+  const { data } = await api.post('/therapists/me/avatar', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data.data;
 }

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../context/AuthContext";
-import { patientService } from "../services/patientService";
-import { therapistService } from "../services/therapistService";
+import { fetchPatientProfile, updatePatientProfile, uploadPatientAvatar } from "../api/patient.api";
+import { fetchTherapistMe, updateTherapistMe } from "../api/therapist.api";
 import { SPECIALIZATIONS, LANGUAGES } from "../data/therapists";
 
 const profileSchema = yup.object().shape({
@@ -54,7 +54,6 @@ const Profile = () => {
 
   const isTherapist = user?.role === "therapist";
   const isPatient = user?.role === "patient";
-  const service = isTherapist ? therapistService : patientService;
 
   const [activeTab, setActiveTab] = useState<
     | "details"
@@ -152,7 +151,9 @@ const Profile = () => {
           });
         }
 
-        const profileData = await service.updateProfile(payload);
+        const profileData = isTherapist
+          ? await updateTherapistMe(payload)
+          : await updatePatientProfile(payload);
 
         // Update global auth context
         if (user) {
@@ -175,7 +176,9 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const profileData: any = await service.getProfile();
+        const profileData: any = isTherapist
+            ? await fetchTherapistMe()
+            : await fetchPatientProfile();
         formik.setValues(getInitialValues(profileData));
         const avatar = profileData.avatarUrl || profileData.photo;
         if (avatar) {
@@ -211,14 +214,9 @@ const Profile = () => {
         reader.readAsDataURL(file);
 
         if (isPatient) {
-          const { avatarUrl } = await patientService.uploadAvatar(file);
+          const { avatarUrl } = await uploadPatientAvatar(file);
           if (user) {
-            const updatedUser = {
-              ...user,
-              avatar: avatarUrl,
-            };
-            localStorage.setItem("innoma_user", JSON.stringify(updatedUser));
-            updateUser(updatedUser as any);
+            updateUser({ ...user, avatar: avatarUrl });
           }
         }
       } catch (err: any) {
