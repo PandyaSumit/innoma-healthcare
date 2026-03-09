@@ -10,6 +10,7 @@ import type { SupportTicket } from "../../types/admin";
 import Spinner from "../../components/ui/Spinner";
 import AdminPageHeader from "../../components/admin/AdminPageHeader";
 import AdminTable from "../../components/admin/AdminTable";
+import GroupButton from "../../components/ui/GroupButton";
 
 type StatusFilter = "all" | SupportTicket["status"];
 
@@ -233,7 +234,7 @@ export default function Support() {
   });
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-2 animate-fade-in">
       {selected && (
         <TicketDetail ticket={selected} onClose={() => setSelected(null)} />
       )}
@@ -244,186 +245,181 @@ export default function Support() {
       />
 
       {/* Filter Section */}
-      <section className="bg-white p-2 rounded-2xl border border-healthcare-border shadow-clinical flex items-center gap-2 overflow-x-auto scrollbar-hide">
-        <div className="flex items-center gap-1 p-1">
-          {(["all", "new", "open", "resolved", "closed"] as StatusFilter[]).map(
-            (f) => (
-              <button
-                key={f}
-                onClick={() => {
-                  setStatusFilter(f);
-                  setPage(1);
-                }}
-                className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap cursor-pointer uppercase tracking-wider ${
-                  statusFilter === f
-                    ? "bg-brand-blue text-white border-brand-blue shadow-clinical"
-                    : "bg-transparent text-healthcare-text-muted border-transparent hover:bg-healthcare-surface hover:text-healthcare-text"
-                }`}
-              >
-                {f}
-              </button>
-            ),
-          )}
-        </div>
+      <section className="bg-white p-2 w-max rounded-sm border border-healthcare-border  flex items-center gap-2 overflow-x-auto scrollbar-hide">
+        <GroupButton
+          value={statusFilter}
+          onChange={(f) => {
+            setStatusFilter(f);
+            setPage(1);
+          }}
+          btns={[
+            { label: "all", value: "all" },
+            { label: "new", value: "new" },
+            {
+              label: "open",
+              value: "open",
+            },
+            {
+              label: "resolved",
+              value: "resolved",
+            },
+            {
+              label: "closed",
+              value: "closed",
+            },
+          ]}
+        />
       </section>
 
-      {isLoading && (
-        <div className="flex justify-center py-20">
-          <Spinner size="lg" />
-        </div>
-      )}
-
-      {data && (
-        <div className="space-y-6">
-          <AdminTable<SupportTicket>
-            data={data.items || []}
-            isLoading={isLoading}
-            emptyMessage="No support tickets found matching criteria."
-            columns={[
-              {
-                header: "Subject",
-                accessor: (t) => (
-                  <div className="max-w-md">
-                    <p className="font-bold text-healthcare-text text-sm line-clamp-1 group-hover:text-brand-blue transition-colors">
-                      {t.subject}
-                    </p>
-                    <p className="text-xs text-healthcare-text-muted line-clamp-1 mt-1 opacity-80">
-                      {t.message}
-                    </p>
-                  </div>
-                ),
-              },
-              {
-                header: "User",
-                accessor: (t) => (
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-healthcare-lavender/10 flex items-center justify-center font-bold text-purple-600 text-[10px] border border-purple-100">
-                      {t.userName[0]}
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-healthcare-text leading-tight">
-                        {t.userName}
-                      </p>
-                      <p className="text-[10px] text-healthcare-text-muted font-medium">
-                        {t.userEmail}
-                      </p>
-                    </div>
-                  </div>
-                ),
-                hiddenOnTablet: true,
-              },
-              {
-                header: "Date",
-                accessor: (t) => (
-                  <span className="text-sm text-healthcare-text-muted font-medium">
-                    {new Date(t.createdAt).toLocaleDateString(undefined, {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </span>
-                ),
-                hiddenOnMobile: true,
-              },
-              {
-                header: "Status",
-                accessor: (t) => (
-                  <span
-                    className={`inline-flex items-center px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${STATUS_BADGE[t.status] ?? "bg-gray-50 text-gray-500 border-gray-100"}`}
-                  >
-                    {t.status}
-                  </span>
-                ),
-              },
-              {
-                header: "",
-                accessor: (t) => (
-                  <div className="flex items-center gap-2 justify-end">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelected(t);
-                      }}
-                      className="px-5 py-2 text-xs font-bold text-brand-blue bg-blue-50/50 rounded-xl hover:bg-blue-100/50 transition-all border-none cursor-pointer"
-                    >
-                      View Ticket
-                    </button>
-                  </div>
-                ),
-              },
-            ]}
-          />
-
-          {data.totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between p-6 gap-6">
-              <p className="text-sm font-medium text-healthcare-text-muted order-2 sm:order-1">
-                Showing{" "}
-                <span className="text-healthcare-text font-bold">
-                  {(page - 1) * 20 + 1}-{Math.min(page * 20, data.total)}
-                </span>{" "}
-                of{" "}
-                <span className="text-healthcare-text font-bold">
-                  {data.total.toLocaleString()}
-                </span>{" "}
-                tickets
-              </p>
-              <div className="flex items-center gap-2 order-1 sm:order-2">
-                <button
-                  disabled={page <= 1}
-                  onClick={() => setPage(page - 1)}
-                  className="p-2.5 rounded-xl border border-healthcare-border text-healthcare-text disabled:opacity-30 hover:bg-healthcare-surface transition-all cursor-pointer bg-white group"
-                >
-                  <svg
-                    className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-
-                <div className="bg-healthcare-surface/50 border border-healthcare-border rounded-xl px-4 py-2 flex items-center gap-2">
-                  <span className="text-sm font-bold text-brand-blue">
-                    {page}
-                  </span>
-                  <span className="text-sm text-healthcare-text-muted/40 font-bold">
-                    /
-                  </span>
-                  <span className="text-sm font-bold text-healthcare-text-muted">
-                    {data.totalPages}
-                  </span>
+      <div className="space-y-6">
+        <AdminTable<SupportTicket>
+          data={data?.items || []}
+          isLoading={isLoading}
+          emptyMessage="No support tickets found matching criteria."
+          columns={[
+            {
+              header: "Subject",
+              accessor: (t) => (
+                <div className="max-w-md">
+                  <p className="font-bold text-healthcare-text text-sm line-clamp-1 group-hover:text-brand-blue transition-colors">
+                    {t.subject}
+                  </p>
+                  <p className="text-xs text-healthcare-text-muted line-clamp-1 mt-1 opacity-80">
+                    {t.message}
+                  </p>
                 </div>
-
-                <button
-                  disabled={page >= data.totalPages}
-                  onClick={() => setPage(page + 1)}
-                  className="p-2.5 rounded-xl border border-healthcare-border text-healthcare-text disabled:opacity-30 hover:bg-healthcare-surface transition-all cursor-pointer bg-white group"
+              ),
+            },
+            {
+              header: "User",
+              accessor: (t) => (
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-healthcare-lavender/10 flex items-center justify-center font-bold text-purple-600 text-[10px] border border-purple-100">
+                    {t.userName[0]}
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-healthcare-text leading-tight">
+                      {t.userName}
+                    </p>
+                    <p className="text-[10px] text-healthcare-text-muted font-medium">
+                      {t.userEmail}
+                    </p>
+                  </div>
+                </div>
+              ),
+              hiddenOnTablet: true,
+            },
+            {
+              header: "Date",
+              accessor: (t) => (
+                <span className="text-sm text-healthcare-text-muted font-medium">
+                  {new Date(t.createdAt).toLocaleDateString(undefined, {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+              ),
+              hiddenOnMobile: true,
+            },
+            {
+              header: "Status",
+              accessor: (t) => (
+                <span
+                  className={`inline-flex items-center px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${STATUS_BADGE[t.status] ?? "bg-gray-50 text-gray-500 border-gray-100"}`}
                 >
-                  <svg
-                    className="w-5 h-5 group-hover:translate-x-0.5 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                  {t.status}
+                </span>
+              ),
+            },
+            {
+              header: "",
+              accessor: (t) => (
+                <div className="flex items-center gap-2 justify-end">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelected(t);
+                    }}
+                    className="px-5 py-2 text-xs font-bold text-brand-blue bg-blue-50/50 rounded-xl hover:bg-blue-100/50 transition-all border-none cursor-pointer"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
+                    View Ticket
+                  </button>
+                </div>
+              ),
+            },
+          ]}
+        />
+
+        {data?.totalPages > 1 && (
+          <div className="flex flex-col sm:flex-row items-center justify-between p-6 gap-6">
+            <p className="text-sm font-medium text-healthcare-text-muted order-2 sm:order-1">
+              Showing{" "}
+              <span className="text-healthcare-text font-bold">
+                {(page - 1) * 20 + 1}-{Math.min(page * 20, data?.total)}
+              </span>{" "}
+              of{" "}
+              <span className="text-healthcare-text font-bold">
+                {data.total.toLocaleString()}
+              </span>{" "}
+              tickets
+            </p>
+            <div className="flex items-center gap-2 order-1 sm:order-2">
+              <button
+                disabled={page <= 1}
+                onClick={() => setPage(page - 1)}
+                className="p-2.5 rounded-xl border border-healthcare-border text-healthcare-text disabled:opacity-30 hover:bg-healthcare-surface transition-all cursor-pointer bg-white group"
+              >
+                <svg
+                  className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+
+              <div className="bg-healthcare-surface/50 border border-healthcare-border rounded-xl px-4 py-2 flex items-center gap-2">
+                <span className="text-sm font-bold text-brand-blue">
+                  {page}
+                </span>
+                <span className="text-sm text-healthcare-text-muted/40 font-bold">
+                  /
+                </span>
+                <span className="text-sm font-bold text-healthcare-text-muted">
+                  {data.totalPages}
+                </span>
               </div>
+
+              <button
+                disabled={page >= data.totalPages}
+                onClick={() => setPage(page + 1)}
+                className="p-2.5 rounded-xl border border-healthcare-border text-healthcare-text disabled:opacity-30 hover:bg-healthcare-surface transition-all cursor-pointer bg-white group"
+              >
+                <svg
+                  className="w-5 h-5 group-hover:translate-x-0.5 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

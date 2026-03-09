@@ -12,6 +12,7 @@ interface AdminStatCardProps {
     isPositive: boolean;
     label?: string;
   };
+  isLoading?: boolean;
 }
 
 const AdminStatCard: React.FC<AdminStatCardProps> = ({
@@ -21,14 +22,32 @@ const AdminStatCard: React.FC<AdminStatCardProps> = ({
   color,
   to,
   trend,
+  isLoading,
 }) => {
+  if (isLoading) {
+    return (
+      <div className="bg-white rounded-sm border border-healthcare-border p-7  animate-pulse">
+        <div className="flex items-center justify-between mb-5">
+          <div className="w-14 h-14 rounded-2xl bg-gray-200" />
+          <div className="w-16 h-6 rounded-full bg-gray-200" />
+        </div>
+
+        <div>
+          <div className="h-4 w-24 bg-gray-200 rounded mb-3"></div>
+          <div className="h-8 w-20 bg-gray-200 rounded"></div>
+          <div className="h-3 w-32 bg-gray-200 rounded mt-3"></div>
+        </div>
+      </div>
+    );
+  }
+
   const CardContent = (
-    <div className="bg-white rounded-2xl border border-healthcare-border p-7 shadow-clinical hover:shadow-clinical-lg transition-all duration-500 group relative overflow-hidden">
+    <div className="bg-white rounded-sm border border-healthcare-border p-7 h-full  transition-all duration-500 group relative overflow-hidden">
       <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-brand-blue/10 transition-colors duration-500" />
 
       <div className="flex items-center justify-between mb-5 relative z-10">
         <div
-          className={`w-14 h-14 rounded-2xl flex items-center justify-center ${color} shadow-clinical group-hover:scale-110 transition-transform duration-500`}
+          className={`w-14 h-14 rounded-sm flex items-center justify-center ${color} shadow-clinical group-hover:scale-110 transition-transform duration-500`}
         >
           {React.isValidElement(icon)
             ? React.cloneElement(

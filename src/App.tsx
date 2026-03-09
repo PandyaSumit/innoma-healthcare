@@ -229,7 +229,10 @@ function AppRoutes() {
               <Route path="therapists" element={<AdminTherapists />} />
               <Route path="therapists/new" element={<TherapistForm />} />
               <Route path="therapists/:id/edit" element={<TherapistForm />} />
-              <Route path="therapists/:id/bookings" element={<TherapistBookings />} />
+              <Route
+                path="therapists/:id/bookings"
+                element={<TherapistBookings />}
+              />
               <Route path="finance" element={<Finance />} />
               <Route path="articles" element={<Articles />} />
               <Route path="articles/new" element={<ArticleForm />} />
@@ -257,8 +260,14 @@ function AppRoutes() {
             <Route path="/book/:therapistId" element={<BookAppointment />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/confirmation" element={<Confirmation />} />
-            <Route path="/assessments" element={<ComingSoon title="Assessments Portal" />} />
-            <Route path="/sessions" element={<ComingSoon title="Your Sessions" />} />
+            <Route
+              path="/assessments"
+              element={<ComingSoon title="Assessments Portal" />}
+            />
+            <Route
+              path="/sessions"
+              element={<ComingSoon title="Your Sessions" />}
+            />
           </Route>
           <Route
             path="/join/:appointmentId"
@@ -268,7 +277,10 @@ function AppRoutes() {
               </div>
             }
           />
-          <Route path="/assessment" element={<Navigate to="/therapists" replace />} />
+          <Route
+            path="/assessment"
+            element={<Navigate to="/therapists" replace />}
+          />
         </Route>
       </Routes>
     </div>
@@ -283,7 +295,17 @@ function App() {
       <AuthProvider>
         <BookingProvider>
           <AppRoutes />
-          <Toaster position="top-right" richColors closeButton />
+          <Toaster
+            position="top-right"
+            richColors
+            toastOptions={{
+              style: {
+                background: `#1e40af`,
+                color: "#FFF",
+                border: "none",
+              },
+            }}
+          />
         </BookingProvider>
       </AuthProvider>
     </QueryClientProvider>

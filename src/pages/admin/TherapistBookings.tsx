@@ -10,6 +10,7 @@ import {
 import Spinner from "../../components/ui/Spinner";
 import AdminPageHeader from "../../components/admin/AdminPageHeader";
 import AdminTable from "../../components/admin/AdminTable";
+import GroupButton from "../../components/ui/GroupButton";
 
 const STATUS_BADGE: Record<string, string> = {
   upcoming: "bg-blue-50 text-blue-700 border-blue-100/50",
@@ -45,14 +46,11 @@ export default function TherapistBookings() {
   });
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-2  animate-fade-in">
       <div className="flex items-start gap-4">
-        <Link
-          to="/admin/therapists"
-          className="mt-1 w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-healthcare-border text-healthcare-text hover:bg-brand-blue hover:text-white hover:border-brand-blue transition-all no-underline shadow-sm group"
-        >
+        <Link to="/admin/therapists" className="mt-2">
           <svg
-            className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform"
+            className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -74,111 +72,100 @@ export default function TherapistBookings() {
       </div>
 
       {/* Tabs Section */}
-      <section className="bg-white p-2 rounded-2xl border border-healthcare-border shadow-clinical flex items-center gap-2 max-w-fit">
-        {(["upcoming", "past"] as const).map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`px-8 py-2.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap cursor-pointer uppercase tracking-wider ${
-              tab === t
-                ? "bg-brand-blue text-white border-brand-blue shadow-clinical"
-                : "bg-transparent text-healthcare-text-muted border-transparent hover:bg-healthcare-surface hover:text-healthcare-text"
-            }`}
-          >
-            {t}
-          </button>
-        ))}
-      </section>
-
-      {isLoading && (
-        <div className="flex justify-center py-20">
-          <Spinner size="lg" />
-        </div>
-      )}
-
-      {bookings && (
-        <AdminTable<any>
-          data={bookings}
-          isLoading={isLoading}
-          emptyMessage={`No ${tab} bookings found for this therapist.`}
-          columns={[
-            {
-              header: "Patient",
-              accessor: (b) => (
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-brand-blue/5 flex items-center justify-center font-bold text-brand-blue text-sm border border-brand-blue/10">
-                    {b.patientName[0]}
-                  </div>
-                  <div>
-                    <p className="font-bold text-healthcare-text text-sm leading-tight">
-                      {b.patientName}
-                    </p>
-                    <p className="text-[11px] text-healthcare-text-muted font-medium mt-0.5">
-                      {b.patientEmail}
-                    </p>
-                  </div>
-                </div>
-              ),
-            },
-            {
-              header: "Date & Time",
-              accessor: (b) => (
-                <div>
-                  <p className="font-bold text-healthcare-text text-sm">
-                    {new Date(b.date).toLocaleDateString(undefined, {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </p>
-                  <p className="text-[11px] text-healthcare-text-muted font-bold uppercase tracking-wider mt-0.5">
-                    {b.time}
-                  </p>
-                </div>
-              ),
-              hiddenOnMobile: true,
-            },
-            {
-              header: "Amount",
-              accessor: (b) => (
-                <span className="font-bold text-healthcare-text">
-                  ${b.amount}
-                </span>
-              ),
-              hiddenOnTablet: true,
-            },
-            {
-              header: "Status",
-              accessor: (b) => (
-                <span
-                  className={`inline-flex items-center px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${STATUS_BADGE[b.status] ?? "bg-gray-50 text-gray-500 border-gray-100"}`}
-                >
-                  {b.status}
-                </span>
-              ),
-            },
-            {
-              header: "",
-              accessor: (b) => (
-                <div className="flex justify-end">
-                  {b.status === "upcoming" && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        complete.mutate(b.id);
-                      }}
-                      disabled={complete.isPending}
-                      className="px-5 py-2 text-xs font-bold text-emerald-700 bg-emerald-50/50 rounded-xl hover:bg-emerald-100/50 transition-all border border-emerald-100/30 cursor-pointer disabled:opacity-50"
-                    >
-                      Mark Complete
-                    </button>
-                  )}
-                </div>
-              ),
-            },
+      <section className="bg-white  pr-1 py-1 rounded-sm border border-healthcare-border  flex items-center gap-2 max-w-fit">
+        <GroupButton
+          value={tab}
+          onChange={(v) => {
+            setTab(v);
+          }}
+          btns={[
+            { label: "upcoming", value: "upcoming" },
+            { label: "past", value: "past" },
           ]}
         />
-      )}
+      </section>
+
+      <AdminTable<any>
+        data={bookings}
+        isLoading={isLoading}
+        emptyMessage={`No ${tab} bookings found for this therapist.`}
+        columns={[
+          {
+            header: "Patient",
+            accessor: (b) => (
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-brand-blue/5 flex items-center justify-center font-bold text-brand-blue text-sm border border-brand-blue/10">
+                  {b?.name?.[0] ?? "P"}
+                </div>
+                <div>
+                  <p className="font-bold text-healthcare-text text-sm leading-tight">
+                    {b?.name ?? "Unknown Patient"}
+                  </p>
+                  <p className="text-[11px] text-healthcare-text-muted font-medium mt-0.5">
+                    {b?.patientEmail}
+                  </p>
+                </div>
+              </div>
+            ),
+          },
+          {
+            header: "Date & Time",
+            accessor: (b) => (
+              <div>
+                <p className="font-bold text-healthcare-text text-sm">
+                  {new Date(b.date).toLocaleDateString(undefined, {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </p>
+                <p className="text-[11px] text-healthcare-text-muted font-bold uppercase tracking-wider mt-0.5">
+                  {b.time}
+                </p>
+              </div>
+            ),
+            hiddenOnMobile: true,
+          },
+          {
+            header: "Amount",
+            accessor: (b) => (
+              <span className="font-bold text-healthcare-text">
+                ${b.amount}
+              </span>
+            ),
+            hiddenOnTablet: true,
+          },
+          {
+            header: "Status",
+            accessor: (b) => (
+              <span
+                className={`inline-flex items-center px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${STATUS_BADGE[b.status] ?? "bg-gray-50 text-gray-500 border-gray-100"}`}
+              >
+                {b.status}
+              </span>
+            ),
+          },
+          {
+            header: "",
+            accessor: (b) => (
+              <div className="flex justify-end">
+                {b.status === "upcoming" && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      complete.mutate(b.id);
+                    }}
+                    disabled={complete.isPending}
+                    className="px-5 py-2 text-xs font-bold text-emerald-700 bg-emerald-50/50 rounded-xl hover:bg-emerald-100/50 transition-all border border-emerald-100/30 cursor-pointer disabled:opacity-50"
+                  >
+                    Mark Complete
+                  </button>
+                )}
+              </div>
+            ),
+          },
+        ]}
+      />
     </div>
   );
 }

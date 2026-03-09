@@ -10,6 +10,11 @@ import {
 } from "../../api/admin.api";
 import Spinner from "../../components/ui/Spinner";
 import AdminPageHeader from "../../components/admin/AdminPageHeader";
+import Input from "../../components/ui/Input";
+import Textarea from "../../components/ui/Textarea";
+import alertIcon from "../../assets/svg/alert.svg";
+import Modal from "../../components/ui/Model";
+import { useState } from "react";
 
 const schema = (isEdit: boolean) =>
   yup.object({
@@ -43,9 +48,13 @@ function Field({
 }) {
   return (
     <div className="space-y-2">
-      <label className="text-sm font-bold text-healthcare-text px-1 flex items-center gap-1">
+      <label className="text-sm relative font-bold w-max  text-healthcare-text px-1 flex items-center gap-1">
         {label}
-        {required && <span className="text-red-500">*</span>}
+        {required && (
+          <span className="text-red-500 text-lg absolute -right-2 top-0 ">
+            *
+          </span>
+        )}
       </label>
       {children}
       {error && (
@@ -70,12 +79,71 @@ function Field({
   );
 }
 
+const TherapistFormSkeleton = () => {
+  return (
+    <div className="bg-white rounded-sm border border-healthcare-border p-6 animate-pulse">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
+        {/* Full Name */}
+        <div className="space-y-2">
+          <div className="h-3 w-24 bg-gray-200 rounded" />
+          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+        </div>
+
+        {/* Email */}
+        <div className="space-y-2">
+          <div className="h-3 w-32 bg-gray-200 rounded" />
+          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+        </div>
+
+        {/* Phone */}
+        <div className="space-y-2">
+          <div className="h-3 w-28 bg-gray-200 rounded" />
+          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+        </div>
+
+        {/* Experience */}
+        <div className="space-y-2">
+          <div className="h-3 w-36 bg-gray-200 rounded" />
+          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+        </div>
+
+        {/* Specialization */}
+        <div className="space-y-2">
+          <div className="h-3 w-36 bg-gray-200 rounded" />
+          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+        </div>
+
+        {/* Password */}
+        <div className="space-y-2">
+          <div className="h-3 w-32 bg-gray-200 rounded" />
+          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+        </div>
+
+        {/* Bio */}
+        <div className="sm:col-span-2 space-y-2">
+          <div className="h-3 w-28 bg-gray-200 rounded" />
+          <div className="h-28 w-full bg-gray-200 rounded-sm" />
+        </div>
+      </div>
+
+      {/* Info text */}
+      <div className="h-3 w-64 bg-gray-200 rounded mt-6" />
+
+      {/* Buttons */}
+      <div className="grid sm:grid-cols-2 gap-4 pt-6 mt-4 border-t border-healthcare-border">
+        <div className="h-12 bg-gray-200 rounded-sm" />
+        <div className="h-12 bg-gray-200 rounded-sm" />
+      </div>
+    </div>
+  );
+};
+
 export default function TherapistForm() {
   const { id } = useParams<{ id?: string }>();
   const isEdit = !!id && id !== "new";
   const navigate = useNavigate();
   const qc = useQueryClient();
-
+  const [editconform, setEditconform] = useState(false);
   const { data: existing, isLoading } = useQuery({
     queryKey: ["admin", "therapist", id],
     queryFn: () => fetchAdminTherapist(id!),
@@ -131,193 +199,229 @@ export default function TherapistForm() {
     },
   });
 
-  if (isEdit && isLoading) {
-    return (
-      <div className="flex justify-center py-20">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
-
   const isPending = create.isPending || edit.isPending;
 
   return (
-    <div className="max-w-4xl space-y-8 animate-fade-in">
-      <div className="flex items-start gap-4">
-        <Link
-          to="/admin/therapists"
-          className="mt-1 w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-healthcare-border text-healthcare-text hover:bg-brand-blue hover:text-white hover:border-brand-blue transition-all no-underline shadow-sm group"
-        >
-          <svg
-            className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2.5}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </Link>
-        <div className="flex-1">
-          <AdminPageHeader
-            title={isEdit ? "Edit Therapist" : "New Therapist"}
-            description={
-              isEdit
-                ? `Modifying therapist: ${existing?.name}`
-                : "Onboard a new healthcare provider to the platform."
-            }
-          />
-        </div>
-      </div>
-
-      <form
-        onSubmit={formik.handleSubmit}
-        className="bg-white rounded-3xl border border-healthcare-border shadow-clinical p-8 space-y-8"
-      >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          <Field
-            label="Full Name"
-            required
-            error={formik.touched.name ? formik.errors.name : undefined}
-          >
-            <input
-              name="name"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="Dr. Jane Smith"
-              className={inputCls(
-                !!formik.touched.name && !!formik.errors.name,
-              )}
-            />
-          </Field>
-          <Field
-            label="Professional Email"
-            required
-            error={formik.touched.email ? formik.errors.email : undefined}
-          >
-            <input
-              type="email"
-              name="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="jane@clinic.com"
-              className={inputCls(
-                !!formik.touched.email && !!formik.errors.email,
-              )}
-            />
-          </Field>
-          <Field label="Contact Number">
-            <input
-              name="phone"
-              value={formik.values.phone}
-              onChange={formik.handleChange}
-              placeholder="+1 (234) 567 8900"
-              className={inputCls()}
-            />
-          </Field>
-          <Field
-            label="Years of Experience"
-            required
-            error={
-              formik.touched.experience ? formik.errors.experience : undefined
-            }
-          >
-            <input
-              type="number"
-              name="experience"
-              value={formik.values.experience}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              min={0}
-              className={inputCls(
-                !!formik.touched.experience && !!formik.errors.experience,
-              )}
-            />
-          </Field>
-          <Field
-            label="Core Specialization"
-            required
-            error={
-              formik.touched.specialization
-                ? formik.errors.specialization
-                : undefined
-            }
-          >
-            <input
-              name="specialization"
-              value={formik.values.specialization}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="e.g. Clinical Psychology"
-              className={inputCls(
-                !!formik.touched.specialization &&
-                  !!formik.errors.specialization,
-              )}
-            />
-          </Field>
-          <Field
-            label={isEdit ? "Update Password (optional)" : "Account Password"}
-            required={!isEdit}
-            error={formik.touched.password ? formik.errors.password : undefined}
-          >
-            <input
-              type="password"
-              name="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="••••••••"
-              className={inputCls(
-                !!formik.touched.password && !!formik.errors.password,
-              )}
-            />
-          </Field>
-          <div className="sm:col-span-2">
-            <Field label="Professional Bio">
-              <textarea
-                name="bio"
-                value={formik.values.bio}
-                onChange={formik.handleChange}
-                rows={5}
-                placeholder="Brief description of professional background and expertise…"
-                className={inputCls() + " resize-none leading-relaxed"}
+    <>
+      <div className="max-w-4xl space-y-2 animate-fade-in">
+        <div className="flex items-start gap-4">
+          <Link to="/admin/therapists" className="mt-2">
+            <svg
+              className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M15 19l-7-7 7-7"
               />
-            </Field>
+            </svg>
+          </Link>
+          <div className="flex-1">
+            <AdminPageHeader
+              title={isEdit ? "Edit Therapist" : "New Therapist"}
+              description={
+                isEdit
+                  ? `Modifying therapist: ${existing?.name}`
+                  : "Onboard a new healthcare provider to the platform."
+              }
+            />
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-4 pt-6 mt-4 border-t border-healthcare-border">
-          <p className="text-xs text-healthcare-text-muted font-bold uppercase tracking-widest hidden sm:block">
-            Fields marked with * are mandatory
-          </p>
-          <div className="flex gap-4 w-full sm:w-auto">
-            <button
-              type="button"
-              onClick={() => navigate("/admin/therapists")}
-              className="flex-1 sm:flex-none px-8 py-3.5 border border-healthcare-border rounded-2xl text-sm font-bold text-healthcare-text hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isPending}
-              className="flex-1 sm:flex-none px-12 py-3.5 bg-healthcare-text text-white rounded-2xl text-sm font-bold hover:opacity-90 hover:shadow-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer"
-            >
-              {isPending
-                ? "Processing…"
-                : isEdit
-                  ? "Save Changes"
-                  : "Create Therapist"}
-            </button>
-          </div>
+        {isEdit && isLoading ? (
+          <TherapistFormSkeleton />
+        ) : (
+          <form
+            onSubmit={formik.handleSubmit}
+            className="bg-white rounded-sm border border-healthcare-border  p-6 "
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
+              <Field
+                label="Full Name"
+                required
+                error={formik.touched.name ? formik.errors.name : undefined}
+              >
+                <Input
+                  name="name"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  placeholder="Dr. Jane Smith"
+                  className={inputCls(
+                    !!formik.touched.name && !!formik.errors.name,
+                  )}
+                />
+              </Field>
+              <Field
+                label="Professional Email"
+                required
+                error={formik.touched.email ? formik.errors.email : undefined}
+              >
+                <Input
+                  type="email"
+                  name="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  placeholder="jane@clinic.com"
+                  className={inputCls(
+                    !!formik.touched.email && !!formik.errors.email,
+                  )}
+                />
+              </Field>
+              <Field label="Contact Number">
+                <Input
+                  name="phone"
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  placeholder="+1 (234) 567 8900"
+                  className={inputCls()}
+                />
+              </Field>
+              <Field
+                label="Years of Experience"
+                required
+                error={
+                  formik.touched.experience
+                    ? formik.errors.experience
+                    : undefined
+                }
+              >
+                <Input
+                  type="number"
+                  name="experience"
+                  value={formik.values.experience}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  min={0}
+                  className={inputCls(
+                    !!formik.touched.experience && !!formik.errors.experience,
+                  )}
+                />
+              </Field>
+              <Field
+                label="Core Specialization"
+                required
+                error={
+                  formik.touched.specialization
+                    ? formik.errors.specialization
+                    : undefined
+                }
+              >
+                <Input
+                  name="specialization"
+                  value={formik.values.specialization}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  placeholder="e.g. Clinical Psychology"
+                  className={inputCls(
+                    !!formik.touched.specialization &&
+                      !!formik.errors.specialization,
+                  )}
+                />
+              </Field>
+              <Field
+                label={
+                  isEdit ? "Update Password (optional)" : "Account Password"
+                }
+                required={!isEdit}
+                error={
+                  formik.touched.password ? formik.errors.password : undefined
+                }
+              >
+                <Input
+                  type="password"
+                  name="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  placeholder="••••••••"
+                  className={inputCls(
+                    !!formik.touched.password && !!formik.errors.password,
+                  )}
+                />
+              </Field>
+              <div className="sm:col-span-2">
+                <Field label="Professional Bio">
+                  <Textarea
+                    name="bio"
+                    value={formik.values.bio}
+                    onChange={formik.handleChange}
+                    rows={5}
+                    placeholder="Brief description of professional background and expertise…"
+                    className={inputCls() + " resize-none leading-relaxed"}
+                  />
+                </Field>
+              </div>
+            </div>
+
+            <p className="text-xs  items-center gap-2 text-red-500 mt-3 font-bold  tracking-widest hidden sm:flex">
+              <img
+                src={alertIcon}
+                alt="Info"
+                className="w-5 h-5 inline-block -translate-y-px"
+              />
+              Fields marked with * are mandatory
+            </p>
+
+            <div className="grid sm:grid-cols-2 gap-4 w-full sm:w-auto pt-6 mt-4 border-t border-healthcare-border">
+              <button
+                type="button"
+                onClick={() => navigate("/admin/therapists")}
+                className="flex-1 sm:flex-none px-8 py-3.5 border border-healthcare-border rounded-sm text-sm font-bold text-healthcare-text hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={isPending}
+                onClick={() => setEditconform(true)}
+                className="flex-1 sm:flex-none px-12 py-3.5 bg-[#1e40af] text-white rounded-sm text-sm font-bold hover:opacity-90 hover:shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer"
+              >
+                {isPending
+                  ? "Processing…"
+                  : isEdit
+                    ? "Save Changes"
+                    : "Create Therapist"}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+      <Modal
+        isOpen={editconform}
+        onClose={() => setEditconform(false)}
+        title={isEdit ? "Confirm Changes" : "Confirm Creation"}
+      >
+        <p className="text-lg text-center text-healthcare-text mb-6">
+          {isEdit
+            ? "Are you sure you want to save changes to this therapist's profile?"
+            : "Are you sure you want to create this therapist account?"}
+        </p>
+
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={() => setEditconform(false)}
+            className="px-4 py-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 rounded-sm"
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={() => {
+              setEditconform(false);
+              formik.submitForm();
+            }}
+            className="px-4 py-2 text-sm font-semibold bg-[#1e40af] text-white hover:opacity-90 rounded-sm"
+          >
+            {isEdit ? "Save Changes" : "Create"}
+          </button>
         </div>
-      </form>
-    </div>
+      </Modal>
+    </>
   );
 }

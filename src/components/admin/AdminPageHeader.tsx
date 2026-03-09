@@ -12,7 +12,7 @@ const AdminPageHeader: React.FC<AdminPageHeaderProps> = ({
   actions,
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10 pb-2">
+    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6  pb-2">
       <div className="space-y-1">
         <h1 className="text-3xl sm:text-4xl font-bold text-healthcare-text tracking-tight animate-slide-up">
           {title}

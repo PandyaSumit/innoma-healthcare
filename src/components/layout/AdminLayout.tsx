@@ -167,7 +167,7 @@ export default function AdminLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-healthcare-surface overflow-hidden">
+    <div className="flex h-screen  bg-healthcare-surface overflow-hidden">
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex lg:flex-col lg:w-68 border-r border-gray-200 flex-shrink-0">
         <SidebarContent />

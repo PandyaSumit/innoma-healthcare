@@ -1,4 +1,4 @@
-import { api } from './axios';
+import { api } from "./axios";
 import type {
   AdminTherapist,
   TherapistFormPayload,
@@ -15,12 +15,12 @@ import type {
   AdminStats,
   PaginatedResponse,
   UserStage,
-} from '../types/admin';
+} from "../types/admin";
 
 // ── Therapist Management ──────────────────────────────────────────────────────
 
 export async function fetchAdminTherapists(): Promise<AdminTherapist[]> {
-  const { data } = await api.get('/admin/therapists');
+  const { data } = await api.get("/admin/therapists");
   return data.data;
 }
 
@@ -29,8 +29,10 @@ export async function fetchAdminTherapist(id: string): Promise<AdminTherapist> {
   return data.data;
 }
 
-export async function createTherapist(payload: TherapistFormPayload): Promise<AdminTherapist> {
-  const { data } = await api.post('/admin/therapists', payload);
+export async function createTherapist(
+  payload: TherapistFormPayload,
+): Promise<AdminTherapist> {
+  const { data } = await api.post("/admin/therapists", payload);
   return data.data;
 }
 
@@ -44,9 +46,11 @@ export async function updateTherapist(
 
 export async function fetchTherapistBookings(
   therapistId: string,
-  type: 'upcoming' | 'past' = 'upcoming',
+  type: "upcoming" | "past" = "upcoming",
 ): Promise<TherapistBooking[]> {
-  const { data } = await api.get(`/admin/therapists/${therapistId}/bookings?type=${type}`);
+  const { data } = await api.get(
+    `/admin/therapists/${therapistId}/bookings?type=${type}`,
+  );
   return data.data;
 }
 
@@ -60,9 +64,9 @@ export async function fetchAllBookings(params?: {
   limit?: number;
 }): Promise<PaginatedResponse<TherapistBooking>> {
   const q = new URLSearchParams();
-  if (params?.status) q.set('status', params.status);
-  if (params?.page) q.set('page', String(params.page));
-  if (params?.limit) q.set('limit', String(params.limit));
+  if (params?.status) q.set("status", params.status);
+  if (params?.page) q.set("page", String(params.page));
+  if (params?.limit) q.set("limit", String(params.limit));
   const { data } = await api.get(`/admin/bookings?${q}`);
   return data.data;
 }
@@ -70,7 +74,7 @@ export async function fetchAllBookings(params?: {
 // ── Finance ───────────────────────────────────────────────────────────────────
 
 export async function fetchFinanceSummary(): Promise<FinanceSummary> {
-  const { data } = await api.get('/admin/finance/summary');
+  const { data } = await api.get("/admin/finance/summary");
   return data.data;
 }
 
@@ -82,22 +86,28 @@ export async function fetchFinancePayments(params?: {
   limit?: number;
 }): Promise<PaginatedResponse<any>> {
   const q = new URLSearchParams();
-  if (params?.fromDate) q.set('fromDate', params.fromDate);
-  if (params?.toDate) q.set('toDate', params.toDate);
-  if (params?.therapistId) q.set('therapistId', params.therapistId);
-  if (params?.page) q.set('page', String(params.page));
-  if (params?.limit) q.set('limit', String(params.limit));
+  if (params?.fromDate) q.set("fromDate", params.fromDate);
+  if (params?.toDate) q.set("toDate", params.toDate);
+  if (params?.therapistId) q.set("therapistId", params.therapistId);
+  if (params?.page) q.set("page", String(params.page));
+  if (params?.limit) q.set("limit", String(params.limit));
   const { data } = await api.get(`/admin/finance/payments?${q}`);
   return data.data;
 }
 
-export async function fetchDailyRevenueChart(days: number = 30): Promise<DailyRevenue[]> {
+export async function fetchDailyRevenueChart(
+  days: number = 30,
+): Promise<DailyRevenue[]> {
   const { data } = await api.get(`/admin/finance/chart/daily?days=${days}`);
   return data.data;
 }
 
-export async function fetchTherapistRevenue(therapistId?: string): Promise<TherapistRevenue[]> {
-  const url = therapistId ? `/admin/finance/therapists/${therapistId}/revenue` : '/admin/finance/therapists';
+export async function fetchTherapistRevenue(
+  therapistId?: string,
+): Promise<TherapistRevenue[]> {
+  const url = therapistId
+    ? `/admin/finance/therapists/${therapistId}/revenue`
+    : "/admin/finance/therapists";
   const { data } = await api.get(url);
   return data.data;
 }
@@ -110,9 +120,10 @@ export async function fetchAdminArticles(params?: {
   published?: boolean;
 }): Promise<PaginatedResponse<AdminArticle>> {
   const q = new URLSearchParams();
-  if (params?.page) q.set('page', String(params.page));
-  if (params?.limit) q.set('limit', String(params.limit));
-  if (params?.published !== undefined) q.set('published', String(params.published));
+  if (params?.page) q.set("page", String(params.page));
+  if (params?.limit) q.set("limit", String(params.limit));
+  if (params?.published !== undefined)
+    q.set("published", String(params.published));
   const { data } = await api.get(`/admin/articles?${q}`);
   return data.data;
 }
@@ -122,8 +133,10 @@ export async function fetchAdminArticle(id: string): Promise<AdminArticle> {
   return data.data;
 }
 
-export async function createArticle(payload: ArticleFormPayload): Promise<AdminArticle> {
-  const { data } = await api.post('/admin/articles', payload);
+export async function createArticle(
+  payload: ArticleFormPayload,
+): Promise<AdminArticle> {
+  const { data } = await api.post("/admin/articles", payload);
   return data.data;
 }
 
@@ -157,9 +170,9 @@ export async function fetchSupportTickets(params?: {
   limit?: number;
 }): Promise<PaginatedResponse<SupportTicket>> {
   const q = new URLSearchParams();
-  if (params?.status) q.set('status', params.status);
-  if (params?.page) q.set('page', String(params.page));
-  if (params?.limit) q.set('limit', String(params.limit));
+  if (params?.status) q.set("status", params.status);
+  if (params?.page) q.set("page", String(params.page));
+  if (params?.limit) q.set("limit", String(params.limit));
   const { data } = await api.get(`/admin/support?${q}`);
   return data.data;
 }
@@ -169,14 +182,17 @@ export async function fetchSupportTicket(id: string): Promise<SupportTicket> {
   return data.data;
 }
 
-export async function replyToTicket(id: string, reply: string): Promise<SupportTicket> {
+export async function replyToTicket(
+  id: string,
+  reply: string,
+): Promise<SupportTicket> {
   const { data } = await api.post(`/admin/support/${id}/reply`, { reply });
   return data.data;
 }
 
 export async function updateTicketStatus(
   id: string,
-  status: SupportTicket['status'],
+  status: SupportTicket["status"],
 ): Promise<SupportTicket> {
   const { data } = await api.patch(`/admin/support/${id}/status`, { status });
   return data.data;
@@ -185,16 +201,19 @@ export async function updateTicketStatus(
 // ── FAQs ──────────────────────────────────────────────────────────────────────
 
 export async function fetchAdminFaqs(): Promise<AdminFaq[]> {
-  const { data } = await api.get('/admin/faqs');
+  const { data } = await api.get("/admin/faqs");
   return data.data;
 }
 
 export async function createFaq(payload: FaqFormPayload): Promise<AdminFaq> {
-  const { data } = await api.post('/admin/faqs', payload);
+  const { data } = await api.post("/admin/faqs", payload);
   return data.data;
 }
 
-export async function updateFaq(id: string, payload: Partial<FaqFormPayload>): Promise<AdminFaq> {
+export async function updateFaq(
+  id: string,
+  payload: Partial<FaqFormPayload>,
+): Promise<AdminFaq> {
   const { data } = await api.patch(`/admin/faqs/${id}`, payload);
   return data.data;
 }
@@ -204,24 +223,23 @@ export async function deleteFaq(id: string): Promise<void> {
 }
 
 export async function reorderFaqs(orderedIds: string[]): Promise<void> {
-  await api.patch('/admin/faqs/reorder', { orderedIds });
+  await api.patch("/admin/faqs/reorder", { orderedIds });
 }
 
 // ── User Management ───────────────────────────────────────────────────────────
 
 export async function fetchAdminUsers(params?: {
-  stage?: UserStage;
+  stage?: UserStage | string;
   role?: string;
   search?: string;
-  page?: number;
+  page?: number | null;
   limit?: number;
 }): Promise<PaginatedResponse<AdminUser>> {
   const q = new URLSearchParams();
-  if (params?.stage) q.set('stage', params.stage);
-  if (params?.role) q.set('role', params.role);
-  if (params?.search) q.set('search', params.search);
-  if (params?.page) q.set('page', String(params.page));
-  if (params?.limit) q.set('limit', String(params.limit));
+  if (params?.stage) q.set("stage", params.stage);
+  if (params?.search) q.set("search", params.search);
+  if (params?.page) q.set("page", String(params.page));
+  if (params?.limit) q.set("limit", String(params.limit));
   const { data } = await api.get(`/admin/users?${q}`);
   return data.data;
 }
@@ -236,6 +254,6 @@ export async function sendEmailToUser(
 // ── Dashboard Stats ───────────────────────────────────────────────────────────
 
 export async function fetchAdminDashboardStats(): Promise<AdminStats> {
-  const { data } = await api.get('/admin/dashboard/stats');
+  const { data } = await api.get("/admin/dashboard/stats");
   return data.data;
 }
