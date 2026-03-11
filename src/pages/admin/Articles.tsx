@@ -59,7 +59,7 @@ export default function Articles() {
         actions={
           <Link
             to="/admin/articles/new"
-            className="inline-flex flex-1 justify-center items-center gap-2 px-5 py-3 bg-brand-blue text-white rounded-sm font-bold text-sm hover:opacity-90 transition-all no-underline shadow-lg shadow-blue-100"
+            className="inline-flex flex-1 justify-center items-center gap-2 px-5 py-3 bg-brand-blue text-white rounded-md font-bold text-sm hover:opacity-90 transition-all no-underline shadow-lg shadow-blue-100"
           >
             <svg
               className="w-5 h-5"
@@ -80,7 +80,7 @@ export default function Articles() {
       />
 
       {/* Filter Section */}
-      <section className="bg-white w-max p-2 rounded-sm border border-healthcare-border  flex items-center gap-2">
+      <section className="bg-white w-max p-2 rounded-md border border-healthcare-border  flex items-center gap-2">
         <GroupButton
           value={filter}
           onChange={(f) => {
@@ -100,7 +100,7 @@ export default function Articles() {
 
       <div className="space-y-6">
         <AdminTable<AdminArticle>
-          data={data?.items || []}
+          data={data || []}
           isLoading={isLoading}
           emptyMessage="No articles found."
           columns={[
@@ -109,11 +109,11 @@ export default function Articles() {
               accessor: (a) => (
                 <div className="max-w-md">
                   <p className="font-bold text-healthcare-text text-sm line-clamp-1">
-                    {a.title}
+                    {a?.title}
                   </p>
                   {a.excerpt && (
                     <p className="text-xs text-healthcare-text-muted line-clamp-1 mt-1 opacity-80">
-                      {a.excerpt}
+                      {a?.excerpt}
                     </p>
                   )}
                 </div>
@@ -123,11 +123,8 @@ export default function Articles() {
               header: "Author",
               accessor: (a) => (
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-lg bg-healthcare-surface flex items-center justify-center text-[10px] font-bold text-healthcare-text-muted border border-healthcare-border">
-                    {a.authorName[0]}
-                  </div>
                   <span className="text-sm font-medium text-healthcare-text">
-                    {a.authorName}
+                    {a?.author_name}
                   </span>
                 </div>
               ),
@@ -137,8 +134,10 @@ export default function Articles() {
               header: "Date",
               accessor: (a) => (
                 <span className="text-sm text-healthcare-text-muted font-medium">
-                  {a.publishedAt
-                    ? new Date(a.publishedAt).toLocaleDateString(undefined, {
+                  {a?.published_at
+                    ? new Date(
+                        a?.published_at || a?.created_at,
+                      ).toLocaleDateString(undefined, {
                         month: "short",
                         day: "numeric",
                         year: "numeric",
@@ -158,7 +157,7 @@ export default function Articles() {
                       : "bg-gray-50 text-gray-500 border border-gray-100/50"
                   }`}
                 >
-                  {a.isPublished ? "Published" : "Draft"}
+                  {a?.isPublished ? "Published" : "Draft"}
                 </span>
               ),
             },
@@ -170,13 +169,13 @@ export default function Articles() {
                     onClick={(e) => {
                       e.stopPropagation();
                       togglePublish.mutate({
-                        id: a.id,
-                        published: a.isPublished,
+                        id: a?.id,
+                        published: a?.isPublished,
                       });
                     }}
                     className="px-4 py-2 text-xs font-bold text-brand-blue bg-blue-50/50 rounded-xl hover:bg-blue-100/50 transition-all border-none cursor-pointer"
                   >
-                    {a.isPublished ? "Unpublish" : "Publish"}
+                    {a?.isPublished ? "Unpublish" : "Publish"}
                   </button>
                   <Link
                     to={`/admin/articles/${a.id}/edit`}
@@ -187,7 +186,7 @@ export default function Articles() {
                   <span
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (confirm("Delete this article?")) del.mutate(a.id);
+                      if (confirm("Delete this article?")) del.mutate(a?.id);
                     }}
                     className=" text-healthcare-text-muted cursor-pointer hover:text-healthcare-text hover:bg-healthcare-surface transition-all no-underline "
                   >

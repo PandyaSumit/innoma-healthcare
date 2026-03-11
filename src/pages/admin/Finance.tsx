@@ -9,6 +9,7 @@ import Spinner from "../../components/ui/Spinner";
 import AdminPageHeader from "../../components/admin/AdminPageHeader";
 import AdminStatCard from "../../components/admin/AdminStatCard";
 import AdminTable from "../../components/admin/AdminTable";
+import RevenueChart from "../../components/Charts/SimpleBarChart";
 
 function today() {
   return new Date().toISOString().slice(0, 10);
@@ -218,13 +219,13 @@ export default function Finance() {
 
       <div className="pt-2 space-y-5">
         {/* Daily Revenue Chart */}
-        <div className="bg-white rounded-sm border border-healthcare-border  p-8 overflow-hidden relative group">
+        <div className="bg-white rounded-md border border-healthcare-border  p-8 overflow-hidden relative group">
           <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-50 group-hover:bg-brand-blue/10 transition-colors duration-500" />
 
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10 relative z-10">
             <div>
               <h2 className="text-xl font-bold text-healthcare-text flex items-center gap-3">
-                <div className="w-10 h-10 bg-brand-blue/10 rounded-sm flex items-center justify-center">
+                <div className="w-10 h-10 bg-brand-blue/10 rounded-md flex items-center justify-center">
                   <svg
                     className="w-5 h-5 text-brand-blue"
                     fill="none"
@@ -243,13 +244,13 @@ export default function Finance() {
               </h2>
             </div>
 
-            <div className="flex items-center gap-1 bg-healthcare-surface/50 p-1 rounded-sm border border-healthcare-border relative z-10">
+            <div className="flex items-center gap-1 bg-healthcare-surface/50 p-1 rounded-md border border-healthcare-border relative z-10">
               <input
                 type="date"
                 value={from}
                 max={to}
                 onChange={(e) => setFrom(e.target.value)}
-                className="px-3 py-2 bg-white border border-healthcare-border/60 rounded-sm text-healthcare-text text-[10px] font-bold uppercase outline-none focus:border-brand-blue/50 transition-all cursor-pointer"
+                className="px-3 py-2 bg-white border border-healthcare-border/60 rounded-md text-healthcare-text text-[10px] font-bold uppercase outline-none focus:border-brand-blue/50 transition-all cursor-pointer"
               />
               <span className="px-2 text-healthcare-text-muted text-[10px] font-bold uppercase tracking-tight opacity-40">
                 to
@@ -260,7 +261,7 @@ export default function Finance() {
                 min={from}
                 max={today()}
                 onChange={(e) => setTo(e.target.value)}
-                className="px-3 py-2 bg-white border border-healthcare-border/60 rounded-sm text-healthcare-text text-[10px] font-bold uppercase outline-none focus:border-brand-blue/50 transition-all cursor-pointer"
+                className="px-3 py-2 bg-white border border-healthcare-border/60 rounded-md text-healthcare-text text-[10px] font-bold uppercase outline-none focus:border-brand-blue/50 transition-all cursor-pointer"
               />
             </div>
           </div>
@@ -271,7 +272,7 @@ export default function Finance() {
                 <Spinner />
               </div>
             ) : daily.data ? (
-              <SimpleBarChart data={daily.data} />
+              <RevenueChart data={daily.data} />
             ) : (
               <div className="h-64 flex items-center justify-center text-healthcare-text-muted italic bg-healthcare-surface/30 rounded-2xl border border-dashed border-healthcare-border">
                 No revenue data found for this period.

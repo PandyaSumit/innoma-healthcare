@@ -72,7 +72,7 @@ export default function TherapistBookings() {
       </div>
 
       {/* Tabs Section */}
-      <section className="bg-white  pr-1 py-1 rounded-sm border border-healthcare-border  flex items-center gap-2 max-w-fit">
+      <section className="bg-white  pr-1 py-1 rounded-md border border-healthcare-border  flex items-center gap-2 max-w-fit">
         <GroupButton
           value={tab}
           onChange={(v) => {

@@ -8,7 +8,7 @@ export default function Input({
   return (
     <input
       {...props}
-      className={`w-full p-3 text-md font-medium border border-healthcare-border/70 rounded-lg focus:border-brand-blue/50 focus:ring-2 focus:ring-brand-blue/5 outline-none bg-healthcare-surface/20 text-healthcare-text placeholder:text-healthcare-text-muted/40 font-medium transition-all ${className}`}
+      className={`w-full p-3 text-md font-medium border border-healthcare-border/70 rounded-md focus:border-brand-blue/50 focus:ring-2 focus:ring-brand-blue/5 outline-none bg-healthcare-surface/20 text-healthcare-text placeholder:text-healthcare-text-muted/40  transition-all ${className}`}
     />
   );
 }

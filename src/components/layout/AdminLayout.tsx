@@ -111,7 +111,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
             end={to === "/admin"}
             onClick={onClose}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all no-underline ${
+              `flex items-center gap-3 px-4 py-3 rounded-md text-sm font-semibold transition-all no-underline ${
                 isActive
                   ? "bg-blue-50 text-brand-blue shadow-sm shadow-blue-100/50"
                   : "text-healthcare-text-muted hover:bg-healthcare-surface hover:text-healthcare-text"

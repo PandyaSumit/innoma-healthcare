@@ -33,7 +33,7 @@ const FaqSkeleton = () => {
       {Array.from({ length: 5 }).map((_, i) => (
         <div
           key={i}
-          className="bg-white rounded-sm border border-healthcare-border p-6 flex flex-col md:flex-row md:items-start gap-4"
+          className="bg-white rounded-md border border-healthcare-border p-6 flex flex-col md:flex-row md:items-start gap-4"
         >
           <div className="flex items-center gap-4 flex-1">
             {/* Number circle */}
@@ -117,7 +117,7 @@ function FaqModal({ faq, onClose }: { faq?: AdminFaq; onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-healthcare-text/40 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white rounded-sm shadow-sm border border-healthcare-border w-full max-w-xl overflow-hidden animate-slide-up">
+      <div className="bg-white rounded-md shadow-sm border border-healthcare-border w-full max-w-xl overflow-hidden animate-slide-up">
         <div className="flex items-center justify-between p-4 border-b border-healthcare-border bg-healthcare-surface/30">
           <div>
             <h2 className="text-xl font-bold text-healthcare-text">
@@ -129,7 +129,7 @@ function FaqModal({ faq, onClose }: { faq?: AdminFaq; onClose: () => void }) {
           </div>
           <button
             onClick={onClose}
-            className="w-10 h-10 flex items-center justify-center text-healthcare-text-muted hover:text-healthcare-text hover:bg-healthcare-surface rounded-sm transition-all border-none cursor-pointer"
+            className="w-10 h-10 flex items-center justify-center text-healthcare-text-muted hover:text-healthcare-text hover:bg-healthcare-surface rounded-md transition-all border-none cursor-pointer"
           >
             <svg
               className="w-5 h-5"
@@ -209,7 +209,7 @@ function FaqModal({ faq, onClose }: { faq?: AdminFaq; onClose: () => void }) {
                     !formik.values.isPublished,
                   )
                 }
-                className="flex items-center gap-3 p-3 rounded-sm border border-healthcare-border bg-healthcare-surface/20 cursor-pointer hover:bg-healthcare-surface/40 transition-all select-none"
+                className="flex items-center gap-3 p-3 rounded-md border border-healthcare-border bg-healthcare-surface/20 cursor-pointer hover:bg-healthcare-surface/40 transition-all select-none"
               >
                 <button
                   type="button"
@@ -232,14 +232,14 @@ function FaqModal({ faq, onClose }: { faq?: AdminFaq; onClose: () => void }) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-3.5 border border-healthcare-border rounded-sm text-sm font-bold text-healthcare-text hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
+              className="flex-1 py-3.5 border border-healthcare-border rounded-md text-sm font-bold text-healthcare-text hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="flex-1 py-3.5 bg-brand-blue text-white rounded-sm text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer shadow-lg shadow-blue-100"
+              className="flex-1 py-3.5 bg-brand-blue text-white rounded-md text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer shadow-lg shadow-blue-100"
             >
               {isPending ? "Saving..." : isEdit ? "Save Changes" : "Create FAQ"}
             </button>
@@ -285,7 +285,7 @@ export default function Faqs() {
           actions={
             <button
               onClick={() => setModal({ open: true })}
-              className="inline-flex items-center gap-2 px-5 py-3 bg-brand-blue text-white rounded-sm flex-1 justify-center font-bold text-sm hover:opacity-90 transition-all border-none cursor-pointer shadow-lg shadow-blue-100"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-brand-blue text-white rounded-md flex-1 justify-center font-bold text-sm hover:opacity-90 transition-all border-none cursor-pointer shadow-lg shadow-blue-100"
             >
               <svg
                 className="w-5 h-5"
@@ -308,10 +308,10 @@ export default function Faqs() {
           {isLoading ? (
             <FaqSkeleton />
           ) : data?.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-sm border border-healthcare-border  group overflow-hidden relative">
+            <div className="text-center py-20 bg-white rounded-md border border-healthcare-border  group overflow-hidden relative">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
               <div className="relative z-10">
-                <div className="w-20 h-20 bg-healthcare-surface rounded-sm flex items-center justify-center mx-auto mb-6 border border-healthcare-border">
+                <div className="w-20 h-20 bg-healthcare-surface rounded-md flex items-center justify-center mx-auto mb-6 border border-healthcare-border">
                   <svg
                     className="w-10 h-10 text-healthcare-text-muted/40"
                     fill="none"
@@ -334,7 +334,7 @@ export default function Faqs() {
                 </p>
                 <button
                   onClick={() => setModal({ open: true })}
-                  className="mt-8 px-6 py-3 bg-brand-blue hover:opacity-90 text-white rounded-sm text-sm font-bold  transition-all border-none cursor-pointer"
+                  className="mt-8 px-6 py-3 bg-brand-blue hover:opacity-90 text-white rounded-md text-sm font-bold  transition-all border-none cursor-pointer"
                 >
                   Create First FAQ
                 </button>
@@ -345,10 +345,10 @@ export default function Faqs() {
               {data?.map((faq, index) => (
                 <div
                   key={faq.id}
-                  className="bg-white rounded-sm border border-healthcare-border p-6 flex flex-col md:flex-row md:items-start gap-4  transition-all group"
+                  className="bg-white rounded-md border border-healthcare-border p-6 flex flex-col md:flex-row md:items-start gap-4  transition-all group"
                 >
                   <div className="flex items-center gap-4 flex-1">
-                    <div className="w-14 h-14 rounded-sm bg-brand-blue/5 text-brand-blue text-sm font-bold flex items-center justify-center flex-shrink-0 border border-brand-blue/10 group-hover:bg-brand-blue group-hover:text-white transition-all">
+                    <div className="w-14 h-14 rounded-md bg-brand-blue/5 text-brand-blue text-sm font-bold flex items-center justify-center flex-shrink-0 border border-brand-blue/10 group-hover:bg-brand-blue group-hover:text-white transition-all">
                       {index + 1}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -378,7 +378,7 @@ export default function Faqs() {
                   <div className="flex items-center gap-2 md:pt-1 self-end md:self-start">
                     <button
                       onClick={() => setModal({ open: true, faq })}
-                      className="p-2.5 text-healthcare-text-muted hover:text-brand-blue hover:bg-brand-blue/5 rounded-sm transition-all border border-transparent hover:border-brand-blue/10 cursor-pointer"
+                      className="p-2.5 text-healthcare-text-muted hover:text-brand-blue hover:bg-brand-blue/5 rounded-md transition-all border border-transparent hover:border-brand-blue/10 cursor-pointer"
                       title="Edit FAQ"
                     >
                       <img src={editIcon} alt="Edit" className="min-w-5 w-5" />
@@ -388,7 +388,7 @@ export default function Faqs() {
                         e.stopPropagation();
                         setDeleteTarget(faq);
                       }}
-                      className="p-2.5 text-red-300 hover:text-red-500 hover:bg-red-50 rounded-sm transition-all border border-transparent hover:border-red-100 cursor-pointer"
+                      className="p-2.5 text-red-300 hover:text-red-500 hover:bg-red-50 rounded-md transition-all border border-transparent hover:border-red-100 cursor-pointer"
                       title="Delete FAQ"
                     >
                       <img
@@ -406,12 +406,12 @@ export default function Faqs() {
       </div>
 
       <Modal
-        title=" Delete Therapist"
+        title=" Delete FAQs"
         isOpen={deleteTarget !== null}
         onClose={() => setDeleteTarget(null)}
       >
-        <p className="text-lg text-center text-healthcare-text-muted mb-6">
-          Are you sure you want to delete <br />
+        <p className="text-lg text-start text-healthcare-text-muted mb-6">
+          Are you sure you want to delete  {" "}
           <span className="font-bold text-healthcare-text-muted/80">
             "{deleteTarget?.question}"
             {console.log(deleteTarget, "deleteTarget")}
@@ -422,7 +422,7 @@ export default function Faqs() {
         <div className="grid grid-cols-2  gap-2">
           <button
             onClick={() => setDeleteTarget(null)}
-            className="px-4 py-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 rounded-sm"
+            className="px-4 py-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 rounded-md"
           >
             Cancel
           </button>
@@ -432,7 +432,7 @@ export default function Faqs() {
               del.mutate(deleteTarget?.id);
               setDeleteTarget(null);
             }}
-            className="px-4 py-2 text-sm font-semibold bg-red-500 text-white hover:bg-red-600 rounded-sm"
+            className="px-4 py-2 text-sm font-semibold bg-red-500 text-white hover:bg-red-600 rounded-md"
           >
             Delete
           </button>

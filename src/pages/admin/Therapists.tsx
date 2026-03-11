@@ -50,7 +50,7 @@ export default function AdminTherapists() {
           actions={
             <Link
               to="/admin/therapists/new"
-              className="inline-flex w-full justify-center items-center text-nowrap gap-2 px-5 py-3 bg-brand-blue text-white rounded-sm font-bold text-sm hover:opacity-90 transition-all no-underline shadow-lg shadow-blue-100"
+              className="inline-flex w-full justify-center items-center text-nowrap gap-2 px-5 py-3 bg-brand-blue text-white rounded-md font-bold text-sm hover:opacity-90 transition-all no-underline shadow-lg shadow-blue-100"
             >
               <svg
                 className="w-5 h-5"
@@ -72,7 +72,7 @@ export default function AdminTherapists() {
 
         {/* Search & Stats Bar */}
         <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="relative flex-1 rounded-sm bg-white ">
+          <div className="relative flex-1 rounded-md bg-white ">
             <span className="absolute left-5 top-1/2 -translate-y-1/2 text-healthcare-text-muted/50">
               <svg
                 className="w-4 h-4"
@@ -92,13 +92,12 @@ export default function AdminTherapists() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name, email or specialty..."
-              // className="w-full pl-12 pr-6 py-3 text-sm border border-healthcare-border/60 rounded-xl focus:border-brand-blue/50 focus:ring-4 focus:ring-brand-blue/5 outline-none bg-healthcare-surface/20 text-healthcare-text placeholder:text-healthcare-text-muted/40 font-medium transition-all"
               className="pl-12"
             />
           </div>
 
           <div className="flex h-full gap-1">
-            <div className=" py-2 px-4  rounded-sm bg-white border border-healthcare-border">
+            <div className=" py-2 px-4  rounded-md bg-white border border-healthcare-border">
               <p className="text-[12px] font-bold flex items-center gap-2 text-healthcare-text-muted uppercase tracking-widest leading-none mb-1">
                 <span className="min-w-2 min-h-2 rounded-full bg-yellow-300"></span>{" "}
                 Total
@@ -107,7 +106,7 @@ export default function AdminTherapists() {
                 {therapists.length}
               </p>
             </div>
-            <div className=" py-2 px-4  rounded-sm bg-white border border-healthcare-border">
+            <div className=" py-2 px-4  rounded-md bg-white border border-healthcare-border">
               <p className="text-[12px] font-bold flex items-center gap-2 text-healthcare-text-muted uppercase tracking-widest leading-none mb-1">
                 <span className="min-w-2 min-h-2 rounded-full bg-green-500"></span>{" "}
                 Active
@@ -120,7 +119,7 @@ export default function AdminTherapists() {
         </section>
 
         {error && (
-          <div className="p-6 bg-red-50 border border-red-100 rounded-2xl text-sm text-red-600 font-medium flex items-center gap-3">
+          <div className="p-6 bg-red-50 border border-red-100 rounded-md text-sm text-red-600 font-medium flex items-center gap-3">
             <svg
               className="w-5 h-5 flex-shrink-0"
               fill="none"
@@ -147,7 +146,7 @@ export default function AdminTherapists() {
               header: "Therapist",
               accessor: (t) => (
                 <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-sm bg-healthcare-lavender/10 flex items-center justify-center flex-shrink-0 text-sm font-bold text-purple-600 ">
+                  <div className="w-11 h-11 rounded-md bg-healthcare-lavender/10 flex items-center justify-center flex-shrink-0 text-sm font-bold text-purple-600 ">
                     {t.name[0]?.toUpperCase()}
                   </div>
                   <div>
@@ -209,7 +208,7 @@ export default function AdminTherapists() {
                 <div className="flex items-center gap-2.5 justify-end">
                   <Link
                     to={`/admin/therapists/${t.id}/bookings`}
-                    className="px-4 py-2 text-xs font-bold text-brand-blue bg-blue-50 rounded-sm hover:bg-blue-100 transition-all no-underline shadow-sm"
+                    className="px-4 py-2 text-xs font-bold text-brand-blue bg-blue-50 rounded-md hover:bg-blue-100 transition-all no-underline shadow-sm"
                   >
                     Bookings
                   </Link>
@@ -244,10 +243,10 @@ export default function AdminTherapists() {
         isOpen={deleteTarget !== null}
         onClose={() => setDeleteTarget(null)}
       >
-        <p className="text-lg text-center text-healthcare-text-muted mb-6">
-          Are you sure you want to delete <br />
+        <p className="text-lg text-start text-healthcare-text-muted mb-6">
+          Are you sure you want to delete  
           <span className="font-bold text-healthcare-text-muted/80">
-            "{deleteTarget?.name}"
+           {" "} "{deleteTarget?.name}"
           </span>{" "}
           ?
         </p>
@@ -255,14 +254,14 @@ export default function AdminTherapists() {
         <div className="grid grid-cols-2  gap-2">
           <button
             onClick={() => setDeleteTarget(null)}
-            className="px-4 py-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 rounded-sm"
+            className="px-4 py-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 rounded-md"
           >
             Cancel
           </button>
 
           <button
             onClick={() => {}}
-            className="px-4 py-2 text-sm font-semibold bg-red-500 text-white hover:bg-red-600 rounded-sm"
+            className="px-4 py-2 text-sm font-semibold bg-red-500 text-white hover:bg-red-600 rounded-md"
           >
             Delete
           </button>

@@ -35,11 +35,11 @@ function GroupButton({ btns = [], value, onChange }: GroupButtonProps) {
     <div className="flex-1">
       <div
         ref={containerRef}
-        className="relative flex items-center gap-2 w-max overflow-x-auto no-scrollbar px-1 py-1 rounded-sm "
+        className="relative flex items-center gap-2 w-max overflow-x-auto no-scrollbar px-1 py-1 rounded-md "
       >
         {/* Sliding Background */}
         <span
-          className="absolute top-1 bottom-1 bg-brand-blue rounded-sm transition-all duration-300"
+          className="absolute top-1 bottom-1 bg-brand-blue rounded-md transition-all duration-300"
           style={{
             width: sliderStyle.width - sliderStyle.width * 0.05,
             transform: `translateX(${sliderStyle.left}px)`,
@@ -51,7 +51,7 @@ function GroupButton({ btns = [], value, onChange }: GroupButtonProps) {
             key={btn.value}
             data-value={btn.value}
             onClick={() => onChange(btn.value)}
-            className={`relative capitalize z-10 px-5 py-2.5 text-center rounded-sm text-xs font-bold whitespace-nowrap cursor-pointer transition-colors duration-300 ${
+            className={`relative capitalize z-10 px-5 py-2.5 text-center rounded-md text-xs font-bold whitespace-nowrap cursor-pointer transition-colors duration-300 ${
               value === btn.value ? "text-white" : "text-healthcare-text-muted"
             }`}
           >

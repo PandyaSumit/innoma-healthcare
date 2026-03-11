@@ -81,48 +81,48 @@ function Field({
 
 const TherapistFormSkeleton = () => {
   return (
-    <div className="bg-white rounded-sm border border-healthcare-border p-6 animate-pulse">
+    <div className="bg-white rounded-md border border-healthcare-border p-6 animate-pulse">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
         {/* Full Name */}
         <div className="space-y-2">
           <div className="h-3 w-24 bg-gray-200 rounded" />
-          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+          <div className="h-11 w-full bg-gray-200 rounded-md" />
         </div>
 
         {/* Email */}
         <div className="space-y-2">
           <div className="h-3 w-32 bg-gray-200 rounded" />
-          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+          <div className="h-11 w-full bg-gray-200 rounded-md" />
         </div>
 
         {/* Phone */}
         <div className="space-y-2">
           <div className="h-3 w-28 bg-gray-200 rounded" />
-          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+          <div className="h-11 w-full bg-gray-200 rounded-md" />
         </div>
 
         {/* Experience */}
         <div className="space-y-2">
           <div className="h-3 w-36 bg-gray-200 rounded" />
-          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+          <div className="h-11 w-full bg-gray-200 rounded-md" />
         </div>
 
         {/* Specialization */}
         <div className="space-y-2">
           <div className="h-3 w-36 bg-gray-200 rounded" />
-          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+          <div className="h-11 w-full bg-gray-200 rounded-md" />
         </div>
 
         {/* Password */}
         <div className="space-y-2">
           <div className="h-3 w-32 bg-gray-200 rounded" />
-          <div className="h-11 w-full bg-gray-200 rounded-sm" />
+          <div className="h-11 w-full bg-gray-200 rounded-md" />
         </div>
 
         {/* Bio */}
         <div className="sm:col-span-2 space-y-2">
           <div className="h-3 w-28 bg-gray-200 rounded" />
-          <div className="h-28 w-full bg-gray-200 rounded-sm" />
+          <div className="h-28 w-full bg-gray-200 rounded-md" />
         </div>
       </div>
 
@@ -131,8 +131,8 @@ const TherapistFormSkeleton = () => {
 
       {/* Buttons */}
       <div className="grid sm:grid-cols-2 gap-4 pt-6 mt-4 border-t border-healthcare-border">
-        <div className="h-12 bg-gray-200 rounded-sm" />
-        <div className="h-12 bg-gray-200 rounded-sm" />
+        <div className="h-12 bg-gray-200 rounded-md" />
+        <div className="h-12 bg-gray-200 rounded-md" />
       </div>
     </div>
   );
@@ -237,7 +237,7 @@ export default function TherapistForm() {
         ) : (
           <form
             onSubmit={formik.handleSubmit}
-            className="bg-white rounded-sm border border-healthcare-border  p-6 "
+            className="bg-white rounded-md border border-healthcare-border  p-6 "
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
               <Field
@@ -372,7 +372,7 @@ export default function TherapistForm() {
               <button
                 type="button"
                 onClick={() => navigate("/admin/therapists")}
-                className="flex-1 sm:flex-none px-8 py-3.5 border border-healthcare-border rounded-sm text-sm font-bold text-healthcare-text hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
+                className="flex-1 sm:flex-none px-8 py-3.5 border border-healthcare-border rounded-md text-sm font-bold text-healthcare-text hover:bg-healthcare-surface transition-all cursor-pointer bg-white"
               >
                 Cancel
               </button>
@@ -380,7 +380,7 @@ export default function TherapistForm() {
                 type="button"
                 disabled={isPending}
                 onClick={() => setEditconform(true)}
-                className="flex-1 sm:flex-none px-12 py-3.5 bg-[#1e40af] text-white rounded-sm text-sm font-bold hover:opacity-90 hover:shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer"
+                className="flex-1 sm:flex-none px-12 py-3.5 bg-[#1e40af] text-white rounded-md text-sm font-bold hover:opacity-90 hover:shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed border-none cursor-pointer"
               >
                 {isPending
                   ? "Processing…"
@@ -397,7 +397,7 @@ export default function TherapistForm() {
         onClose={() => setEditconform(false)}
         title={isEdit ? "Confirm Changes" : "Confirm Creation"}
       >
-        <p className="text-lg text-center text-healthcare-text mb-6">
+        <p className="text-lg text-start text-healthcare-text mb-6">
           {isEdit
             ? "Are you sure you want to save changes to this therapist's profile?"
             : "Are you sure you want to create this therapist account?"}
@@ -406,7 +406,7 @@ export default function TherapistForm() {
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={() => setEditconform(false)}
-            className="px-4 py-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 rounded-sm"
+            className="px-4 py-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 rounded-md"
           >
             Cancel
           </button>
@@ -416,7 +416,7 @@ export default function TherapistForm() {
               setEditconform(false);
               formik.submitForm();
             }}
-            className="px-4 py-2 text-sm font-semibold bg-[#1e40af] text-white hover:opacity-90 rounded-sm"
+            className="px-4 py-2 text-sm font-semibold bg-[#1e40af] text-white hover:opacity-90 rounded-md"
           >
             {isEdit ? "Save Changes" : "Create"}
           </button>

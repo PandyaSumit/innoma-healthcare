@@ -1,9 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { fetchAdminDashboardStats } from "../../api/admin.api";
-import Spinner from "../../components/ui/Spinner";
 import AdminPageHeader from "../../components/admin/AdminPageHeader";
 import AdminStatCard from "../../components/admin/AdminStatCard";
+import ChartCard from "../../components/Charts/ChartCard";
+import AreaTrendChart from "../../components/Charts/AreaTrendChart";
+import BarTrendChart from "../../components/Charts/BarTrendChart";
+import PieDistributionChart from "../../components/Charts/PieDistributionChart";
+import { useState } from "react";
 
 function Icon({ d }: { d: string }) {
   return (
@@ -31,10 +35,10 @@ const AdminDashboardSkeleton = () => {
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
-            className="bg-white border border-healthcare-border rounded-sm p-6 space-y-4"
+            className="bg-white border border-healthcare-border rounded-md p-6 space-y-4"
           >
             <div className="flex items-center justify-between">
-              <div className="w-12 h-12 bg-gray-200 rounded-sm" />
+              <div className="w-12 h-12 bg-gray-200 rounded-md" />
               <div className="h-4 w-12 bg-gray-200 rounded" />
             </div>
 
@@ -47,9 +51,9 @@ const AdminDashboardSkeleton = () => {
       </div>
 
       {/* Quick Actions */}
-      <section className="bg-white border border-healthcare-border rounded-sm p-8 space-y-8">
+      <section className="bg-white border border-healthcare-border rounded-md p-8 space-y-8">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gray-200 rounded-sm" />
+          <div className="w-10 h-10 bg-gray-200 rounded-md" />
           <div className="h-5 w-40 bg-gray-200 rounded" />
         </div>
 
@@ -57,7 +61,7 @@ const AdminDashboardSkeleton = () => {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="flex flex-col items-center gap-3 p-5 border border-healthcare-border rounded-sm"
+              className="flex flex-col items-center gap-3 p-5 border border-healthcare-border rounded-md"
             >
               <div className="w-6 h-6 bg-gray-200 rounded" />
               <div className="h-3 w-20 bg-gray-200 rounded" />
@@ -75,6 +79,18 @@ export default function AdminDashboard() {
     queryFn: fetchAdminDashboardStats,
   });
 
+  const revenueTrend =
+    data?.charts?.revenueTrend?.map((d) => ({
+      date: d.date,
+      value: d.amount,
+    })) ?? [];
+
+  const appointmentTrend =
+    data?.charts?.appointmentTrend?.map((d) => ({
+      date: d.date,
+      value: d.count,
+    })) ?? [];
+
   return (
     <div className="space-y-2 animate-fade-in">
       <AdminPageHeader
@@ -83,7 +99,7 @@ export default function AdminDashboard() {
       />
 
       {error && (
-        <div className="p-6 bg-red-50 border border-red-100 rounded-2xl text-sm text-red-600 font-medium flex items-center gap-3">
+        <div className="p-6 bg-red-50 border border-red-100 rounded-md text-sm text-red-600 font-medium flex items-center gap-3">
           <svg
             className="w-5 h-5 flex-shrink-0"
             fill="none"
@@ -177,13 +193,26 @@ export default function AdminDashboard() {
                 }
               />
             </div>
+            <section className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+              <ChartCard title="Revenue Trend">
+                <AreaTrendChart
+                  data={revenueTrend}
+                  color="#1e40af"
+                  isLoading={isLoading}
+                />
+              </ChartCard>
 
+              <ChartCard title="Appointments">
+                <BarTrendChart data={appointmentTrend} isLoading={isLoading} />
+              </ChartCard>
+            </section>
+            
             {/* Quick Actions */}
-            <section className="bg-white rounded-sm border border-healthcare-border p-8  transition-all duration-500 overflow-hidden relative">
+            <section className="bg-white rounded-md border border-healthcare-border p-8  transition-all duration-500 overflow-hidden relative">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
 
               <h2 className="text-xl font-bold text-healthcare-text mb-8 flex items-center gap-3 relative z-10">
-                <div className="w-10 h-10 bg-brand-blue/10 rounded-sm flex items-center justify-center">
+                <div className="w-10 h-10 bg-brand-blue/10 rounded-md flex items-center justify-center">
                   <svg
                     className="w-5 h-5 text-brand-blue"
                     fill="none"
@@ -286,7 +315,7 @@ export default function AdminDashboard() {
                   <Link
                     key={to}
                     to={to}
-                    className={`group/btn flex flex-col items-center justify-center p-5 gap-3 border rounded-sm hover:bg-white hover:shadow-clinical transition-all duration-300 no-underline text-center ${color}`}
+                    className={`group/btn flex flex-col items-center justify-center p-5 gap-3 border rounded-md hover:bg-white hover:shadow-clinical transition-all duration-300 no-underline text-center ${color}`}
                   >
                     <svg
                       className="w-6 h-6 group-hover/btn:scale-110 transition-transform duration-300"
