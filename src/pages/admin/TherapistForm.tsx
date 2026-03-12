@@ -8,7 +8,6 @@ import {
   createTherapist,
   updateTherapist,
 } from "../../api/admin.api";
-import Spinner from "../../components/ui/Spinner";
 import AdminPageHeader from "../../components/admin/AdminPageHeader";
 import Input from "../../components/ui/Input";
 import Textarea from "../../components/ui/Textarea";
@@ -18,7 +17,7 @@ import { useState } from "react";
 
 const schema = (isEdit: boolean) =>
   yup.object({
-    name: yup.string().required("Name is required"),
+    fullname: yup.string().required("Name is required"),
     email: yup.string().required("Email is required").email("Invalid email"),
     phone: yup.string(),
     specialization: yup.string().required("Specialization is required"),
@@ -33,7 +32,7 @@ const schema = (isEdit: boolean) =>
   });
 
 const inputCls = (err?: boolean) =>
-  `w-full px-5 py-3.5 rounded-2xl border ${err ? "border-red-400 bg-red-50/10" : "border-healthcare-border bg-healthcare-surface/20"} focus:border-brand-blue/50 focus:ring-4 focus:ring-brand-blue/5 outline-none text-healthcare-text font-medium text-sm transition-all placeholder:text-healthcare-text-muted/40`;
+  `w-full px-5 py-3.5 rounded-md border ${err ? "border-red-400 bg-red-50/10" : "border-healthcare-border bg-healthcare-surface/20"} focus:border-brand-blue/50 focus:ring-4 focus:ring-brand-blue/5 outline-none text-healthcare-text font-medium text-sm transition-all placeholder:text-healthcare-text-muted/40`;
 
 function Field({
   label,
@@ -176,20 +175,51 @@ export default function TherapistForm() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: existing?.name ?? "",
+      fullname: existing?.name ?? "",
       email: existing?.email ?? "",
       phone: existing?.phone ?? "",
-      specialization: existing?.specialization ?? "",
-      experience: existing?.experience ?? 0,
+      qualifications: existing?.qualifications ?? "",
+      license_number: existing?.license_number ?? "",
+      experience: existing?.experience_years ?? 0,
+      consultation_fee: existing?.consultation_fee ?? 0,
+      specialization: existing?.specializations
+        ? existing.specializations.join(", ")
+        : "",
+      languages: existing?.languages ? existing.languages.join(", ") : "",
+      location: existing?.location ?? "",
+      gender: existing?.gender ?? "",
       bio: existing?.bio ?? "",
       password: "",
     },
     validationSchema: schema(isEdit),
     onSubmit: (values) => {
-      const payload: any = { ...values };
-      if (isEdit && !payload.password) delete payload.password;
-      if (!payload.phone) delete payload.phone;
-      if (!payload.bio) delete payload.bio;
+      const payload: any = {
+        fullName: values.fullname,
+        email: values.email,
+        phone: values.phone,
+        qualifications: values.qualifications,
+        licenseNumber: values.license_number,
+        experience: values.experience,
+        consultationFee: values.consultation_fee,
+        location: values.location,
+        gender: values.gender,
+        bio: values.bio,
+
+        specializations: values.specialization
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+
+        languages: values.languages
+          .split(",")
+          .map((l) => l.trim())
+          .filter(Boolean),
+      };
+
+      if (!values.phone) delete payload.phone;
+      if (!values.bio) delete payload.bio;
+
+      if (!isEdit) payload.password = values.password;
 
       if (isEdit) {
         edit.mutate(payload);
@@ -243,16 +273,18 @@ export default function TherapistForm() {
               <Field
                 label="Full Name"
                 required
-                error={formik.touched.name ? formik.errors.name : undefined}
+                error={
+                  formik.touched.fullname ? formik.errors.fullname : undefined
+                }
               >
                 <Input
-                  name="name"
-                  value={formik.values.name}
+                  name="fullname"
+                  value={formik.values.fullname}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   placeholder="Dr. Jane Smith"
                   className={inputCls(
-                    !!formik.touched.name && !!formik.errors.name,
+                    !!formik.touched.fullname && !!formik.errors.fullname,
                   )}
                 />
               </Field>
@@ -308,7 +340,7 @@ export default function TherapistForm() {
                 required
                 error={
                   formik.touched.specialization
-                    ? formik.errors.specialization
+                    ? (formik.errors.specialization as string)
                     : undefined
                 }
               >
@@ -317,7 +349,7 @@ export default function TherapistForm() {
                   value={formik.values.specialization}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  placeholder="e.g. Clinical Psychology"
+                  placeholder="Enter specialization "
                   className={inputCls(
                     !!formik.touched.specialization &&
                       !!formik.errors.specialization,
@@ -345,6 +377,58 @@ export default function TherapistForm() {
                   )}
                 />
               </Field>
+              <Field label="Qualifications">
+                <Input
+                  name="qualifications"
+                  value={formik.values.qualifications}
+                  onChange={formik.handleChange}
+                  placeholder="MBBS, MD Psychiatry"
+                  className={inputCls()}
+                />
+              </Field>
+              <Field label="License Number">
+                <Input
+                  name="license_number"
+                  value={formik.values.license_number}
+                  onChange={formik.handleChange}
+                  placeholder="MCI-67890"
+                  className={inputCls()}
+                />
+              </Field>
+
+              <Field label="Consultation Fee">
+                <Input
+                  type="number"
+                  name="consultation_fee"
+                  value={formik.values.consultation_fee}
+                  onChange={formik.handleChange}
+                  className={inputCls()}
+                />
+              </Field>
+
+              <Field label="Languages">
+                <Input
+                  name="languages"
+                  value={formik.values.languages}
+                  onChange={formik.handleChange}
+                  placeholder="English, Gujarati"
+                  className={inputCls()}
+                />
+              </Field>
+
+              <Field label="Gender">
+                <select
+                  name="gender"
+                  value={formik.values.gender}
+                  onChange={formik.handleChange}
+                  className={inputCls()}
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </Field>
+
               <div className="sm:col-span-2">
                 <Field label="Professional Bio">
                   <Textarea

@@ -211,13 +211,7 @@ export default function ArticleForm() {
     }
   };
 
-  // if (isEdit && isLoading) {
-  //   return (
-  //     <div className="flex justify-center py-20">
-  //       <Spinner size="lg" />
-  //     </div>
-  //   );
-  // }
+
 
   const isPending = create.isPending || edit.isPending;
 

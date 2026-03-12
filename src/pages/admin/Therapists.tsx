@@ -41,6 +41,7 @@ export default function AdminTherapists() {
       t.specialization?.toLowerCase()?.includes(search.toLowerCase()),
   );
 
+  console.log(therapists, "therapists===");
   return (
     <>
       <div className="space-y-2 animate-fade-in">
@@ -145,42 +146,87 @@ export default function AdminTherapists() {
             {
               header: "Therapist",
               accessor: (t) => (
-                <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-md bg-healthcare-lavender/10 flex items-center justify-center flex-shrink-0 text-sm font-bold text-purple-600 ">
-                    {t.name[0]?.toUpperCase()}
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-md bg-healthcare-lavender/10 flex items-center justify-center text-sm font-bold text-purple-600">
+                    {t.name?.[0]?.toUpperCase()}
                   </div>
-                  <div>
-                    <p className="font-bold text-healthcare-text text-sm">
+
+                  <div className="flex flex-col">
+                    <p className="font-semibold text-healthcare-text text-sm">
                       {t.name}
                     </p>
-                    <p className="text-xs text-healthcare-text-muted mt-0.5">
+                    <p className="text-xs text-healthcare-text-muted">
                       {t.email}
                     </p>
                   </div>
                 </div>
               ),
             },
+
             {
-              header: "Specialization",
+              header: "Specializations",
               accessor: (t) => (
-                <p className="capitalize  rounded-lg text-xs text-center font-semibold text-healthcare-text">
-                  {t.specialization || "N/A"}
-                </p>
+                <div className="flex flex-wrap justify-center w-full gap-1">
+                  {t?.specializations?.length ? (
+                    t.specializations.map((e, i) => (
+                      <span
+                        key={i}
+                        className="px-2 py-1 bg-purple-50 text-purple-700 text-[11px] font-semibold rounded-md"
+                      >
+                        {e.trim()}
+                      </span>
+                    ))
+                  ) : (
+                    <p className="text-xs text-center text-gray-400">N/A</p>
+                  )}
+                </div>
               ),
               hiddenOnTablet: true,
             },
+
             {
-              header: "Sessions",
+              header: "Experience",
               accessor: (t) => (
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-healthcare-lavender"></span>
-                  <span className="font-bold text-healthcare-text">
-                    {t.totalSessions}
+                <span className="text-sm font-semibold text-healthcare-text">
+                  {t.experienceYears ?? 0} yrs
+                </span>
+              ),
+              hiddenOnTablet: true,
+            },
+
+            {
+              header: "Rating",
+              accessor: (t) => (
+                <div className="flex items-center justify-center gap-1 font-semibold text-sm">
+                  ⭐ {t.rating || 0}
+                </div>
+              ),
+              hiddenOnTablet: true,
+            },
+
+            {
+              header: "Bookings",
+              accessor: (t) => (
+                <div className="flex items-center justify-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                  <span className="font-semibold text-healthcare-text">
+                    {t?.totalBookings ?? 0}
                   </span>
                 </div>
               ),
               hiddenOnMobile: true,
             },
+
+            {
+              header: "Revenue",
+              accessor: (t) => (
+                <span className="font-semibold text-green-600">
+                  ₹{t?.totalRevenue ?? 0}
+                </span>
+              ),
+              hiddenOnMobile: true,
+            },
+
             {
               header: "Status",
               accessor: (t) => (
@@ -192,31 +238,33 @@ export default function AdminTherapists() {
                       isActive: !t.isActive,
                     });
                   }}
-                  className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[12px] font-bold shadow uppercase tracking-wider border-none cursor-pointer transition-all ${
+                  className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide transition-all ${
                     t.isActive
                       ? "bg-green-500 text-white"
-                      : "bg-red-500 text-white "
+                      : "bg-red-500 text-white"
                   }`}
                 >
                   {t.isActive ? "Active" : "Inactive"}
                 </button>
               ),
             },
+
             {
               header: "",
               accessor: (t) => (
-                <div className="flex items-center gap-2.5 justify-end">
+                <div className="flex items-center gap-2 justify-end">
                   <Link
                     to={`/admin/therapists/${t.id}/bookings`}
-                    className="px-4 py-2 text-xs font-bold text-brand-blue bg-blue-50 rounded-md hover:bg-blue-100 transition-all no-underline shadow-sm"
+                    className="px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100"
                   >
                     Bookings
                   </Link>
+
                   <Link
                     to={`/admin/therapists/${t.id}/edit`}
-                    className=" text-healthcare-text-muted hover:text-healthcare-text hover:bg-healthcare-surface transition-all no-underline "
+                    className="p-1 hover:bg-gray-100 rounded-md w-10 h-10 flex"
                   >
-                    <img src={editIcon} alt="Edit" className="min-w-5 w-5" />
+                    <img src={editIcon} alt="Edit" className="w-5 m-auto" />
                   </Link>
 
                   <span
@@ -224,13 +272,9 @@ export default function AdminTherapists() {
                       e.stopPropagation();
                       setDeleteTarget(t);
                     }}
-                    className=" text-healthcare-text-muted cursor-pointer hover:text-healthcare-text hover:bg-healthcare-surface transition-all no-underline "
+                    className="p-1 cursor-pointer hover:bg-gray-100 rounded-md w-10 h-10 flex"
                   >
-                    <img
-                      src={deleteIcon}
-                      alt="Delete"
-                      className="min-w-5 w-5"
-                    />
+                    <img src={deleteIcon} alt="Delete" className="w-5 m-auto" />
                   </span>
                 </div>
               ),
@@ -244,9 +288,10 @@ export default function AdminTherapists() {
         onClose={() => setDeleteTarget(null)}
       >
         <p className="text-lg text-start text-healthcare-text-muted mb-6">
-          Are you sure you want to delete  
+          Are you sure you want to delete
           <span className="font-bold text-healthcare-text-muted/80">
-           {" "} "{deleteTarget?.name}"
+            {" "}
+            "{deleteTarget?.name}"
           </span>{" "}
           ?
         </p>

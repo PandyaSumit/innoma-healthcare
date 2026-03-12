@@ -248,7 +248,7 @@ export default function Finance() {
               <input
                 type="date"
                 value={from}
-                max={to}
+                max={today()}
                 onChange={(e) => setFrom(e.target.value)}
                 className="px-3 py-2 bg-white border border-healthcare-border/60 rounded-md text-healthcare-text text-[10px] font-bold uppercase outline-none focus:border-brand-blue/50 transition-all cursor-pointer"
               />
@@ -302,7 +302,7 @@ export default function Finance() {
             </h2>
           </div>
           <AdminTable<any>
-            data={(therapists.data as any) || []}
+            data={(therapists as any) || []}
             isLoading={therapists.isLoading}
             emptyMessage="No therapist revenue data found."
             columns={[

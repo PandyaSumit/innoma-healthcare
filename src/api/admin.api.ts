@@ -40,7 +40,7 @@ export async function updateTherapist(
   id: string,
   payload: Partial<TherapistFormPayload>,
 ): Promise<AdminTherapist> {
-  const { data } = await api.patch(`/admin/therapists/${id}`, payload);
+  const { data } = await api.put(`/admin/therapists/${id}`, payload);
   return data.data;
 }
 
@@ -144,7 +144,7 @@ export async function updateArticle(
   id: string,
   payload: Partial<ArticleFormPayload>,
 ): Promise<AdminArticle> {
-  const { data } = await api.patch(`/admin/articles/${id}`, payload);
+  const { data } = await api.put(`/admin/articles/${id}`, payload);
   return data.data;
 }
 
@@ -214,7 +214,7 @@ export async function updateFaq(
   id: string,
   payload: Partial<FaqFormPayload>,
 ): Promise<AdminFaq> {
-  const { data } = await api.patch(`/admin/faqs/${id}`, payload);
+  const { data } = await api.put(`/admin/faqs/${id}`, payload);
   return data.data;
 }
 
