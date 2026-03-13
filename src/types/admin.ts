@@ -117,14 +117,20 @@ export type UserStage = 'registered' | 'free_assessment' | 'paid_session';
 export type TicketStatus = 'new' | 'open' | 'resolved' | 'closed';
 
 export interface AdminStats {
-  totalUsers: number;
-  totalTherapists: number;
-  totalSessions: number;
-  totalRevenue: number;
-  newUsersThisMonth: number;
-  sessionsThisMonth: number;
-  openTickets: number;
-  pendingArticles: number;
+  cards: {
+    totalUsers: number;
+    totalTherapists: number;
+    totalSessions: number;
+    totalRevenue: number;
+    newUsersMonth: number;
+    sessionsMonth: number;
+    openTickets: number;
+    pendingArticles: number;
+  };
+  charts: {
+    revenueTrend: { date: string; amount: number }[];
+    appointmentTrend: { date: string; count: number }[];
+  };
 }
 
 export interface AdminUser {
@@ -136,6 +142,8 @@ export interface AdminUser {
   createdAt: string;
   totalSessions: number;
   lastLoginAt: string | null;
+  avatarUrl: string | null;
+  isVerified: boolean;
 }
 
 export interface PaginatedResponse<T> {

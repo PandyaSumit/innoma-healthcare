@@ -6,8 +6,6 @@ import AdminStatCard from "../../components/admin/AdminStatCard";
 import ChartCard from "../../components/Charts/ChartCard";
 import AreaTrendChart from "../../components/Charts/AreaTrendChart";
 import BarTrendChart from "../../components/Charts/BarTrendChart";
-import PieDistributionChart from "../../components/Charts/PieDistributionChart";
-import { useState } from "react";
 
 function Icon({ d }: { d: string }) {
   return (
@@ -31,20 +29,20 @@ const AdminDashboardSkeleton = () => {
   return (
     <div className="space-y-8 animate-pulse">
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
-            className="bg-white border border-healthcare-border rounded-md p-6 space-y-4"
+            className="bg-white border border-healthcare-border rounded-md p-5 space-y-3"
           >
             <div className="flex items-center justify-between">
-              <div className="w-12 h-12 bg-gray-200 rounded-md" />
+              <div className="w-10 h-10 bg-gray-200 rounded-md" />
               <div className="h-4 w-12 bg-gray-200 rounded" />
             </div>
 
             <div className="space-y-2">
-              <div className="h-3 w-24 bg-gray-200 rounded" />
-              <div className="h-7 w-20 bg-gray-200 rounded" />
+              <div className="h-3 w-20 bg-gray-200 rounded" />
+              <div className="h-6 w-24 bg-gray-200 rounded" />
             </div>
           </div>
         ))}
@@ -122,7 +120,7 @@ export default function AdminDashboard() {
       ) : (
         data && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               <AdminStatCard
                 label="Total Users"
                 value={(data?.cards?.totalUsers ?? 0).toLocaleString()}
@@ -193,7 +191,7 @@ export default function AdminDashboard() {
                 }
               />
             </div>
-            <section className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <ChartCard title="Revenue Trend">
                 <AreaTrendChart
                   data={revenueTrend}
@@ -208,10 +206,10 @@ export default function AdminDashboard() {
             </section>
             
             {/* Quick Actions */}
-            <section className="bg-white rounded-md border border-healthcare-border p-8  transition-all duration-500 overflow-hidden relative">
+            <section className="bg-white rounded-md border border-healthcare-border p-6 transition-all duration-500 overflow-hidden relative">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
 
-              <h2 className="text-xl font-bold text-healthcare-text mb-8 flex items-center gap-3 relative z-10">
+              <h2 className="text-xl font-bold text-healthcare-text mb-6 flex items-center gap-3 relative z-10">
                 <div className="w-10 h-10 bg-brand-blue/10 rounded-md flex items-center justify-center">
                   <svg
                     className="w-5 h-5 text-brand-blue"
@@ -229,7 +227,7 @@ export default function AdminDashboard() {
                 </div>
                 Quick Actions
               </h2>
-              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 relative z-10">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 relative z-10">
                 {[
                   {
                     to: "/admin/therapists/new",

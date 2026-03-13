@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { toast } from "sonner";
-
-import { fetchAdminUsers, sendEmailToUser } from "../../api/admin.api";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchAdminUsers } from "../../api/admin.api";
 import type { AdminUser, UserStage } from "../../types/admin";
 
 import AdminPageHeader from "../../components/admin/AdminPageHeader";
 import Input from "../../components/ui/Input";
 import GroupButton from "../../components/ui/GroupButton";
 import AdminTable from "../../components/admin/AdminTable";
-import Modal from "../../components/ui/Model";
-import Textarea from "../../components/ui/Textarea";
 
 const STAGE_BADGE: Record<UserStage, string> = {
   registered: "bg-gray-100 text-gray-600",
@@ -31,16 +25,10 @@ const VERIFIED_BADGE = {
   false: "bg-amber-50 text-amber-600 border border-amber-100",
 };
 
-const emailSchema = yup.object({
-  subject: yup.string().required("Subject is required"),
-  message: yup.string().required("Message is required").min(10, "Too short"),
-});
-
 export default function Users() {
   const [stageFilter, setStageFilter] = useState<UserStage | "all">("all");
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState<number | null>(1);
-  const [emailTarget, setEmailTarget] = useState<AdminUser | null>(null);
+  const [page, setPage] = useState<number>(1);
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "users", stageFilter, search, page],
@@ -53,38 +41,7 @@ export default function Users() {
       }),
   });
 
-  /* ---------------- EMAIL MUTATION ---------------- */
 
-  const send = useMutation({
-    mutationFn: (payload: { subject: string; message: string }) =>
-      sendEmailToUser(emailTarget!.id, payload),
-
-    onSuccess: () => {
-      toast.success(`Email sent to ${emailTarget?.email}.`);
-      handleClose();
-    },
-
-    onError: (err: any) => toast.error(err?.message ?? "Failed to send email."),
-  });
-
-  /* ---------------- FORM ---------------- */
-
-  const formik = useFormik({
-    initialValues: { subject: "", message: "" },
-    validationSchema: emailSchema,
-    onSubmit: (values) => send.mutate(values),
-  });
-
-  /* ---------------- MODAL HANDLING ---------------- */
-
-  const handleClose = () => {
-    setEmailTarget(null);
-    formik.resetForm();
-  };
-
-  useEffect(() => {
-    if (emailTarget) formik.resetForm();
-  }, [emailTarget]);
 
   return (
     <>
@@ -130,7 +87,7 @@ export default function Users() {
         {/* Users Table */}
 
         <AdminTable<AdminUser>
-          data={data || []}
+          data={data ? { data: data.items, meta: data } : undefined}
           page={page}
           setPage={setPage}
           isLoading={isLoading}
@@ -193,7 +150,7 @@ export default function Users() {
             {
               header: "Sessions",
               accessor: (u) => (
-                <span className="font-bold text-sm">{u.sessions}</span>
+                <span className="font-bold text-sm">{u.totalSessions}</span>
               ),
               hiddenOnMobile: true,
             },
@@ -208,93 +165,11 @@ export default function Users() {
                 </span>
               ),
             },
-
-            {
-              header: "",
-              accessor: (u) => (
-                <div className="flex justify-end">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setEmailTarget(u);
-                    }}
-                    className="px-4 py-2 text-xs font-bold text-white bg-brand-blue rounded-xl hover:bg-brand-blue/90"
-                  >
-                    Email
-                  </button>
-                </div>
-              ),
-            },
           ]}
         />
       </div>
 
-      {/* EMAIL MODAL */}
 
-      <Modal isOpen={!!emailTarget} title="Send Email" onClose={handleClose}>
-        {emailTarget && (
-          <>
-            <p className="text-sm text-healthcare-text-muted mt-2">
-              To:{" "}
-              <span className="font-semibold text-healthcare-text">
-                {emailTarget.name}
-              </span>{" "}
-              ({emailTarget.email})
-            </p>
-
-            <form onSubmit={formik.handleSubmit} className=" space-y-3 mt-3">
-              <div>
-                <label className="text-sm font-bold">Subject</label>
-                <Input
-                  name="subject"
-                  value={formik.values.subject}
-                  onChange={formik.handleChange}
-                />
-
-                {formik.touched.subject && formik.errors.subject && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {formik.errors.subject}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="text-sm font-bold">Message</label>
-                <Textarea
-                  name="message"
-                  rows={6}
-                  value={formik.values.message}
-                  onChange={formik.handleChange}
-                />
-
-                {formik.touched.message && formik.errors.message && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {formik.errors.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="grid grid-cols-2  gap-2">
-                <button
-                  type="button"
-                  onClick={handleClose}
-                  className="px-4 py-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 rounded-md"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  disabled={send.isPending}
-                  className="px-4 py-2 text-sm font-semibold bg-brand-blue text-white  rounded-md"
-                >
-                  {send.isPending ? "Sending..." : "Send Email"}
-                </button>
-              </div>
-            </form>
-          </>
-        )}
-      </Modal>
     </>
   );
 }
