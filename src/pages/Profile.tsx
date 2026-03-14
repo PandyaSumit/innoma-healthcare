@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../context/AuthContext";
 import { fetchPatientProfile, updatePatientProfile, uploadPatientAvatar } from "../api/patient.api";
-import { fetchTherapistMe, updateTherapistMe } from "../api/therapist.api";
+import { fetchTherapistMe, updateTherapistMe, fetchMyAvailability, updateMyAvailability } from "../api/therapist.api";
 import { SPECIALIZATIONS, LANGUAGES } from "../data/therapists";
 
 const profileSchema = yup.object().shape({
@@ -225,6 +225,68 @@ const Profile = () => {
     }
   };
 
+  const [availability, setAvailability] = useState<any[]>([]);
+
+  const [loadingAvailability, setLoadingAvailability] = useState(false);
+
+  useEffect(() => {
+    if (isTherapist && activeTab === 'availability') {
+      const loadAvailability = async () => {
+        setLoadingAvailability(true);
+        try {
+          const data = await fetchMyAvailability();
+          setAvailability(data);
+        } catch (err) {
+          console.error('Failed to fetch availability:', err);
+        } finally {
+          setLoadingAvailability(false);
+        }
+      };
+      loadAvailability();
+    }
+  }, [activeTab, isTherapist]);
+
+  const handleAddSlot = (dayOfWeek: number) => {
+    const newSlot = {
+      dayOfWeek,
+      startTime: '09:00',
+      endTime: '10:00',
+      isActive: true,
+      isNew: true,
+      tempId: Math.random().toString(36).substr(2, 9),
+    };
+    setAvailability([...availability, newSlot]);
+  };
+
+  const handleRemoveSlot = (slotProp: any) => {
+    setAvailability(availability.filter(s => 
+      s.id ? s.id !== slotProp.id : s.tempId !== slotProp.tempId
+    ));
+  };
+
+  const handleSlotChange = (slotProp: any, field: string, value: any) => {
+    setAvailability(availability.map(s => {
+      const match = s.id ? s.id === slotProp.id : s.tempId === slotProp.tempId;
+      return match ? { ...s, [field]: value } : s;
+    }));
+  };
+
+  const saveAvailability = async () => {
+    setSubmitError(null);
+    try {
+      await updateMyAvailability(availability.map(s => ({
+        dayOfWeek: s.dayOfWeek,
+        startTime: s.startTime,
+        endTime: s.endTime,
+        isActive: s.isActive
+      })));
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
+    } catch (err: any) {
+      setSubmitError(err.message || 'Failed to update availability');
+    }
+  };
+
   if (isPageLoading) {
     return (
       <div className="h-full flex items-center justify-center min-h-[400px]">
@@ -232,6 +294,8 @@ const Profile = () => {
       </div>
     );
   }
+
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   return (
     <div className="animate-fade-in h-full flex flex-col pb-16 space-y-6 sm:space-y-8">
@@ -253,12 +317,13 @@ const Profile = () => {
           </h1>
 
           <button
-            onClick={() => formik.handleSubmit()}
+            onClick={() => activeTab === 'availability' ? saveAvailability() : formik.handleSubmit()}
             className="px-5 py-2 text-sm font-semibold bg-brand-blue text-white rounded-md hover:opacity-90 transition"
           >
             Save changes
           </button>
         </div>
+
 
         {/* Profile row */}
         <div className="flex items-center gap-4 sm:gap-6">
@@ -842,41 +907,65 @@ const Profile = () => {
                   only book appointments within these windows.
                 </p>
 
-                <div className="grid grid-cols-7 gap-4">
-                  {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
-                    (day) => (
-                      <div key={day} className="space-y-3">
-                        <div className="text-center">
-                          <span className="text-xs font-bold text-healthcare-text italic">
-                            {day}
-                          </span>
+                {loadingAvailability ? (
+                  <div className="flex justify-center py-12">
+                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-blue"></div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4">
+                    {days.map((day, dayIndex) => {
+                      const dayOfWeek = (dayIndex + 1) % 7; // Backend uses 0 for Sunday
+                      const daySlots = availability.filter(s => s.dayOfWeek === dayOfWeek);
+                      
+                      return (
+                        <div key={day} className="p-3 bg-white rounded-xl border border-healthcare-border space-y-3">
+                          <div className="text-center pb-2 border-b border-healthcare-border">
+                            <span className="text-xs font-bold text-healthcare-text uppercase">
+                              {day}
+                            </span>
+                          </div>
+                          <div className="space-y-2">
+                            {daySlots.map((slot, sIdx) => (
+                              <div key={slot.id || slot.tempId} className="group relative flex flex-col gap-1 p-2 bg-healthcare-surface/30 rounded-lg border border-healthcare-border hover:border-brand-blue/30 transition-all">
+                                <input
+                                  type="time"
+                                  value={slot.startTime}
+                                  onChange={(e) => handleSlotChange(slot, 'startTime', e.target.value)}
+                                  className="bg-transparent text-[10px] font-bold text-healthcare-text focus:outline-none"
+                                />
+                                <div className="h-px bg-healthcare-border w-1/2" />
+                                <input
+                                  type="time"
+                                  value={slot.endTime}
+                                  onChange={(e) => handleSlotChange(slot, 'endTime', e.target.value)}
+                                  className="bg-transparent text-[10px] font-bold text-healthcare-text focus:outline-none"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveSlot(slot)}
+                                  className="absolute -top-1 -right-1 w-4 h-4 bg-red-100 text-red-600 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-sm"
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={() => handleAddSlot(dayOfWeek)}
+                              className="w-full py-2 rounded-lg border border-dashed border-healthcare-border text-[10px] text-healthcare-text-muted hover:border-brand-blue hover:text-brand-blue transition-all"
+                            >
+                              + Add
+                            </button>
+                          </div>
                         </div>
-                        <div className="space-y-2">
-                          {["09:00 AM", "11:00 AM", "02:00 PM", "04:00 PM"].map(
-                            (time) => (
-                              <button
-                                key={time}
-                                type="button"
-                                className="w-full py-2 rounded-lg border border-healthcare-border bg-white text-[10px] font-bold text-healthcare-text hover:border-brand-blue hover:text-brand-blue transition-all"
-                              >
-                                {time}
-                              </button>
-                            ),
-                          )}
-                          <button
-                            type="button"
-                            className="w-full py-2 rounded-lg border border-dashed border-healthcare-border text-[10px] text-healthcare-text-muted hover:border-brand-blue hover:text-brand-blue transition-all"
-                          >
-                            + Add
-                          </button>
-                        </div>
-                      </div>
-                    ),
-                  )}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           )}
+
 
           {/* THERAPIST: Reviews Tab */}
           {isTherapist && activeTab === "reviews" && (

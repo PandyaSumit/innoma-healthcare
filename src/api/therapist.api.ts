@@ -64,3 +64,13 @@ export async function uploadTherapistAvatar(file: File): Promise<{ avatarUrl: st
   });
   return data.data;
 }
+
+export async function fetchMyAvailability(): Promise<any[]> {
+  const { data } = await api.get('/therapists/me/availability');
+  return data.data;
+}
+
+export async function updateMyAvailability(schedule: any[]): Promise<void> {
+  await api.put('/therapists/me/availability', { schedule });
+}
+

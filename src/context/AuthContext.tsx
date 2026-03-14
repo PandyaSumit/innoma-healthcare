@@ -15,7 +15,7 @@ interface AuthContextType {
   ): Promise<{ success: boolean; error?: string; role?: string }>;
   register(
     payload: RegisterPayload,
-  ): Promise<{ success: boolean; error?: string }>;
+  ): Promise<{ success: boolean; error?: string; userId?: string; email?: string; role?: string }>;
   logout(): Promise<void>;
   refreshAccessToken(): Promise<string>;
   updateUser(updatedUser: AuthUser): void;
@@ -77,8 +77,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const register = async (payload: RegisterPayload) => {
     try {
-      await api.post("/auth/register", payload);
-      return { success: true };
+      const { data } = await api.post("/auth/register", payload);
+      const { userId, email, role } = data.data;
+      return { success: true, userId, email, role };
     } catch (err: any) {
       if (err.status === 409)
         return {
@@ -90,6 +91,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         error: err.message ?? "Registration failed. Please try again.",
       };
     }
+  };
+
+  const loginAfterOtp = (u: { id: string; email: string; role: string; name: string; avatar?: string }, accessToken: string, refreshToken: string) => {
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+    const authUser: AuthUser = {
+      id: u.id,
+      email: u.email,
+      role: u.role,
+      name: u.name,
+      avatar: u.avatar ?? null,
+    };
+    localStorage.setItem("authUser", JSON.stringify(authUser));
+    setUser(authUser);
   };
 
   const logout = async (): Promise<void> => {
@@ -128,10 +143,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         isLoading,
         login,
         register,
+        loginAfterOtp,
         logout,
         refreshAccessToken,
         updateUser,
-      }}
+      } as any}
     >
       {children}
     </AuthContext.Provider>

@@ -10,8 +10,23 @@ export async function login(
   return data.data;
 }
 
-export async function register(payload: RegisterPayload): Promise<void> {
-  await api.post('/auth/register', payload);
+export async function register(
+  payload: RegisterPayload,
+): Promise<{ userId: string; email: string; role: string }> {
+  const { data } = await api.post('/auth/register', payload);
+  return data.data;
+}
+
+export async function sendOtp(userId: string): Promise<void> {
+  await api.post('/auth/send-otp', { userId });
+}
+
+export async function verifyOtp(
+  userId: string,
+  otp: string,
+): Promise<{ accessToken: string; refreshToken: string; user: any }> {
+  const { data } = await api.post('/auth/verify-otp', { userId, otp });
+  return data.data;
 }
 
 export async function logout(refreshToken: string): Promise<void> {

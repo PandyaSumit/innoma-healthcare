@@ -37,6 +37,7 @@ export interface PatientDashboard {
   upcomingCount: number;
   totalSessions: number;
   assessmentCompleted: boolean;
+  hasUsedFreeAssessment: boolean;
 }
 
 export type UpdatePatientPayload = Partial<{
