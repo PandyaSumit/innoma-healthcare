@@ -115,6 +115,7 @@ function AdminTable<T extends { id: string | number }>({
 
   /* ---------------- TABLE ---------------- */
 
+  console.log(data,'rata===')
   return (
     <>
       <div className="bg-white rounded-md border border-healthcare-border overflow-hidden">
@@ -198,46 +199,9 @@ function AdminTable<T extends { id: string | number }>({
             </tbody>
           </table>
 
-          {/* INFINITE SCROLL TRIGGER */}
-
-          {meta && (
-            <div
-              ref={loadMoreRef}
-              className="h-16 flex items-center justify-center"
-            >
-              {isLoading && (
-                <p className="text-sm text-healthcare-text-muted">
-                  Loading more...
-                </p>
-              )}
-            </div>
-          )}
+         
         </div>
       </div>
-
-      {/* FOOTER INFO */}
-
-      {meta && (
-        <div className="flex justify-between items-center p-4 bg-white border border-healthcare-border rounded-md mt-2">
-          <p className="text-sm text-healthcare-text-muted">
-            Showing{" "}
-            <span className="font-bold text-healthcare-text">
-              {(page - 1) * meta.limit + 1} –{" "}
-              {Math.min(page * meta.limit, meta.total)}
-            </span>{" "}
-            of{" "}
-            <span className="font-bold text-healthcare-text">
-              {meta.total}
-            </span>
-          </p>
-
-          <p className="text-sm text-healthcare-text-muted">
-            Page{" "}
-            <span className="font-bold text-brand-blue">{page}</span> /{" "}
-            {meta.totalPages}
-          </p>
-        </div>
-      )}
     </>
   );
 }

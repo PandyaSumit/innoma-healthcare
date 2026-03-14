@@ -6,6 +6,7 @@ import SymptomsGrid from "../components/sections/landing/SymptomsGrid";
 import OffersSection from "../components/sections/landing/OffersSection";
 import LeadForm from "../components/sections/landing/LeadForm";
 import FAQSection from "../components/sections/landing/FAQSection";
+import BlogSection from "../components/sections/landing/BlogSection";
 
 const LandingPage = () => {
   return (
@@ -18,6 +19,7 @@ const LandingPage = () => {
       <OffersSection />
       <LeadForm />
       <FAQSection />
+      <BlogSection />
     </>
   );
 };

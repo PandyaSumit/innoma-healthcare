@@ -87,7 +87,7 @@ export default function Users() {
         {/* Users Table */}
 
         <AdminTable<AdminUser>
-          data={data ? { data: data.items, meta: data } : undefined}
+          data={data ? { data: data, meta: data } : undefined}
           page={page}
           setPage={setPage}
           isLoading={isLoading}
@@ -150,7 +150,7 @@ export default function Users() {
             {
               header: "Sessions",
               accessor: (u) => (
-                <span className="font-bold text-sm">{u.totalSessions}</span>
+                <span className="font-bold text-sm">{u?.sessions}</span>
               ),
               hiddenOnMobile: true,
             },

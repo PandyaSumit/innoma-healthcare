@@ -61,6 +61,7 @@ const queryClient = new QueryClient({
 });
 
 // ── Coming Soon Component ─────────────────────────────────────────────────────
+import BlogDetail from "./pages/BlogDetail";
 
 const ComingSoon = ({ title }: { title: string }) => (
   <div className="flex flex-col items-center justify-center min-h-[400px] p-10 bg-white rounded-3xl shadow-clinical border border-healthcare-border animate-fade-in text-center">
@@ -174,6 +175,25 @@ function AppRoutes() {
             </>
           }
         />
+
+        <Route
+          path="/blog/:id"
+          element={
+            <>
+              <Header />
+              <main className="flex-grow pt-18">
+                <BlogDetail />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Auth Routes - No Header/Footer */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Therapist Directory - Public (for non-logged-in users) */}
         <Route
           path="/therapists"
           element={
