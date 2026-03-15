@@ -2,8 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../context/AuthContext";
-import { fetchPatientProfile, updatePatientProfile, uploadPatientAvatar } from "../api/patient.api";
-import { fetchTherapistMe, updateTherapistMe, fetchMyAvailability, updateMyAvailability } from "../api/therapist.api";
+import {
+  fetchPatientProfile,
+  updatePatientProfile,
+  uploadPatientAvatar,
+} from "../api/patient.api";
+import {
+  fetchTherapistMe,
+  updateTherapistMe,
+  fetchMyAvailability,
+  updateMyAvailability,
+} from "../api/therapist.api";
 import { SPECIALIZATIONS, LANGUAGES } from "../data/therapists";
 
 const profileSchema = yup.object().shape({
@@ -51,7 +60,8 @@ const Profile = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const isTherapist = user?.role === "therapist";
   const isPatient = user?.role === "patient";
 
@@ -72,20 +82,22 @@ const Profile = () => {
         phone: data.phone || (user as any)?.phone || "",
         qualifications:
           data.qualifications || (user as any)?.qualifications || "",
-        licenseNumber: data.licenseNumber || (user as any)?.licenseNumber || "",
-        experience: data.experience || (user as any)?.experience || 0,
+        licenseNumber:
+          data.license_number || (user as any)?.license_number || "",
+        experience:
+          data.experience_years || (user as any)?.experience_years || 0,
         consultationFee:
-          data.consultationFee || (user as any)?.consultationFee || 0,
+          data.consultation_fee || (user as any)?.consultation_fee || 0,
         specializations:
-          data.specialization || (user as any)?.specialization || [],
+          data.specializations || (user as any)?.specializations || [],
         languages: data.languages || (user as any)?.languages || [],
         newPassword: "",
         confirmPassword: "",
         bio: data.bio || (user as any)?.bio || "",
         notificationEmail:
-          data.notificationEmail ?? (user as any)?.notificationEmail ?? true,
+          data.notification_email ?? (user as any)?.notification_email ?? true,
         notificationSms:
-          data.notificationSms ?? (user as any)?.notificationSms ?? false,
+          data.notification_sms ?? (user as any)?.notification_sms ?? false,
       };
     } else {
       return {
@@ -102,9 +114,9 @@ const Profile = () => {
         healthInterests:
           data.healthInterests || (user as any)?.healthInterests || [],
         notificationEmail:
-          data.notificationEmail ?? (user as any)?.notificationEmail ?? true,
+          data.notification_email ?? (user as any)?.notification_email ?? true,
         notificationSms:
-          data.notificationSms ?? (user as any)?.notificationSms ?? false,
+          data.notification_sms ?? (user as any)?.notification_sms ?? false,
         allergies: data.allergies || (user as any)?.allergies || "",
         medications: data.medications || (user as any)?.medications || "",
         emergencyContact:
@@ -146,7 +158,7 @@ const Profile = () => {
             licenseNumber: values.licenseNumber,
             experience: values.experience,
             consultationFee: values.consultationFee,
-            specialization: values.specializations,
+            specializations: values.specializations,
             languages: values.languages,
           });
         }
@@ -177,8 +189,8 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const profileData: any = isTherapist
-            ? await fetchTherapistMe()
-            : await fetchPatientProfile();
+          ? await fetchTherapistMe()
+          : await fetchPatientProfile();
         formik.setValues(getInitialValues(profileData));
         const avatar = profileData.avatarUrl || profileData.photo;
         if (avatar) {
@@ -213,11 +225,9 @@ const Profile = () => {
         };
         reader.readAsDataURL(file);
 
-        if (isPatient) {
-          const { avatarUrl } = await uploadPatientAvatar(file);
-          if (user) {
-            updateUser({ ...user, avatar: avatarUrl });
-          }
+        const { avatarUrl } = await uploadPatientAvatar(file);
+        if (user) {
+          updateUser({ ...user, avatar: avatarUrl });
         }
       } catch (err: any) {
         alert(err.message || "Failed to upload avatar");
@@ -230,14 +240,14 @@ const Profile = () => {
   const [loadingAvailability, setLoadingAvailability] = useState(false);
 
   useEffect(() => {
-    if (isTherapist && activeTab === 'availability') {
+    if (isTherapist && activeTab === "availability") {
       const loadAvailability = async () => {
         setLoadingAvailability(true);
         try {
           const data = await fetchMyAvailability();
           setAvailability(data);
         } catch (err) {
-          console.error('Failed to fetch availability:', err);
+          console.error("Failed to fetch availability:", err);
         } finally {
           setLoadingAvailability(false);
         }
@@ -249,8 +259,8 @@ const Profile = () => {
   const handleAddSlot = (dayOfWeek: number) => {
     const newSlot = {
       dayOfWeek,
-      startTime: '09:00',
-      endTime: '10:00',
+      startTime: "09:00",
+      endTime: "10:00",
       isActive: true,
       isNew: true,
       tempId: Math.random().toString(36).substr(2, 9),
@@ -259,31 +269,39 @@ const Profile = () => {
   };
 
   const handleRemoveSlot = (slotProp: any) => {
-    setAvailability(availability.filter(s => 
-      s.id ? s.id !== slotProp.id : s.tempId !== slotProp.tempId
-    ));
+    setAvailability(
+      availability.filter((s) =>
+        s.id ? s.id !== slotProp.id : s.tempId !== slotProp.tempId,
+      ),
+    );
   };
 
   const handleSlotChange = (slotProp: any, field: string, value: any) => {
-    setAvailability(availability.map(s => {
-      const match = s.id ? s.id === slotProp.id : s.tempId === slotProp.tempId;
-      return match ? { ...s, [field]: value } : s;
-    }));
+    setAvailability(
+      availability.map((s) => {
+        const match = s.id
+          ? s.id === slotProp.id
+          : s.tempId === slotProp.tempId;
+        return match ? { ...s, [field]: value } : s;
+      }),
+    );
   };
 
   const saveAvailability = async () => {
     setSubmitError(null);
     try {
-      await updateMyAvailability(availability.map(s => ({
-        dayOfWeek: s.dayOfWeek,
-        startTime: s.startTime,
-        endTime: s.endTime,
-        isActive: s.isActive
-      })));
+      await updateMyAvailability(
+        availability.map((s) => ({
+          dayOfWeek: s.dayOfWeek,
+          startTime: s.startTime,
+          endTime: s.endTime,
+          isActive: s.isActive,
+        })),
+      );
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
     } catch (err: any) {
-      setSubmitError(err.message || 'Failed to update availability');
+      setSubmitError(err.message || "Failed to update availability");
     }
   };
 
@@ -317,13 +335,16 @@ const Profile = () => {
           </h1>
 
           <button
-            onClick={() => activeTab === 'availability' ? saveAvailability() : formik.handleSubmit()}
+            onClick={() =>
+              activeTab === "availability"
+                ? saveAvailability()
+                : formik.handleSubmit()
+            }
             className="px-5 py-2 text-sm font-semibold bg-brand-blue text-white rounded-md hover:opacity-90 transition"
           >
             Save changes
           </button>
         </div>
-
 
         {/* Profile row */}
         <div className="flex items-center gap-4 sm:gap-6">
@@ -747,24 +768,47 @@ const Profile = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <InfoField label="New Password" isEditable>
-                  <input
-                    type="password"
-                    name="newPassword"
-                    value={formik.values.newPassword}
-                    onChange={formik.handleChange}
-                    placeholder="••••••••"
-                    className="w-full px-4 py-2.5 rounded-lg border border-healthcare-border bg-healthcare-surface/30 font-bold text-healthcare-text outline-none focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 transition-all"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="newPassword"
+                      value={formik.values.newPassword}
+                      onChange={formik.handleChange}
+                      placeholder="••••••••"
+                      className="w-full px-4 py-2.5 pr-10 rounded-lg border border-healthcare-border bg-healthcare-surface/30 font-bold text-healthcare-text outline-none focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 transition-all"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-healthcare-text-muted"
+                    >
+                      {showPassword ? "🙈" : "👁"}
+                    </button>
+                  </div>
                 </InfoField>
+
                 <InfoField label="Confirm Password" isEditable>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={formik.values.confirmPassword}
-                    onChange={formik.handleChange}
-                    placeholder="••••••••"
-                    className="w-full px-4 py-2.5 rounded-lg border border-healthcare-border bg-healthcare-surface/30 font-bold text-healthcare-text outline-none focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 transition-all"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={formik.values.confirmPassword}
+                      onChange={formik.handleChange}
+                      placeholder="••••••••"
+                      className="w-full px-4 py-2.5 pr-10 rounded-lg border border-healthcare-border bg-healthcare-surface/30 font-bold text-healthcare-text outline-none focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 transition-all"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-healthcare-text-muted"
+                    >
+                      {showConfirmPassword ? "🙈" : "👁"}
+                    </button>
+                  </div>
                 </InfoField>
               </div>
 
@@ -809,6 +853,7 @@ const Profile = () => {
                       </p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
+                  
                       <input
                         type="checkbox"
                         className="sr-only peer"
@@ -909,16 +954,21 @@ const Profile = () => {
 
                 {loadingAvailability ? (
                   <div className="flex justify-center py-12">
-                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-blue"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-blue"></div>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4">
                     {days.map((day, dayIndex) => {
                       const dayOfWeek = (dayIndex + 1) % 7; // Backend uses 0 for Sunday
-                      const daySlots = availability.filter(s => s.dayOfWeek === dayOfWeek);
-                      
+                      const daySlots = availability.filter(
+                        (s) => s.dayOfWeek === dayOfWeek,
+                      );
+
                       return (
-                        <div key={day} className="p-3 bg-white rounded-xl border border-healthcare-border space-y-3">
+                        <div
+                          key={day}
+                          className="p-3 bg-white rounded-xl border border-healthcare-border space-y-3"
+                        >
                           <div className="text-center pb-2 border-b border-healthcare-border">
                             <span className="text-xs font-bold text-healthcare-text uppercase">
                               {day}
@@ -926,18 +976,33 @@ const Profile = () => {
                           </div>
                           <div className="space-y-2">
                             {daySlots.map((slot, sIdx) => (
-                              <div key={slot.id || slot.tempId} className="group relative flex flex-col gap-1 p-2 bg-healthcare-surface/30 rounded-lg border border-healthcare-border hover:border-brand-blue/30 transition-all">
+                              <div
+                                key={slot.id || slot.tempId}
+                                className="group relative flex flex-col gap-1 p-2 bg-healthcare-surface/30 rounded-lg border border-healthcare-border hover:border-brand-blue/30 transition-all"
+                              >
                                 <input
                                   type="time"
                                   value={slot.startTime}
-                                  onChange={(e) => handleSlotChange(slot, 'startTime', e.target.value)}
+                                  onChange={(e) =>
+                                    handleSlotChange(
+                                      slot,
+                                      "startTime",
+                                      e.target.value,
+                                    )
+                                  }
                                   className="bg-transparent text-[10px] font-bold text-healthcare-text focus:outline-none"
                                 />
                                 <div className="h-px bg-healthcare-border w-1/2" />
                                 <input
                                   type="time"
                                   value={slot.endTime}
-                                  onChange={(e) => handleSlotChange(slot, 'endTime', e.target.value)}
+                                  onChange={(e) =>
+                                    handleSlotChange(
+                                      slot,
+                                      "endTime",
+                                      e.target.value,
+                                    )
+                                  }
                                   className="bg-transparent text-[10px] font-bold text-healthcare-text focus:outline-none"
                                 />
                                 <button
@@ -965,7 +1030,6 @@ const Profile = () => {
               </div>
             </div>
           )}
-
 
           {/* THERAPIST: Reviews Tab */}
           {isTherapist && activeTab === "reviews" && (

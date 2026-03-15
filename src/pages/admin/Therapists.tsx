@@ -2,7 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { fetchAdminTherapists, updateTherapist } from "../../api/admin.api";
+import {
+  deleteTherapist,
+  fetchAdminTherapists,
+  updateTherapist,
+} from "../../api/admin.api";
 import type { AdminTherapist } from "../../types/admin";
 import AdminPageHeader from "../../components/admin/AdminPageHeader";
 import AdminTable from "../../components/admin/AdminTable";
@@ -15,6 +19,8 @@ export default function AdminTherapists() {
   const qc = useQueryClient();
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<AdminTherapist | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin", "therapists"],
     queryFn: fetchAdminTherapists,
@@ -30,18 +36,40 @@ export default function AdminTherapists() {
     onError: (err: any) => toast.error(err.message ?? "Failed to update."),
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      await deleteTherapist(id);
+    },
+    onSuccess: () => {
+      toast.success("Therapist deleted successfully.");
+      qc.invalidateQueries({ queryKey: ["admin", "therapists"] });
+      setDeleteTarget(null);
+    },
+    onError: (err: any) =>
+      toast.error(err.message || "Failed to delete therapist."),
+  });
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      setIsDeleting(true);
+      await deleteMutation.mutateAsync(deleteTarget.id);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const therapists: AdminTherapist[] = Array.isArray(data)
     ? data
     : (data as any)?.items || [];
 
   const filtered = therapists.filter(
     (t: AdminTherapist) =>
-      t.name.toLowerCase()?.includes(search.toLowerCase()) ||
-      t.email.toLowerCase()?.includes(search.toLowerCase()) ||
+      t.name.toLowerCase().includes(search.toLowerCase()) ||
+      t.email.toLowerCase().includes(search.toLowerCase()) ||
       t.specialization?.toLowerCase()?.includes(search.toLowerCase()),
   );
 
-  console.log(therapists, "therapists===");
   return (
     <>
       <div className="space-y-2 animate-fade-in">
@@ -121,19 +149,6 @@ export default function AdminTherapists() {
 
         {error && (
           <div className="p-6 bg-red-50 border border-red-100 rounded-md text-sm text-red-600 font-medium flex items-center gap-3">
-            <svg
-              className="w-5 h-5 flex-shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
             Failed to load therapist data. Please try again.
           </div>
         )}
@@ -150,7 +165,6 @@ export default function AdminTherapists() {
                   <div className="w-11 h-11 rounded-md bg-healthcare-lavender/10 flex items-center justify-center text-sm font-bold text-purple-600">
                     {t.name?.[0]?.toUpperCase()}
                   </div>
-
                   <div className="flex flex-col">
                     <p className="font-semibold text-healthcare-text text-sm">
                       {t.name}
@@ -162,7 +176,6 @@ export default function AdminTherapists() {
                 </div>
               ),
             },
-
             {
               header: "Specializations",
               accessor: (t) => (
@@ -183,7 +196,6 @@ export default function AdminTherapists() {
               ),
               hiddenOnTablet: true,
             },
-
             {
               header: "Experience",
               accessor: (t) => (
@@ -193,7 +205,6 @@ export default function AdminTherapists() {
               ),
               hiddenOnTablet: true,
             },
-
             {
               header: "Rating",
               accessor: (t) => (
@@ -203,7 +214,6 @@ export default function AdminTherapists() {
               ),
               hiddenOnTablet: true,
             },
-
             {
               header: "Bookings",
               accessor: (t) => (
@@ -216,7 +226,6 @@ export default function AdminTherapists() {
               ),
               hiddenOnMobile: true,
             },
-
             {
               header: "Revenue",
               accessor: (t) => (
@@ -226,17 +235,13 @@ export default function AdminTherapists() {
               ),
               hiddenOnMobile: true,
             },
-
             {
               header: "Status",
               accessor: (t) => (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    toggleActive.mutate({
-                      id: t.id,
-                      isActive: !t.isActive,
-                    });
+                    toggleActive.mutate({ id: t.id, isActive: !t.isActive });
                   }}
                   className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide transition-all ${
                     t.isActive
@@ -248,7 +253,6 @@ export default function AdminTherapists() {
                 </button>
               ),
             },
-
             {
               header: "",
               accessor: (t) => (
@@ -282,8 +286,10 @@ export default function AdminTherapists() {
           ]}
         />
       </div>
+
+      {/* Delete Modal */}
       <Modal
-        title=" Delete Therapist"
+        title="Delete Therapist"
         isOpen={deleteTarget !== null}
         onClose={() => setDeleteTarget(null)}
       >
@@ -296,19 +302,25 @@ export default function AdminTherapists() {
           ?
         </p>
 
-        <div className="grid grid-cols-2  gap-2">
+        <div className="grid grid-cols-2 gap-2">
           <button
             onClick={() => setDeleteTarget(null)}
             className="px-4 py-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 rounded-md"
+            disabled={isDeleting}
           >
             Cancel
           </button>
 
           <button
-            onClick={() => {}}
-            className="px-4 py-2 text-sm font-semibold bg-red-500 text-white hover:bg-red-600 rounded-md"
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className={`px-4 py-2 text-sm font-semibold rounded-md ${
+              isDeleting
+                ? "bg-red-300 text-white opacity-50 cursor-not-allowed"
+                : "bg-red-500 text-white hover:bg-red-600"
+            }`}
           >
-            Delete
+            {isDeleting ? "Deleting..." : "Delete"}
           </button>
         </div>
       </Modal>

@@ -44,6 +44,13 @@ export async function updateTherapist(
   return data.data;
 }
 
+export async function deleteTherapist(
+  therapistProfileId: string,
+): Promise<AdminTherapist> {
+  const { data } = await api.delete(`/admin/therapists/${therapistProfileId}`);
+  return data.data;
+}
+
 export async function fetchTherapistBookings(
   therapistId: string,
   type: "upcoming" | "past" = "upcoming",

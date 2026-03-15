@@ -1,7 +1,42 @@
 import { Link } from "react-router-dom";
-import { UPCOMING_APPOINTMENTS, MOCK_PATIENTS } from "../data/appointments";
+import {
+  UPCOMING_APPOINTMENTS,
+  MOCK_PATIENTS,
+  type Appointment,
+} from "../data/appointments";
 import { useAuth } from "../context/AuthContext";
 import { useBooking } from "../context/BookingContext";
+import { useEffect, useState } from "react";
+import {
+  fetchAppointments,
+  type AppointmentRecord,
+} from "../api/appointment.api";
+
+function toAppointment(r: AppointmentRecord): Appointment {
+  return {
+    id: r.id,
+    therapistId: r.therapist_id,
+    therapistName: r.therapist?.name ?? "Therapist",
+    therapistPhoto:
+      r.therapist?.avatar_url ??
+      `https://ui-avatars.com/api/?name=${encodeURIComponent(r.therapist?.name ?? "T")}&background=random`,
+    specialization: "",
+    patientId: r.patient_id,
+    patientName: r.patient?.name,
+    patientPhoto: r.patient?.avatar_url,
+    date: r.scheduled_date,
+    time: r.scheduled_time,
+    duration: r.duration_minutes,
+    type: r.type,
+    status: r.status,
+    fee: r.fee,
+    meetingLink: r.meeting_link,
+    reschedulesLeft: r.reschedules_left,
+    paymentStatus: r.payment_status as "Paid" | "Pending" | "Refunded",
+    invoiceNumber: r.invoice_number,
+    rating: r.rating,
+  };
+}
 
 const TherapistDashboard = () => {
   const { user } = useAuth();
@@ -41,6 +76,38 @@ const TherapistDashboard = () => {
     const date = new Date(dateStr);
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const loadAppointments = async () => {
+    setIsLoading(true);
+    setFetchError(null);
+    try {
+      const [upcomingRes, pastRes] = await Promise.all([
+        fetchAppointments({ status: "Upcoming", limit: 50 }),
+        fetchAppointments({ status: "Completed", limit: 50 }),
+      ]);
+      const all = [
+        ...upcomingRes.data.map(toAppointment),
+        ...pastRes.data.map(toAppointment),
+      ];
+      setAppointments(all);
+    } catch (err: any) {
+      setFetchError(err?.message ?? "Failed to load appointments");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const now = new Date();
+
+  useEffect(() => {
+    loadAppointments();
+  }, []);
+  const filteredUpcoming = appointments.filter((apt) => {
+    const aptDate = new Date(`${apt.date}T${apt.time}`);
+    return aptDate >= now && apt.status === "Upcoming";
+  });
 
   return (
     <div>
@@ -117,9 +184,9 @@ const TherapistDashboard = () => {
             </Link>
           </div>
 
-          {allUpcoming.length > 0 ? (
+          {filteredUpcoming.length > 0 ? (
             <div className="space-y-3">
-              {allUpcoming.slice(0, 5).map((apt) => {
+              {filteredUpcoming.slice(0, 5).map((apt) => {
                 const aptDate = new Date(`${apt.date}T${apt.time}`);
                 const now = new Date();
                 const diff = (aptDate.getTime() - now.getTime()) / 60000;

@@ -89,11 +89,7 @@ const BlogSection: React.FC = () => {
         </div>
 
         {/* ================= VIEW ALL CTA ================= */}
-        <div className="mt-12 sm:mt-16 flex justify-center">
-          <button className="px-8 sm:px-10 py-3.5 sm:py-4 rounded-lg bg-brand-blue text-white font-semibold text-sm sm:text-base hover:bg-brand-blue/90 shadow-lg shadow-brand-blue/10 transition-all">
-            View All Articles
-          </button>
-        </div>
+       
       </div>
     </section>
   );

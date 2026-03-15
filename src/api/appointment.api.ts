@@ -1,4 +1,4 @@
-import { api } from './axios';
+import { api } from "./axios";
 
 export interface AppointmentRecord {
   id: string;
@@ -7,10 +7,10 @@ export interface AppointmentRecord {
   scheduled_date: string;
   scheduled_time: string;
   duration_minutes: number;
-  type: 'Assessment' | 'Consultation' | 'Follow-up';
-  status: 'Upcoming' | 'In Progress' | 'Completed' | 'Cancelled';
+  type: "Assessment" | "Consultation" | "Follow-up";
+  status: "Upcoming" | "In Progress" | "Completed" | "Cancelled";
   fee: number;
-  payment_status: 'Pending' | 'Paid' | 'Refunded';
+  payment_status: "Pending" | "Paid" | "Refunded";
   invoice_number?: string;
   meeting_link?: string;
   reschedules_left: number;
@@ -27,7 +27,7 @@ export interface CreateAppointmentPayload {
   packageId: string;
   scheduledDate: string;
   scheduledTime: string;
-  type?: 'Assessment' | 'Consultation' | 'Follow-up';
+  type?: "Assessment" | "Consultation" | "Follow-up";
   isFreeAssessment?: boolean;
   razorpayOrderId?: string;
   razorpayPaymentId?: string;
@@ -42,7 +42,7 @@ export interface AppointmentsListResponse {
 export async function createAppointment(
   payload: CreateAppointmentPayload,
 ): Promise<AppointmentRecord> {
-  const { data } = await api.post('/appointments', payload);
+  const { data } = await api.post("/appointments", payload);
   return data.data;
 }
 
@@ -52,14 +52,16 @@ export async function fetchAppointments(params?: {
   limit?: number;
 }): Promise<AppointmentsListResponse> {
   const q = new URLSearchParams();
-  if (params?.status) q.set('status', params.status);
-  if (params?.page) q.set('page', String(params.page));
-  if (params?.limit) q.set('limit', String(params.limit));
+  if (params?.status) q.set("status", params.status);
+  if (params?.page) q.set("page", String(params.page));
+  if (params?.limit) q.set("limit", String(params.limit));
   const { data } = await api.get(`/appointments?${q}`);
   return { data: data.data, meta: data.meta };
 }
 
-export async function fetchAppointmentById(id: string): Promise<AppointmentRecord> {
+export async function fetchAppointmentById(
+  id: string,
+): Promise<AppointmentRecord> {
   const { data } = await api.get(`/appointments/${id}`);
   return data.data;
 }
@@ -69,7 +71,10 @@ export async function rescheduleAppointment(
   newDate: string,
   newTime: string,
 ): Promise<AppointmentRecord> {
-  const { data } = await api.post(`/appointments/${id}/reschedule`, { newDate, newTime });
+  const { data } = await api.post(`/appointments/${id}/reschedule`, {
+    newDate,
+    newTime,
+  });
   return data.data;
 }
 
@@ -86,7 +91,10 @@ export async function submitFeedback(
   rating: number,
   feedbackText?: string,
 ): Promise<AppointmentRecord> {
-  const { data } = await api.post(`/appointments/${id}/feedback`, { rating, feedbackText });
+  const { data } = await api.post(`/appointments/${id}/feedback`, {
+    rating,
+    feedbackText,
+  });
   return data.data;
 }
 
@@ -101,7 +109,7 @@ export async function fetchFreeAssessmentEligibility(): Promise<{
   eligible: boolean;
   hasUsed: boolean;
 }> {
-  const { data } = await api.get('/patients/me/free-assessment');
+  const { data } = await api.get("/patients/me/free-assessment");
   return data.data;
 }
 
@@ -109,6 +117,16 @@ export async function fetchTherapistAvailability(
   therapistId: string,
   date: string,
 ): Promise<{ available: string[]; booked: string[] }> {
-  const { data } = await api.get(`/therapists/${therapistId}/availability?date=${date}`);
+  const { data } = await api.get(
+    `/therapists/${therapistId}/availability?date=${date}`,
+  );
+  return data.data;
+}
+
+export async function fetchTherapistpatients(): Promise<{
+  available: string[];
+  booked: string[];
+}> {
+  const { data } = await api.get(`/therapists/me/patients`);
   return data.data;
 }

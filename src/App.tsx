@@ -62,6 +62,7 @@ const queryClient = new QueryClient({
 
 // ── Coming Soon Component ─────────────────────────────────────────────────────
 import BlogDetail from "./pages/BlogDetail";
+import PracticeProfile from "./pages/PracticeProfile";
 
 const ComingSoon = ({ title }: { title: string }) => (
   <div className="flex flex-col items-center justify-center min-h-[400px] p-10 bg-white rounded-3xl shadow-clinical border border-healthcare-border animate-fade-in text-center">
@@ -269,6 +270,8 @@ function AppRoutes() {
           <Route element={<AppLayoutRoute />}>
             <Route path="/find-therapist" element={<TherapistDirectory />} />
             <Route path="/find-therapist/:id" element={<TherapistProfile />} />
+            <Route path="/find-Practic/:id" element={<PracticeProfile />} />
+
             <Route
               path="/dashboard"
               element={isTherapist ? <TherapistDashboard /> : <Dashboard />}

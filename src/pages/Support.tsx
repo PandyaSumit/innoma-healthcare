@@ -1,10 +1,18 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import {
+  createSupportTicket,
+  fetchFaq,
+  fetchSupportTickets,
+} from "../api/support";
+import { toast } from "sonner";
 
 const Support = () => {
   const [activeTab, setActiveTab] = useState<"faq" | "contact" | "tickets">(
     "faq",
   );
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string | undefined>();
   const [contactForm, setContactForm] = useState({
     category: "",
     subject: "",
@@ -57,14 +65,54 @@ const Support = () => {
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock submission
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setContactForm({ category: "", subject: "", description: "" });
-    }, 3000);
+
+    createTicketMutation.mutate({
+      category: contactForm.category,
+      subject: contactForm.subject,
+      description: contactForm.description,
+    });
   };
 
+  // For FAQ
+  const { data: faqData = [] } = useQuery({
+    queryKey: ["faq"],
+    queryFn: fetchFaq,
+  });
+
+  const { data: ticketsData = [] } = useQuery({
+    queryKey: ["support-tickets"],
+    queryFn: fetchSupportTickets,
+  });
+
+  const queryClient = useQueryClient();
+
+  const createTicketMutation = useMutation({
+    mutationFn: createSupportTicket,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["support-tickets"] });
+
+      setSubmitted(true);
+      toast.success("successfully create support ticket ");
+      setContactForm({
+        category: "",
+        subject: "",
+        description: "",
+      });
+
+      setTimeout(() => {
+        setSubmitted(false);
+        setActiveTab("tickets");
+      }, 2000);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const filteredFaqs = faqs?.filter(
+    (faq) =>
+      faq?.question?.toLowerCase()?.includes(searchTerm?.toLowerCase()) || faq,
+  );
   return (
     <div>
       <div>
@@ -115,6 +163,7 @@ const Support = () => {
 
               <div className="relative">
                 <input
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search questions..."
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-healthcare-border focus:ring-2 focus:ring-brand-blue/20 outline-none text-sm"
                 />
@@ -134,7 +183,7 @@ const Support = () => {
               </div>
             </div>
 
-            {faqs.map((faq, index) => (
+            {faqData?.data?.map((faq, index) => (
               <div
                 key={index}
                 className="bg-white border border-healthcare-border rounded-xl overflow-hidden"
@@ -218,13 +267,11 @@ const Support = () => {
                   className="w-full px-4 py-3 border border-healthcare-border rounded-lg text-sm"
                 >
                   <option value="">Select issue category</option>
-                  <option value="booking">Booking issue</option>
-                  <option value="technical">Technical problem</option>
-                  <option value="payment">Payment & billing</option>
-                  <option value="therapist">Therapist concern</option>
-                  <option value="other">Other</option>
+                  <option value="Technical">Technical</option>
+                  <option value="Billing">Billing</option>
+                  <option value="Appointments">Appointments</option>
+                  <option value="Other">Other</option>
                 </select>
-
                 <input
                   required
                   placeholder="Subject"
@@ -251,9 +298,12 @@ const Support = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-brand-blue text-white rounded-lg font-semibold hover:opacity-90 transition"
+                  disabled={createTicketMutation.isPending}
+                  className="w-full py-3 bg-brand-blue text-white rounded-lg font-semibold hover:opacity-90 transition disabled:opacity-50"
                 >
-                  Submit ticket
+                  {createTicketMutation.isPending
+                    ? "Submitting..."
+                    : "Submit ticket"}
                 </button>
               </form>
             )}
@@ -262,35 +312,80 @@ const Support = () => {
 
         {/* ================= TICKETS ================= */}
         {activeTab === "tickets" && (
-          <div className="bg-white border border-healthcare-border rounded-xl p-10 text-center">
-            <svg
-              className="w-14 h-14 mx-auto mb-4 text-healthcare-text-muted"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
+          <>
+            {ticketsData?.data?.length > 0 ? (
+              <div className="space-y-4">
+                {ticketsData?.data?.map((ticket) => (
+                  <div
+                    key={ticket.id}
+                    className="bg-white border border-healthcare-border rounded-xl p-6 hover:shadow-md transition"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="text-lg font-semibold text-healthcare-text">
+                          {ticket.subject}
+                        </h3>
+                        <p className="text-sm text-healthcare-text-muted">
+                          Category: {ticket.category}
+                        </p>
+                      </div>
 
-            <h3 className="text-lg font-semibold text-healthcare-text mb-1">
-              No tickets yet
-            </h3>
-            <p className="text-sm text-healthcare-text-muted mb-6">
-              You haven’t created any support tickets
-            </p>
+                      <span
+                        className={`px-3 py-1 text-xs rounded-full font-semibold ${
+                          ticket.status === "Open"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-600"
+                        }`}
+                      >
+                        {ticket.status}
+                      </span>
+                    </div>
 
-            <button
-              onClick={() => setActiveTab("contact")}
-              className="px-6 py-3 bg-brand-blue text-white rounded-lg font-semibold hover:opacity-90"
-            >
-              Create ticket
-            </button>
-          </div>
+                    <p className="text-sm text-healthcare-text mb-4">
+                      {ticket.description}
+                    </p>
+
+                    <div className="flex justify-between text-xs text-healthcare-text-muted">
+                      <span>
+                        Created:{" "}
+                        {new Date(ticket.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white border border-healthcare-border rounded-xl p-10 text-center">
+                <svg
+                  className="w-14 h-14 mx-auto mb-4 text-healthcare-text-muted"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+
+                <h3 className="text-lg font-semibold text-healthcare-text mb-1">
+                  No tickets yet
+                </h3>
+                <p className="text-sm text-healthcare-text-muted mb-6">
+                  You haven’t created any support tickets
+                </p>
+
+                <button
+                  onClick={() => setActiveTab("contact")}
+                  className="px-6 py-3 bg-brand-blue text-white rounded-lg font-semibold hover:opacity-90"
+                >
+                  Create ticket
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

@@ -9,7 +9,7 @@ export async function fetchPatientProfile(): Promise<PatientProfile> {
 export async function updatePatientProfile(
   payload: UpdatePatientPayload,
 ): Promise<PatientProfile> {
-  const { data } = await api.patch('/patients/me', payload);
+  const { data } = await api.put('/patients/me', payload);
   return data.data;
 }
 
